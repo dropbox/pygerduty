@@ -9,3 +9,7 @@ Installation
 =========
 
 sudo python setup.py install
+
+or
+
+pip install pygerduty

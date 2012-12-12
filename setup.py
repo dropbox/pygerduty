@@ -4,8 +4,9 @@ from distutils.core import setup
 
 kwargs = {
     "name": "pygerduty",
-    "version": "0.1",
+    "version": "0.11",
     "py_modules": ["pygerduty"],
+    "data_files": ["README.md", "LICENSE"],
     "description": "Python Client Library for PagerDuty's REST API",
     "author": "Gary M. Josack",
     "author_email": "gary@dropbox.com",
