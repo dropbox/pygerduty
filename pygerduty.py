@@ -9,7 +9,7 @@ except ImportError:
 
 
 __author__ = "Gary M. Josack <gary@dropbox.com>"
-__version__ = "0.11"
+__version__ = "0.12"
 
 
 # TODO:
@@ -307,13 +307,11 @@ class User(Container):
 
 
 class PagerDuty(object):
-    def __init__(self, subdomain, api_token, secure=True, timeout=10):
+    def __init__(self, subdomain, api_token, timeout=10):
         self.subdomain = subdomain
         self.api_token = api_token
-        self.secure = secure
-        self._proto = "https" if secure else "http"
         self._host = "%s.pagerduty.com" % subdomain
-        self._api_base = "%s://%s/api/v1/" % (self._proto, self._host)
+        self._api_base = "https://%s/api/v1/" % self._host
         self.timeout = timeout
 
         # Collections
