@@ -47,7 +47,7 @@ Instantiating a client:
 ::
 
     import pygerduty
-    pager = pygerduty.PagerClient("foobar", "SOMEAPIKEY123456")
+    pager = pygerduty.PagerDuty("foobar", "SOMEAPIKEY123456")
 
 Listing a resource:
 
