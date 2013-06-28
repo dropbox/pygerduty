@@ -15,7 +15,6 @@ __version__ = "0.12"
 # TODO:
 # Support for older Integration API. (Trigger, Ack, Resolve)
 # Support for Log Entries
-# Support /entries and /users for Schedules
 # Support for Reports
 
 
