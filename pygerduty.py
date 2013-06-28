@@ -184,6 +184,10 @@ class Overrides(Collection):
     pass
 
 
+class Entries(Collection):
+    pass
+
+
 class Schedules(Collection):
     pass
 
@@ -297,6 +301,8 @@ class Schedule(Container):
     def __init__(self, *args, **kwargs):
         Container.__init__(self, *args, **kwargs)
         self.overrides = Overrides(self.pagerduty, self)
+        self.users = Users(self.pagerduty, self)
+        self.entries = Entries(self.pagerduty, self)
 
 
 class User(Container):
@@ -304,6 +310,10 @@ class User(Container):
         Container.__init__(self, *args, **kwargs)
         self.notification_rules = NotificationRules(self.pagerduty, self)
         self.contact_methods = ContactMethods(self.pagerduty, self)
+
+
+class Entry(Container):
+    pass
 
 
 class PagerDuty(object):
