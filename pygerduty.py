@@ -343,15 +343,15 @@ class PagerDuty(object):
         self.services = Services(self)
         self.maintenance_windows = MaintenanceWindows(self)
 
-    def trigger_incident(self, service_key, description,
-                         details=None, incident_key=None):
+    def create_event(self, service_key, description, event_type,
+                     details, incident_key):
         headers = {
             "Content-type": "application/json",
         }
 
         data = {
             "service_key": service_key,
-            "event_type": "trigger",
+            "event_type": event_type,
             "description": description,
             "details": details,
             "incident_key": incident_key,
@@ -365,6 +365,30 @@ class PagerDuty(object):
         if not response["status"] == "success":
             raise IntegrationAPIError("trigger", response["message"])
         return response["incident_key"]
+
+    def resolve_incident(self, service_key, incident_key,
+                         description=None, details=None):
+        """ Shallow wrapper for create_event
+        """
+
+        return self.create_event(service_key, description, "resolve",
+                                 details, incident_key)
+
+    def ack_incident(self, service_key, incident_key,
+                     description=None, details=None):
+        """ Shallow wrapper for create_event
+        """
+
+        return self.create_event(service_key, description, "acknowledge",
+                                 details, incident_key)
+
+    def trigger_incident(self, service_key, description,
+                         incident_key=None, details=None):
+        """ Shallow wrapper for create_event
+        """
+
+        return self.create_event(service_key, description, "trigger",
+                                 details, incident_key)
 
     def execute_request(self, request):
         try:
