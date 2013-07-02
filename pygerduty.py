@@ -21,6 +21,14 @@ __version__ = "0.12"
 class Error(Exception):
     pass
 
+class IntegrationAPIError(Error):
+    def __init__(self, message, event_type):
+        self.event_type = event_type
+        self.message = message
+
+    def __str__(self):
+        return "Creating {0} event failed: {1}".\
+            format(self.event_type, self.message)
 
 class BadRequest(Error):
     def __init__(self, payload, *args, **kwargs):
@@ -316,6 +324,10 @@ class Entry(Container):
 
 
 class PagerDuty(object):
+
+    INTEGRATION_API_URL =\
+        "https://events.pagerduty.com/generic/2010-04-15/create_event.json"
+
     def __init__(self, subdomain, api_token, timeout=10):
         self.subdomain = subdomain
         self.api_token = api_token
@@ -330,6 +342,49 @@ class PagerDuty(object):
         self.users = Users(self)
         self.services = Services(self)
         self.maintenance_windows = MaintenanceWindows(self)
+
+    def trigger_incident(self, service_key, description,
+                         details=None, incident_key=None):
+        headers = {
+            "Content-type": "application/json",
+        }
+
+        data = {
+            "service_key": service_key,
+            "event_type": "trigger",
+            "description": description,
+            "details": details,
+            "incident_key": incident_key,
+        }
+
+        request = urllib2.Request(PagerDuty.INTEGRATION_API_URL,
+                                  data=json.dumps(data),
+                                  headers=headers)
+        response = self.execute_request(request)
+
+        if not response["status"] == "success":
+            raise IntegrationAPIError("trigger", response["message"])
+        return response["incident_key"]
+
+    def execute_request(self, request):
+        try:
+            response = urllib2.urlopen(request).read()
+        except urllib2.HTTPError, err:
+            if err.code / 100 == 2:
+                response = err.read()
+            elif err.code == 400:
+                raise BadRequest(json.loads(err.read()))
+            elif err.code == 404:
+                raise NotFound("URL (%s) Not Found." % request.get_full_url())
+            else:
+                raise
+
+        try:
+            response = json.loads(response)
+        except ValueError:
+            response = None
+
+        return response
 
     def request(self, method, path, query_params=None, data=None,
                 extra_headers=None):
@@ -351,23 +406,7 @@ class PagerDuty(object):
         request = urllib2.Request(url, data=data, headers=headers)
         request.get_method = lambda: method.upper()
 
-        try:
-            response = urllib2.urlopen(request).read()
-        except urllib2.HTTPError, err:
-            if err.code / 100 == 2:
-                response = err.read()
-            elif err.code == 400:
-                raise BadRequest(json.loads(err.read()))
-            elif err.code == 404:
-                raise NotFound("Endpoint (%s) Not Found." % path)
-            else:
-                raise
-        try:
-            response = json.loads(response)
-        except ValueError:
-            response = None
-
-        return response
+        return self.execute_request(request)
 
 
 def _lower(string):
