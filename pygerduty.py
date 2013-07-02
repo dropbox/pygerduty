@@ -15,7 +15,6 @@ __version__ = "0.12"
 # TODO:
 # Support for older Integration API. (Trigger, Ack, Resolve)
 # Support for Log Entries
-# Support /entries and /users for Schedules
 # Support for Reports
 
 
@@ -48,7 +47,7 @@ class Collection(object):
         self.name = getattr(self, "name", False) or _lower(self.__class__.__name__)
         self.sname = getattr(self, "sname", False) or _singularize(self.name)
         self.container = (getattr(self, "container", False) or
-                         globals()[_upper(self.sname)])
+                          globals()[_upper(self.sname)])
 
         self.pagerduty = pagerduty
         self.base_container = base_container
@@ -184,6 +183,10 @@ class Overrides(Collection):
     pass
 
 
+class Entries(Collection):
+    pass
+
+
 class Schedules(Collection):
     pass
 
@@ -297,6 +300,8 @@ class Schedule(Container):
     def __init__(self, *args, **kwargs):
         Container.__init__(self, *args, **kwargs)
         self.overrides = Overrides(self.pagerduty, self)
+        self.users = Users(self.pagerduty, self)
+        self.entries = Entries(self.pagerduty, self)
 
 
 class User(Container):
@@ -304,6 +309,10 @@ class User(Container):
         Container.__init__(self, *args, **kwargs)
         self.notification_rules = NotificationRules(self.pagerduty, self)
         self.contact_methods = ContactMethods(self.pagerduty, self)
+
+
+class Entry(Container):
+    pass
 
 
 class PagerDuty(object):
