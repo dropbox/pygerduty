@@ -363,7 +363,7 @@ class PagerDuty(object):
         response = self.execute_request(request)
 
         if not response["status"] == "success":
-            raise IntegrationAPIError("trigger", response["message"])
+            raise IntegrationAPIError(event_type, response["message"])
         return response["incident_key"]
 
     def resolve_incident(self, service_key, incident_key,
