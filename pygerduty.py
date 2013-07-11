@@ -9,7 +9,7 @@ except ImportError:
 
 
 __author__ = "Gary M. Josack <gary@dropbox.com>"
-__version__ = "0.12"
+__version__ = "0.13"
 
 
 # TODO:
@@ -27,8 +27,8 @@ class IntegrationAPIError(Error):
         self.message = message
 
     def __str__(self):
-        return "Creating {0} event failed: {1}".format(self.event_type,
-                                                       self.message)
+        return "Creating %s event failed: %s" % (self.event_type,
+                                                 self.message)
 
 class BadRequest(Error):
     def __init__(self, payload, *args, **kwargs):
