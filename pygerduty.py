@@ -13,7 +13,6 @@ __version__ = "0.13"
 
 
 # TODO:
-# Support for older Integration API. (Trigger, Ack, Resolve)
 # Support for Log Entries
 # Support for Reports
 
