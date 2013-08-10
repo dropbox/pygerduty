@@ -126,7 +126,10 @@ class Collection(object):
 
         response = self.pagerduty.request(
             "GET", path, query_params=kwargs)
-        return self.container(self, **response.get(self.sname, {}))
+        if response.get(self.sname):
+            return self.container(self, **response.get(self.sname, {}))
+        else:
+            return self.container(self, **response)
 
     def delete(self, entity_id):
         path = "%s/%s" % (self.name, entity_id)
