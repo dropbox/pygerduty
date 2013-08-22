@@ -9,7 +9,7 @@ except ImportError:
 
 
 __author__ = "Gary M. Josack <gary@dropbox.com>"
-__version__ = "0.13"
+__version__ = "0.14"
 
 
 # TODO:
@@ -198,12 +198,21 @@ class Entries(Collection):
 
 
 class Schedules(Collection):
-    pass
+    def update(self, entity_id, **kwargs):
+        path = "%s/%s" % (self.name, entity_id)
+        data = {"schedule": kwargs['schedules']
+                }
+        response = self.pagerduty.request("PUT", path, data=json.dumps(data))
+        return self.container(self, **response.get(self.sname, {}))
 
+class ScheduleUsers(Collection):
+    pass
 
 class Users(Collection):
     pass
 
+class Restrictions(Collection):
+    pass
 
 class NotificationRules(Collection):
     pass
@@ -218,6 +227,7 @@ class EmailFilters(Collection):
 
 
 class Container(object):
+    ATTR_NAME_OVERRIDE_KEY = '_attr_name_override'
     def __init__(self, collection, **kwargs):
         # This class depends on the existance on the _kwargs attr.
         # Use object's __setattr__ to initialize.
@@ -225,9 +235,11 @@ class Container(object):
 
         self.collection = collection
         self.pagerduty = collection.pagerduty
+        self._attr_overrides = kwargs.pop(Container.ATTR_NAME_OVERRIDE_KEY, None)
 
         def _check_kwarg(key, value):
             if isinstance(value, dict):
+                value[Container.ATTR_NAME_OVERRIDE_KEY] = self._attr_overrides
                 container = globals().get(_upper(_singularize(key)))
                 if container is not None and issubclass(container, Container):
                     _collection = globals().get(_upper(_pluralize(key)),
@@ -238,6 +250,8 @@ class Container(object):
             return value
 
         for key, value in kwargs.iteritems():
+            if self._attr_overrides and key in self._attr_overrides:
+                key = self._attr_overrides[key]
             if isinstance(value, list):
                 self._kwargs[key] = []
                 for item in value:
@@ -262,6 +276,25 @@ class Container(object):
 
     def __repr__(self):
         return str(self)
+
+    def to_json(self):
+        json_dict = {}
+        overriden_attrs = dict()
+        if self._attr_overrides:
+            for key, value in self._attr_overrides.iteritems():
+                overriden_attrs[value] = key
+        for key, value in self._kwargs.iteritems():
+            if key in overriden_attrs:
+                key = overriden_attrs[key]
+            if isinstance(value, Container):
+                json_dict[key] = value.to_json()
+            elif isinstance(value, list):
+                json_dict[key] = []
+                for v in value:
+                    json_dict[key].append(v.to_json())
+            else:
+                json_dict[key] = value
+        return json_dict
 
 
 class Incident(Container):
@@ -308,11 +341,20 @@ class Service(Container):
 
 class Schedule(Container):
     def __init__(self, *args, **kwargs):
+        # The json representation of Schedule has a field called
+        # "users". Rename it to schedule_users to avoid conflict with
+        # Users
+        kwargs[Container.ATTR_NAME_OVERRIDE_KEY] = {"users": "schedule_users"}
         Container.__init__(self, *args, **kwargs)
         self.overrides = Overrides(self.pagerduty, self)
         self.users = Users(self.pagerduty, self)
         self.entries = Entries(self.pagerduty, self)
 
+class ScheduleUser(Container):
+    pass
+
+class Restriction(Container):
+    pass
 
 class User(Container):
     def __init__(self, *args, **kwargs):
