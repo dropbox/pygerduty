@@ -196,6 +196,8 @@ class Overrides(Collection):
 class Entries(Collection):
     pass
 
+class EscalationPolicies(Collection):
+    pass
 
 class Schedules(Collection):
     def update(self, entity_id, **kwargs):
@@ -383,6 +385,7 @@ class PagerDuty(object):
         self.incidents = Incidents(self)
         self.alerts = Alerts(self)
         self.schedules = Schedules(self)
+        self.escalation_policies = EscalationPolicies(self)
         self.users = Users(self)
         self.services = Services(self)
         self.maintenance_windows = MaintenanceWindows(self)
