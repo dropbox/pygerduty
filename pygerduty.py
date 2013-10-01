@@ -9,7 +9,7 @@ except ImportError:
 
 
 __author__ = "Gary M. Josack <gary@dropbox.com>"
-__version__ = "0.15"
+__version__ = "0.16"
 
 
 # TODO:
@@ -196,8 +196,19 @@ class Overrides(Collection):
 class Entries(Collection):
     pass
 
+
 class EscalationPolicies(Collection):
     pass
+
+
+class EscalationRules(Collection):
+    def update(self, entity_id, **kwargs):
+        path = "%s/%s/%s/%s" % (
+            self.base_container.collection.name,
+            self.base_container.id, self.name, entity_id)
+        response = self.pagerduty.request("PUT", path, data=json.dumps(kwargs))
+        return self.container(self, **response.get(self.sname, {}))
+
 
 class Schedules(Collection):
     def update(self, entity_id, **kwargs):
@@ -207,14 +218,18 @@ class Schedules(Collection):
         response = self.pagerduty.request("PUT", path, data=json.dumps(data))
         return self.container(self, **response.get(self.sname, {}))
 
+
 class ScheduleUsers(Collection):
     pass
+
 
 class Users(Collection):
     pass
 
+
 class Restrictions(Collection):
     pass
+
 
 class NotificationRules(Collection):
     pass
@@ -328,6 +343,16 @@ class ContactMethod(Container):
 
 
 class EscalationPolicy(Container):
+    def __init__(self, *args, **kwargs):
+        Container.__init__(self, *args, **kwargs)
+        self.escalation_rules = EscalationRules(self.pagerduty, self)
+
+
+class EscalationRule(Container):
+    pass
+
+
+class RuleObject(Container):
     pass
 
 
@@ -352,11 +377,14 @@ class Schedule(Container):
         self.users = Users(self.pagerduty, self)
         self.entries = Entries(self.pagerduty, self)
 
+
 class ScheduleUser(Container):
     pass
 
+
 class Restriction(Container):
     pass
+
 
 class User(Container):
     def __init__(self, *args, **kwargs):
