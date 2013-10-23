@@ -4,7 +4,7 @@ from distutils.core import setup
 
 kwargs = {
     "name": "pygerduty",
-    "version": "0.16",
+    "version": "0.17",
     "py_modules": ["pygerduty"],
     "scripts": ["bin/grab_oncall.py"],
     "description": "Python Client Library for PagerDuty's REST API",
