@@ -502,7 +502,7 @@ class PagerDuty(object):
                 extra_headers=None):
         auth = None
         if self.api_token:
-            auth = "Token token=%s" % self.api_token,
+            auth = "Token token=%s" % self.api_token
         elif self.basic_auth:
             b64_string = "%s:%s" % self.basic_auth
             auth = "Basic %s" % base64.b64encode(b64_string)
