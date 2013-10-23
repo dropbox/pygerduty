@@ -1,6 +1,7 @@
 import urllib
 import urllib2
 import urlparse
+import base64
 
 try:
     import json
@@ -402,9 +403,15 @@ class PagerDuty(object):
     INTEGRATION_API_URL =\
         "https://events.pagerduty.com/generic/2010-04-15/create_event.json"
 
-    def __init__(self, subdomain, api_token, timeout=10):
-        self.subdomain = subdomain
+    def __init__(self, subdomain, api_token=None, timeout=10, basic_auth=None):
+        if not any([api_token, basic_auth]):
+            raise Error("Must use exactly one authentication method.")
+        if api_token and basic_auth:
+            raise Error("Must use exactly one authentication method.")
+
         self.api_token = api_token
+        self.basic_auth = basic_auth
+        self.subdomain = subdomain
         self._host = "%s.pagerduty.com" % subdomain
         self._api_base = "https://%s/api/v1/" % self._host
         self.timeout = timeout
@@ -493,9 +500,16 @@ class PagerDuty(object):
 
     def request(self, method, path, query_params=None, data=None,
                 extra_headers=None):
+        auth = None
+        if self.api_token:
+            auth = "Token token=%s" % self.api_token,
+        elif self.basic_auth:
+            b64_string = "%s:%s" % self.basic_auth
+            auth = "Basic %s" % base64.b64encode(b64_string)
+
         headers = {
             "Content-type": "application/json",
-            "Authorization": "Token token=%s" % self.api_token,
+            "Authorization": auth
         }
 
         if extra_headers:
