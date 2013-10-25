@@ -2,10 +2,12 @@
 
 from distutils.core import setup
 
+execfile('pygerduty/version.py')
+
 kwargs = {
     "name": "pygerduty",
-    "version": "0.17",
-    "py_modules": ["pygerduty"],
+    "version": str(__version__),
+    "packages": ["pygerduty"],
     "scripts": ["bin/grab_oncall.py"],
     "description": "Python Client Library for PagerDuty's REST API",
     "author": "Gary M. Josack",

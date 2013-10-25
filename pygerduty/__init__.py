@@ -10,7 +10,7 @@ except ImportError:
 
 
 __author__ = "Gary M. Josack <gary@dropbox.com>"
-__version__ = "0.17"
+from version import __version__
 
 
 # TODO:
