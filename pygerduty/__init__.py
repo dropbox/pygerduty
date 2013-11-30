@@ -34,9 +34,9 @@ class BadRequest(Error):
     def __init__(self, payload, *args, **kwargs):
         # Error Reponses don't always contain all fields.
         # Sane defaults must be set.
-        self.code = payload["error"].get('code', 99999)
-        self.errors = payload["error"].get('errors', [])
-        self.message = payload["error"].get('message', "")
+        self.code = payload.get("error", {}).get('code', 99999)
+        self.errors = payload.get("error", {}).get('errors', [])
+        self.message = payload.get("error", {}).get('message', str(payload))
 
         Error.__init__(self, *args, **kwargs)
 
