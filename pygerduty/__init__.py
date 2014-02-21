@@ -1,3 +1,4 @@
+import copy
 import urllib
 import urllib2
 import urlparse
@@ -50,6 +51,7 @@ class NotFound(Error):
 
 
 class Collection(object):
+    paginated = True
 
     def __init__(self, pagerduty, base_container=None):
         self.name = getattr(self, "name", False) or _lower(self.__class__.__name__)
@@ -104,7 +106,7 @@ class Collection(object):
             entities.append(self.container(self, **entity))
         return entities
 
-    def list(self, **kwargs):
+    def _list_no_pagination(self, **kwargs):
         path = self.name
         if self.base_container:
             path = "%s/%s/%s" % (
@@ -112,6 +114,28 @@ class Collection(object):
                 self.base_container.id, self.name)
         response = self.pagerduty.request("GET", path, query_params=kwargs)
         return self._list_response(response)
+
+    def list(self, **kwargs):
+        # Some APIs are paginated. If they are, and the user isn't doing
+        # pagination themselves, let's do it for them
+        if not self.paginated or any(key in kwargs for key in ('offset', 'limit')):
+            return self._list_no_pagination(**kwargs)
+        else:
+            offset = 0
+            limit = 25  # the default
+            total_result = []
+            while True:
+                these_kwargs = copy.copy(kwargs)
+                these_kwargs.update({
+                    'limit': limit,
+                    'offset': offset,
+                })
+                this_paginated_result = self._list_no_pagination(**these_kwargs)
+                if not this_paginated_result:
+                    break
+                total_result.extend(this_paginated_result)
+                offset += len(this_paginated_result)
+            return total_result
 
     def count(self, **kwargs):
         path = "%s/count" % self.name
@@ -191,11 +215,11 @@ class Alerts(Collection):
 
 
 class Overrides(Collection):
-    pass
+    paginated = False
 
 
 class Entries(Collection):
-    pass
+    paginated = False
 
 
 class EscalationPolicies(Collection):
@@ -203,6 +227,8 @@ class EscalationPolicies(Collection):
 
 
 class EscalationRules(Collection):
+    paginated = False
+
     def update(self, entity_id, **kwargs):
         path = "%s/%s/%s/%s" % (
             self.base_container.collection.name,
@@ -221,7 +247,7 @@ class Schedules(Collection):
 
 
 class ScheduleUsers(Collection):
-    pass
+    paginated = False
 
 
 class Users(Collection):
@@ -237,7 +263,7 @@ class NotificationRules(Collection):
 
 
 class ContactMethods(Collection):
-    pass
+    paginated = False
 
 
 class EmailFilters(Collection):
@@ -336,7 +362,7 @@ class Override(Container):
 
 
 class NotificationRule(Container):
-    pass
+    paginated = False
 
 
 class ContactMethod(Container):
