@@ -135,6 +135,11 @@ class Collection(object):
                     break
                 total_result.extend(this_paginated_result)
                 offset += len(this_paginated_result)
+                if len(this_paginated_result) > limit:
+                    # sometimes pagerduty decides to ignore your limit and just
+                    # return everything. it seems to only do this when you're near
+                    # the last page.
+                    break
             return total_result
 
     def count(self, **kwargs):
