@@ -264,7 +264,7 @@ class Restrictions(Collection):
 
 
 class NotificationRules(Collection):
-    pass
+    paginated = False
 
 
 class ContactMethods(Collection):
@@ -367,8 +367,7 @@ class Override(Container):
 
 
 class NotificationRule(Container):
-    paginated = False
-
+    pass
 
 class ContactMethod(Container):
     pass
