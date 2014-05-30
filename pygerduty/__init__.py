@@ -252,6 +252,7 @@ class Schedules(Collection):
 
 
 class ScheduleUsers(Collection):
+    name = 'users'
     paginated = False
 
 
@@ -405,7 +406,7 @@ class Schedule(Container):
         kwargs[Container.ATTR_NAME_OVERRIDE_KEY] = {"users": "schedule_users"}
         Container.__init__(self, *args, **kwargs)
         self.overrides = Overrides(self.pagerduty, self)
-        self.users = Users(self.pagerduty, self)
+        self.users = ScheduleUsers(self.pagerduty, self)
         self.entries = Entries(self.pagerduty, self)
 
 
