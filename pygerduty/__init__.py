@@ -245,8 +245,8 @@ class EscalationRules(Collection):
 class Schedules(Collection):
     def update(self, entity_id, **kwargs):
         path = "%s/%s" % (self.name, entity_id)
-        data = {"schedule": kwargs['schedules']
-                }
+        data = {"overflow": kwargs["overflow"],
+                "schedule": kwargs["schedule"]}
         response = self.pagerduty.request("PUT", path, data=json.dumps(data))
         return self.container(self, **response.get(self.sname, {}))
 
