@@ -74,9 +74,9 @@ def main():
     parser.add_option("--schedule", default=None,
                       help="Schedule to add the override to.")
     parser.add_option("--api_key", default=None,
-                      help="Schedule to add the override to.")
+                      help="Integration API key.")
     parser.add_option("--subdomain", default=None,
-                      help="Schedule to add the override to.")
+                      help="PagerDuty subdomain.")
 
     options, args = parser.parse_args()
 
@@ -105,13 +105,13 @@ def main():
 
     pager = pygerduty.PagerDuty(options.subdomain, options.api_key)
 
-    users = pager.users.list(query="%s" % options.user)
+    users = list(pager.users.list(query="%s" % options.user))
     if len(users) != 1:
         print "Expected 1 user. Found (%s)" % len(users)
         sys.exit(1)
     uid = users[0].id
 
-    schedules = pager.schedules.list(query=options.schedule)
+    schedules = list(pager.schedules.list(query=options.schedule, limit=1))
     if len(schedules) != 1:
         print "Expected 1 schedule. Found (%s)" % len(schedules)
         sys.exit(1)
