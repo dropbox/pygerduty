@@ -22,6 +22,7 @@ from version import __version__, version_info
 class Error(Exception):
     pass
 
+
 class IntegrationAPIError(Error):
     def __init__(self, message, event_type):
         self.event_type = event_type
@@ -30,6 +31,7 @@ class IntegrationAPIError(Error):
     def __str__(self):
         return "Creating %s event failed: %s" % (self.event_type,
                                                  self.message)
+
 
 class BadRequest(Error):
     def __init__(self, payload, *args, **kwargs):
@@ -348,7 +350,26 @@ class Container(object):
 
 
 class Incident(Container):
-    pass
+    def _do_action(self, verb, requester_id, **kwargs):
+        path = '%s/%s/%s' % (self.collection.name, self.id, verb)
+        data = {'requester_id': requester_id}
+        data.update(kwargs)
+        self.pagerduty.request("PUT", path, data=json.dumps(data))
+
+    def resolve(self, requester_id):
+        self._do_action('resolve')
+
+    def acknowledge(self, requester_id):
+        self._do_action('acknowledge')
+
+    def reassign(self, user_ids, requester_id):
+        """Reassign this incident to a user or list of users
+
+        :param user_ids: A non-empty list of user ids
+        """
+        if not user_ids:
+            raise Error('Must pass at least one user id')
+        self._do_action('reassign', assigned_to_user=','.join(user_ids))
 
 
 class Alert(Container):
