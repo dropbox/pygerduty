@@ -121,11 +121,12 @@ class Collection(object):
         # Some APIs are paginated. If they are, and the user isn't doing
         # pagination themselves, let's do it for them
         if not self.paginated or any(key in kwargs for key in ('offset', 'limit')):
-            return self._list_no_pagination(**kwargs)
+            for i in self._list_no_pagination(**kwargs):
+                yield i
         else:
             offset = 0
             limit = 25  # the default
-            total_result = []
+            seen_items = set()
             while True:
                 these_kwargs = copy.copy(kwargs)
                 these_kwargs.update({
@@ -135,14 +136,17 @@ class Collection(object):
                 this_paginated_result = self._list_no_pagination(**these_kwargs)
                 if not this_paginated_result:
                     break
-                total_result.extend(this_paginated_result)
+                for item in this_paginated_result:
+                    if item.id in seen_items:
+                        continue
+                    seen_items.add(item.id)
+                    yield item
                 offset += len(this_paginated_result)
                 if len(this_paginated_result) > limit:
-                    # sometimes pagerduty decides to ignore your limit and just
-                    # return everything. it seems to only do this when you're near
-                    # the last page.
+                    # sometimes pagerduty decides to ignore your limit and
+                    # just return everything. it seems to only do this when
+                    # you're near the last page.
                     break
-            return total_result
 
     def count(self, **kwargs):
         path = "%s/count" % self.name
