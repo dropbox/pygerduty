@@ -70,7 +70,7 @@ Creating a resource:
 
 ::
 
-    user = pager.users.list(query="gary")[0]
+    user = next(pager.users.list(query="gary", limit=1))
     override = schedule.overrides.create(
         start="2012-12-16", end="2012-12-17", user_id=user.id)
 
@@ -88,3 +88,10 @@ Updating a resource:
     pagerduty.users.update(user.id, name="Gary Example")
 
 
+Acknowledging a group by incidents:
+
+::
+
+    me = next(pager.users.list(query="me@you.com", limit=1))
+    for incident in pagerduty.incidents.list(status='triggered'):
+        incident.acknowledge(requester_id=me.id)
