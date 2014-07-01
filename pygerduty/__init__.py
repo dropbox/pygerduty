@@ -357,10 +357,10 @@ class Incident(Container):
         self.pagerduty.request("PUT", path, data=json.dumps(data))
 
     def resolve(self, requester_id):
-        self._do_action('resolve')
+        self._do_action('resolve', requester_id=requester_id)
 
     def acknowledge(self, requester_id):
-        self._do_action('acknowledge')
+        self._do_action('acknowledge', requester_id=requester_id)
 
     def reassign(self, user_ids, requester_id):
         """Reassign this incident to a user or list of users
@@ -369,7 +369,7 @@ class Incident(Container):
         """
         if not user_ids:
             raise Error('Must pass at least one user id')
-        self._do_action('reassign', assigned_to_user=','.join(user_ids))
+        self._do_action('reassign', requester_id=requester_id, assigned_to_user=','.join(user_ids))
 
 
 class Alert(Container):
