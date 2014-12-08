@@ -282,6 +282,10 @@ class EmailFilters(Collection):
     pass
 
 
+class LogEntries(Collection):
+    pass
+
+
 class Container(object):
     ATTR_NAME_OVERRIDE_KEY = '_attr_name_override'
     def __init__(self, collection, **kwargs):
@@ -354,6 +358,10 @@ class Container(object):
 
 
 class Incident(Container):
+    def __init__(self, *args, **kwargs):
+        Container.__init__(self, *args, **kwargs)
+        self.log_entries = LogEntries(self.pagerduty, self)
+
     def _do_action(self, verb, requester_id, **kwargs):
         path = '%s/%s/%s' % (self.collection.name, self.id, verb)
         data = {'requester_id': requester_id}
@@ -448,9 +456,14 @@ class User(Container):
         Container.__init__(self, *args, **kwargs)
         self.notification_rules = NotificationRules(self.pagerduty, self)
         self.contact_methods = ContactMethods(self.pagerduty, self)
+        self.log_entries = LogEntries(self.pagerduty, self)
 
 
 class Entry(Container):
+    pass
+
+
+class LogEntry(Container):
     pass
 
 
@@ -480,6 +493,7 @@ class PagerDuty(object):
         self.users = Users(self)
         self.services = Services(self)
         self.maintenance_windows = MaintenanceWindows(self)
+        self.log_entries = LogEntries(self)
 
     def create_event(self, service_key, description, event_type,
                      details, incident_key, **kwargs):
