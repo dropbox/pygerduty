@@ -559,7 +559,7 @@ class PagerDuty(object):
 
     def execute_request(self, request):
         try:
-            response = urllib2.urlopen(request).read()
+            response = urllib2.urlopen(request, timeout=self.timeout).read()
         except urllib2.HTTPError, err:
             if err.code / 100 == 2:
                 response = err.read()
