@@ -286,6 +286,14 @@ class LogEntries(Collection):
     pass
 
 
+class Notes(Collection):
+    paginated = False
+    def update(self, *args, **kwargs): raise NotImplementedError()
+    def count(self, *args, **kwargs): raise NotImplementedError()
+    def show(self, *args, **kwargs): raise NotImplementedError()
+    def delete(self, *args, **kwargs): raise NotImplementedError()
+
+
 class Container(object):
     ATTR_NAME_OVERRIDE_KEY = '_attr_name_override'
     def __init__(self, collection, **kwargs):
@@ -361,6 +369,7 @@ class Incident(Container):
     def __init__(self, *args, **kwargs):
         Container.__init__(self, *args, **kwargs)
         self.log_entries = LogEntries(self.pagerduty, self)
+        self.notes = Notes(self.pagerduty, self)
 
     def _do_action(self, verb, requester_id, **kwargs):
         path = '%s/%s/%s' % (self.collection.name, self.id, verb)
@@ -383,6 +392,9 @@ class Incident(Container):
             raise Error('Must pass at least one user id')
         self._do_action('reassign', requester_id=requester_id, assigned_to_user=','.join(user_ids))
 
+
+class Note(Container):
+    pass
 
 class Alert(Container):
     pass
