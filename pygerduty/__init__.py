@@ -589,6 +589,18 @@ class PagerDuty(object):
 
         return response
 
+    @staticmethod
+    def _process_query_params(query_params):
+        new_qp = []
+        for key, value in query_params.items():
+            if isinstance(value, (list, set, tuple)):
+                for elem in value:
+                    new_qp.append(("{}[]".format(key), elem))
+            else:
+                new_qp.append((key, value))
+
+        return urllib.urlencode(new_qp)
+
     def request(self, method, path, query_params=None, data=None,
                 extra_headers=None):
         auth = None
@@ -607,7 +619,7 @@ class PagerDuty(object):
             headers.update(extra_headers)
 
         if query_params is not None:
-            query_params = urllib.urlencode(query_params)
+            query_params = self._process_query_params(query_params)
 
         url = urlparse.urljoin(self._api_base, path)
         if query_params:
