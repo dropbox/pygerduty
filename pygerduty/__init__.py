@@ -114,6 +114,11 @@ class Collection(object):
             path = "%s/%s/%s" % (
                 self.base_container.collection.name,
                 self.base_container.id, self.name)
+
+        suffix_path = kwargs.pop("_suffix_path", None)
+        if suffix_path is not None:
+            path += "/{}".format(suffix_path)
+
         response = self.pagerduty.request("GET", path, query_params=kwargs)
         return self._list_response(response)
 
@@ -234,7 +239,8 @@ class Entries(Collection):
 
 
 class EscalationPolicies(Collection):
-    pass
+    def on_call(self, **kwargs):
+        return self.list(_suffix_path="on_call", **kwargs)
 
 
 class EscalationRules(Collection):
@@ -263,7 +269,8 @@ class ScheduleUsers(Collection):
 
 
 class Users(Collection):
-    pass
+    def on_call(self, **kwargs):
+        return self.list(_suffix_path="on_call", **kwargs)
 
 
 class Restrictions(Collection):
