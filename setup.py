@@ -2,11 +2,12 @@
 
 from setuptools import setup
 
-execfile('pygerduty/version.py')
+with open('pygerduty/version.py') as version_file:
+    exec(compile(version_file.read(), version_file.name, 'exec'))
 
 kwargs = {
     "name": "pygerduty",
-    "version": str(__version__),
+    "version": str(__version__),  # noqa
     "packages": ["pygerduty"],
     "scripts": ["bin/grab_oncall.py"],
     "description": "Python Client Library for PagerDuty's REST API",
