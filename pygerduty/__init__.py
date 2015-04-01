@@ -11,7 +11,7 @@ except ImportError:
 
 
 __author__ = "Gary M. Josack <gary@dropbox.com>"
-from version import __version__, version_info
+from version import __version__, version_info  # noqa
 
 
 # TODO:
@@ -295,14 +295,23 @@ class LogEntries(Collection):
 
 class Notes(Collection):
     paginated = False
-    def update(self, *args, **kwargs): raise NotImplementedError()
-    def count(self, *args, **kwargs): raise NotImplementedError()
-    def show(self, *args, **kwargs): raise NotImplementedError()
-    def delete(self, *args, **kwargs): raise NotImplementedError()
+
+    def update(self, *args, **kwargs):
+        raise NotImplementedError()
+
+    def count(self, *args, **kwargs):
+        raise NotImplementedError()
+
+    def show(self, *args, **kwargs):
+        raise NotImplementedError()
+
+    def delete(self, *args, **kwargs):
+        raise NotImplementedError()
 
 
 class Container(object):
     ATTR_NAME_OVERRIDE_KEY = '_attr_name_override'
+
     def __init__(self, collection, **kwargs):
         # This class depends on the existance on the _kwargs attr.
         # Use object's __setattr__ to initialize.
@@ -403,6 +412,7 @@ class Incident(Container):
 class Note(Container):
     pass
 
+
 class Alert(Container):
     pass
 
@@ -421,6 +431,7 @@ class Override(Container):
 
 class NotificationRule(Container):
     pass
+
 
 class ContactMethod(Container):
     pass
@@ -579,7 +590,7 @@ class PagerDuty(object):
     def execute_request(self, request):
         try:
             response = urllib2.urlopen(request, timeout=self.timeout).read()
-        except urllib2.HTTPError, err:
+        except urllib2.HTTPError as err:
             if err.code / 100 == 2:
                 response = err.read()
             elif err.code == 400:
