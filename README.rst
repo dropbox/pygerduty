@@ -1,3 +1,7 @@
+
+.. image:: https://travis-ci.org/dropbox/pygerduty.svg?branch=master
+    :target: https://travis-ci.org/dropbox/pygerduty
+
 =========
 Pygerduty
 =========
