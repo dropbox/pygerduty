@@ -303,9 +303,8 @@ class Notes(Collection):
         raise NotImplementedError()
 
     def show(self, *args, **kwargs):
-        path = 'incidents/%s/notes' % self.base_container.id
-        response = self.pagerduty.request("GET", path, data='')
-        print response
+        path = "incidents/%s/notes" % self.base_container.id
+        response = self.pagerduty.request("GET", path, data="")
         return self.container(self, **response)
 
     def delete(self, *args, **kwargs):
