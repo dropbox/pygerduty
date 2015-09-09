@@ -335,7 +335,7 @@ class Container(object):
                     return Container(Collection(self.pagerduty), **value)
             return value
 
-        for key, value in kwargs.iteritems():
+        for key, value in kwargs.items():
             if self._attr_overrides and key in self._attr_overrides:
                 key = self._attr_overrides[key]
             if isinstance(value, list):
@@ -357,7 +357,7 @@ class Container(object):
         self._kwargs[name] = value
 
     def __str__(self):
-        attrs = ["{}={}".format(k, repr(v)) for k, v in self._kwargs.iteritems()]
+        attrs = ["{}={}".format(k, repr(v)) for k, v in self._kwargs.items()]
         return "<{}: {}>".format(self.__class__.__name__, ", ".join(attrs))
 
     def __repr__(self):
@@ -367,9 +367,9 @@ class Container(object):
         json_dict = {}
         overriden_attrs = dict()
         if self._attr_overrides:
-            for key, value in self._attr_overrides.iteritems():
+            for key, value in self._attr_overrides.items():
                 overriden_attrs[value] = key
-        for key, value in self._kwargs.iteritems():
+        for key, value in self._kwargs.items():
             if key in overriden_attrs:
                 key = overriden_attrs[key]
             if isinstance(value, Container):
