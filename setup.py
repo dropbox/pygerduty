@@ -6,18 +6,15 @@ with open('pygerduty/version.py') as version_file:
     exec(compile(version_file.read(), version_file.name, 'exec'))
 
 kwargs = {
-    "name": "pygerduty",
+    "name": "pygerduty-py3",
     "version": str(__version__),  # noqa
     "packages": ["pygerduty"],
     "scripts": ["bin/grab_oncall.py"],
     "description": "Python Client Library for PagerDuty's REST API",
     "author": "Gary M. Josack",
-    "maintainer": "Gary M. Josack",
     "author_email": "gary@dropbox.com",
-    "maintainer_email": "gary@dropbox.com",
     "license": "MIT",
-    "url": "https://github.com/dropbox/pygerduty",
-    "download_url": "https://github.com/dropbox/pygerduty/archive/master.tar.gz",
+    "url": "https://github.com/cardforcoin/pygerduty",
     "classifiers": [
         "Programming Language :: Python",
         "Topic :: Software Development",
