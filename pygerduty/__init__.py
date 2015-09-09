@@ -13,7 +13,7 @@ except ImportError:
 
 
 __author__ = "Gary M. Josack <gary@dropbox.com>"
-from version import __version__, version_info  # noqa
+from .version import __version__, version_info  # noqa
 
 
 # TODO:
