@@ -1,8 +1,8 @@
 import copy
 import urllib
 import urllib.error
+import urllib.parse
 import urllib.request
-import urlparse
 import base64
 import time
 
@@ -650,7 +650,7 @@ class PagerDuty(object):
         if query_params is not None:
             query_params = self._process_query_params(query_params)
 
-        url = urlparse.urljoin(self._api_base, path)
+        url = urllib.parse.urljoin(self._api_base, path)
         if query_params:
             url += "?{}".format(query_params)
 
