@@ -1,6 +1,7 @@
 import copy
 import urllib
-import urllib2
+import urllib.error
+import urllib.request
 import urlparse
 import base64
 import time
@@ -548,9 +549,9 @@ class PagerDuty(object):
             "client_url": client_url
         }
 
-        request = urllib2.Request(PagerDuty.INTEGRATION_API_URL,
-                                  data=json.dumps(data),
-                                  headers=headers)
+        request = urllib.request.Request(PagerDuty.INTEGRATION_API_URL,
+                                         data=json.dumps(data),
+                                         headers=headers)
         response = self.execute_request(request)
 
         if not response["status"] == "success":
@@ -591,8 +592,9 @@ class PagerDuty(object):
 
     def execute_request(self, request, retry_count=0):
         try:
-            response = urllib2.urlopen(request, timeout=self.timeout).read()
-        except urllib2.HTTPError as err:
+            response = urllib.request.urlopen(request,
+                                              timeout=self.timeout).read()
+        except urllib.error.HTTPError as err:
             if err.code / 100 == 2:
                 response = err.read()
             elif err.code == 400:
@@ -652,7 +654,7 @@ class PagerDuty(object):
         if query_params:
             url += "?{}".format(query_params)
 
-        request = urllib2.Request(url, data=data, headers=headers)
+        request = urllib.request.Request(url, data=data, headers=headers)
         request.get_method = lambda: method.upper()
 
         return self.execute_request(request)
