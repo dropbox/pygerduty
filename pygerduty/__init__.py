@@ -64,6 +64,17 @@ class Collection(object):
         self.pagerduty = pagerduty
         self.base_container = base_container
 
+    @staticmethod
+    def _filter_entity_fields(entity):
+        entity_filtered = {}
+        for k, v in entity.iteritems():
+            # PagerDuty's 'self' field conflicts with Python conventions.
+            if k == 'self':
+                entity_filtered['self_url'] = v
+            else:
+                entity_filtered[k] = v
+        return entity_filtered
+
     def create(self, **kwargs):
         path = "%s" % self.name
         if self.base_container:
@@ -81,7 +92,7 @@ class Collection(object):
         data[self.sname] = kwargs
 
         response = self.pagerduty.request("POST", path, data=json.dumps(data))
-        return self.container(self, **response.get(self.sname, {}))
+        return self.container(self, **self._filter_entity_fields(response.get(self.sname, {})))
 
     def update(self, entity_id, **kwargs):
         path = "%s/%s" % (self.name, entity_id)
@@ -100,12 +111,12 @@ class Collection(object):
         data[self.sname] = kwargs
 
         response = self.pagerduty.request("PUT", path, data=json.dumps(data))
-        return self.container(self, **response.get(self.sname, {}))
+        return self.container(self, **self._filter_entity_fields(response.get(self.sname, {})))
 
     def _list_response(self, response):
         entities = []
         for entity in response.get(self.name, []):
-            entities.append(self.container(self, **entity))
+            entities.append(self.container(self, **self._filter_entity_fields(entity)))
         return entities
 
     def _list_no_pagination(self, **kwargs):
@@ -167,10 +178,11 @@ class Collection(object):
 
         response = self.pagerduty.request(
             "GET", path, query_params=kwargs)
-        if response.get(self.sname):
-            return self.container(self, **response.get(self.sname, {}))
+        if self.sname in response:
+            entity = response.get(self.sname, {})
         else:
-            return self.container(self, **response)
+            entity = response
+        return self.container(self, **self._filter_entity_fields(entity))
 
     def delete(self, entity_id):
         path = "%s/%s" % (self.name, entity_id)
