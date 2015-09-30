@@ -3,6 +3,7 @@ import urllib
 import urllib2
 import urlparse
 import base64
+import time
 
 try:
     import json
@@ -313,7 +314,7 @@ class Container(object):
     ATTR_NAME_OVERRIDE_KEY = '_attr_name_override'
 
     def __init__(self, collection, **kwargs):
-        # This class depends on the existance on the _kwargs attr.
+        # This class depends on the existence on the _kwargs attr.
         # Use object's __setattr__ to initialize.
         object.__setattr__(self, "_kwargs", {})
 
@@ -502,7 +503,7 @@ class PagerDuty(object):
     INTEGRATION_API_URL =\
         "https://events.pagerduty.com/generic/2010-04-15/create_event.json"
 
-    def __init__(self, subdomain, api_token=None, timeout=10, basic_auth=None):
+    def __init__(self, subdomain, api_token=None, timeout=10, basic_auth=None, max_403_retries=0):
         if not any([api_token, basic_auth]):
             raise Error("Must use exactly one authentication method.")
         if api_token and basic_auth:
@@ -514,6 +515,7 @@ class PagerDuty(object):
         self._host = "%s.pagerduty.com" % subdomain
         self._api_base = "https://%s/api/v1/" % self._host
         self.timeout = timeout
+        self.max_403_retries = max_403_retries
 
         # Collections
         self.incidents = Incidents(self)
@@ -587,7 +589,7 @@ class PagerDuty(object):
                                  details, incident_key,
                                  client=client, client_url=client_url)
 
-    def execute_request(self, request):
+    def execute_request(self, request, retry_count=0):
         try:
             response = urllib2.urlopen(request, timeout=self.timeout).read()
         except urllib2.HTTPError as err:
@@ -595,6 +597,12 @@ class PagerDuty(object):
                 response = err.read()
             elif err.code == 400:
                 raise BadRequest(json.loads(err.read()))
+            elif err.code == 403:
+                if retry_count < self.max_403_retries:
+                    time.sleep(1 * (retry_count + 1))
+                    return self.execute_request(request, retry_count + 1)
+                else:
+                    raise
             elif err.code == 404:
                 raise NotFound("URL (%s) Not Found." % request.get_full_url())
             else:
