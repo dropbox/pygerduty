@@ -22,7 +22,7 @@ If you want to install from source, then ``python setup.py install``.
 Requirements
 ============
 
-Pygerduty is tested against >= Python 2.5
+Pygerduty is tested against >= Python 2.5, Python < 3
 
 ``simplejson`` is required on Python2.5
 
