@@ -1,10 +1,14 @@
 language: python
-python:
-    - "2.6"
-    - "2.7"
-    - "3.3"
-    - "3.4"
+
+# Keep in-sync with tox.ini.
+env:
+    - TOXENV=py26
+    - TOXENV=py27
+    - TOXENV=py33
+    - TOXENV=py34
+
 install:
     - "pip install ."
     - "pip install tox"
+
 script: tox
