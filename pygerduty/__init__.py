@@ -204,7 +204,7 @@ class MaintenanceWindows(Collection):
 
 class Incidents(Collection):
     def update(self, requester_id, *args):
-        path = "{}".formatself.name
+        path = "{}".format(self.name)
         data = {"requester_id": requester_id, self.name: args}
         response = self.pagerduty.request("PUT", path, data=json.dumps(data))
         return self.container(self, **response.get(self.sname, {}))
@@ -634,7 +634,7 @@ class PagerDuty(object):
                 extra_headers=None):
         auth = None
         if self.api_token:
-            auth = "Token token={}".formatself.api_token
+            auth = "Token token={}".format(self.api_token)
         elif self.basic_auth:
             b64_string = "{}:{}".format(**self.basic_auth)
             auth = "Basic {}".format(base64.b64encode(b64_string))
