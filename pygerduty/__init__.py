@@ -628,7 +628,7 @@ class PagerDuty(object):
             else:
                 new_qp.append((key, value))
 
-        return urllib.urlencode(new_qp)
+        return urllib.parse.urlencode(new_qp)
 
     def request(self, method, path, query_params=None, data=None,
                 extra_headers=None):
