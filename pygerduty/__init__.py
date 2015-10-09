@@ -1,15 +1,9 @@
-import copy
-import urllib
-import urllib.error
-import urllib.parse
-import urllib.request
 import base64
+import copy
+import json
 import time
 
-try:
-    import json
-except ImportError:
-    import simplejson as json
+from six.moves import urllib
 
 
 __author__ = "Gary M. Josack <gary@dropbox.com>"
