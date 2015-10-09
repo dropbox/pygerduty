@@ -1,18 +1,13 @@
-import copy
-import urllib
-import urllib2
-import urlparse
 import base64
+import copy
+import json
 import time
 
-try:
-    import json
-except ImportError:
-    import simplejson as json
+from six.moves import urllib
 
 
 __author__ = "Gary M. Josack <gary@dropbox.com>"
-from version import __version__, version_info  # noqa
+from .version import __version__, version_info  # noqa
 
 
 # TODO:
@@ -30,8 +25,8 @@ class IntegrationAPIError(Error):
         self.message = message
 
     def __str__(self):
-        return "Creating %s event failed: %s" % (self.event_type,
-                                                 self.message)
+        return "Creating {0} event failed: {1}".format(self.event_type,
+                                                       self.message)
 
 
 class BadRequest(Error):
@@ -45,7 +40,7 @@ class BadRequest(Error):
         Error.__init__(self, *args, **kwargs)
 
     def __str__(self):
-        return "%s (%s): %s" % (
+        return "{0} ({1}): {2}".format(
             self.message, self.code, self.errors)
 
 
@@ -66,9 +61,9 @@ class Collection(object):
         self.base_container = base_container
 
     def create(self, **kwargs):
-        path = "%s" % self.name
+        path = "{0}".format(self.name)
         if self.base_container:
-            path = "%s/%s/%s" % (
+            path = "{0}/{1}/{2}".format(
                 self.base_container.collection.name,
                 self.base_container.id, self.name)
 
@@ -85,9 +80,9 @@ class Collection(object):
         return self.container(self, **response.get(self.sname, {}))
 
     def update(self, entity_id, **kwargs):
-        path = "%s/%s" % (self.name, entity_id)
+        path = "{0}/{1}".format(self.name, entity_id)
         if self.base_container:
-            path = "%s/%s/%s/%s" % (
+            path = "{0}/{1}/{2}/{3}".format(
                 self.base_container.collection.name,
                 self.base_container.id, self.name, entity_id)
 
@@ -112,13 +107,13 @@ class Collection(object):
     def _list_no_pagination(self, **kwargs):
         path = self.name
         if self.base_container:
-            path = "%s/%s/%s" % (
+            path = "{0}/{1}/{2}".format(
                 self.base_container.collection.name,
                 self.base_container.id, self.name)
 
         suffix_path = kwargs.pop("_suffix_path", None)
         if suffix_path is not None:
-            path += "/{}".format(suffix_path)
+            path += "/{0}".format(suffix_path)
 
         response = self.pagerduty.request("GET", path, query_params=kwargs)
         return self._list_response(response)
@@ -155,14 +150,14 @@ class Collection(object):
                     break
 
     def count(self, **kwargs):
-        path = "%s/count" % self.name
+        path = "{0}/count".format(self.name)
         response = self.pagerduty.request("GET", path, query_params=kwargs)
         return response.get("total", None)
 
     def show(self, entity_id, **kwargs):
-        path = "%s/%s" % (self.name, entity_id)
+        path = "{0}/{1}".format(self.name, entity_id)
         if self.base_container:
-            path = "%s/%s/%s/%s" % (
+            path = "{0}/{1}/{2}/{3}".format(
                 self.base_container.collection.name,
                 self.base_container.id, self.name, entity_id)
 
@@ -174,9 +169,9 @@ class Collection(object):
             return self.container(self, **response)
 
     def delete(self, entity_id):
-        path = "%s/%s" % (self.name, entity_id)
+        path = "{0}/{1}".format(self.name, entity_id)
         if self.base_container:
-            path = "%s/%s/%s/%s" % (
+            path = "{0}/{1}/{2}/{3}".format(
                 self.base_container.collection.name,
                 self.base_container.id, self.name, entity_id)
 
@@ -189,21 +184,21 @@ class MaintenanceWindows(Collection):
         path = self.name
 
         if "type" in kwargs:
-            path = "%s/%s" % (self.name, kwargs["type"])
+            path = "{0}/{1}".format(self.name, kwargs["type"])
             del kwargs["type"]
 
         response = self.pagerduty.request("GET", path, query_params=kwargs)
         return self._list_response(response)
 
     def update(self, entity_id, **kwargs):
-        path = "%s/%s" % (self.name, entity_id)
+        path = "{0}/{1}".format(self.name, entity_id)
         response = self.pagerduty.request("PUT", path, data=json.dumps(kwargs))
         return self.container(self, **response.get(self.sname, {}))
 
 
 class Incidents(Collection):
     def update(self, requester_id, *args):
-        path = "%s" % self.name
+        path = "{0}".format(self.name)
         data = {"requester_id": requester_id, self.name: args}
         response = self.pagerduty.request("PUT", path, data=json.dumps(data))
         return self.container(self, **response.get(self.sname, {}))
@@ -211,18 +206,18 @@ class Incidents(Collection):
 
 class Services(Collection):
     def disable(self, entity_id, requester_id):
-        path = "%s/%s/disable" % (self.name, entity_id)
+        path = "{0}/{1}/disable".format(self.name, entity_id)
         data = {"requester_id": requester_id}
         response = self.pagerduty.request("PUT", path, data=json.dumps(data))
         return response
 
     def enable(self, entity_id):
-        path = "%s/%s/enable" % (self.name, entity_id)
+        path = "{0}/{1}/enable".format(self.name, entity_id)
         response = self.pagerduty.request("PUT", path, data="")
         return response
 
     def regenerate_key(self, entity_id):
-        path = "%s/%s/regenerate_key" % (self.name, entity_id)
+        path = "{0}/{1}/regenerate_key".format(self.name, entity_id)
         response = self.pagerduty.request("POST", path, data="")
         return self.container(self, **response.get(self.sname, {}))
 
@@ -248,7 +243,7 @@ class EscalationRules(Collection):
     paginated = False
 
     def update(self, entity_id, **kwargs):
-        path = "%s/%s/%s/%s" % (
+        path = "{0}/{1}/{2}/{3}".format(
             self.base_container.collection.name,
             self.base_container.id, self.name, entity_id)
         response = self.pagerduty.request("PUT", path, data=json.dumps(kwargs))
@@ -257,7 +252,7 @@ class EscalationRules(Collection):
 
 class Schedules(Collection):
     def update(self, entity_id, **kwargs):
-        path = "%s/%s" % (self.name, entity_id)
+        path = "{0}/{1}".format(self.name, entity_id)
         data = {"overflow": kwargs["overflow"],
                 "schedule": kwargs["schedule"]}
         response = self.pagerduty.request("PUT", path, data=json.dumps(data))
@@ -334,7 +329,7 @@ class Container(object):
                     return Container(Collection(self.pagerduty), **value)
             return value
 
-        for key, value in kwargs.iteritems():
+        for key, value in kwargs.items():
             if self._attr_overrides and key in self._attr_overrides:
                 key = self._attr_overrides[key]
             if isinstance(value, list):
@@ -356,8 +351,8 @@ class Container(object):
         self._kwargs[name] = value
 
     def __str__(self):
-        attrs = ["%s=%s" % (k, repr(v)) for k, v in self._kwargs.iteritems()]
-        return "<%s: %s>" % (self.__class__.__name__, ", ".join(attrs))
+        attrs = ["{0}={1}".format(k, repr(v)) for k, v in self._kwargs.items()]
+        return "<{0}: {1}>".format(self.__class__.__name__, ", ".join(attrs))
 
     def __repr__(self):
         return str(self)
@@ -366,9 +361,9 @@ class Container(object):
         json_dict = {}
         overriden_attrs = dict()
         if self._attr_overrides:
-            for key, value in self._attr_overrides.iteritems():
+            for key, value in self._attr_overrides.items():
                 overriden_attrs[value] = key
-        for key, value in self._kwargs.iteritems():
+        for key, value in self._kwargs.items():
             if key in overriden_attrs:
                 key = overriden_attrs[key]
             if isinstance(value, Container):
@@ -389,7 +384,7 @@ class Incident(Container):
         self.notes = Notes(self.pagerduty, self)
 
     def _do_action(self, verb, requester_id, **kwargs):
-        path = '%s/%s/%s' % (self.collection.name, self.id, verb)
+        path = '{0}/{1}/{2}'.format(self.collection.name, self.id, verb)
         data = {'requester_id': requester_id}
         data.update(kwargs)
         self.pagerduty.request("PUT", path, data=json.dumps(data))
@@ -512,8 +507,8 @@ class PagerDuty(object):
         self.api_token = api_token
         self.basic_auth = basic_auth
         self.subdomain = subdomain
-        self._host = "%s.pagerduty.com" % subdomain
-        self._api_base = "https://%s/api/v1/" % self._host
+        self._host = "{0}.pagerduty.com".format(subdomain)
+        self._api_base = "https://{0}/api/v1/".format(self._host)
         self.timeout = timeout
         self.max_403_retries = max_403_retries
 
@@ -548,9 +543,9 @@ class PagerDuty(object):
             "client_url": client_url
         }
 
-        request = urllib2.Request(PagerDuty.INTEGRATION_API_URL,
-                                  data=json.dumps(data),
-                                  headers=headers)
+        request = urllib.request.Request(PagerDuty.INTEGRATION_API_URL,
+                                         data=json.dumps(data),
+                                         headers=headers)
         response = self.execute_request(request)
 
         if not response["status"] == "success":
@@ -591,12 +586,13 @@ class PagerDuty(object):
 
     def execute_request(self, request, retry_count=0):
         try:
-            response = urllib2.urlopen(request, timeout=self.timeout).read()
-        except urllib2.HTTPError as err:
+            response = (urllib.request.urlopen(request, timeout=self.timeout).
+                        read().decode("utf-8"))
+        except urllib.error.HTTPError as err:
             if err.code / 100 == 2:
-                response = err.read()
+                response = err.read().decode("utf-8")
             elif err.code == 400:
-                raise BadRequest(json.loads(err.read()))
+                raise BadRequest(json.loads(err.read().decode("utf-8")))
             elif err.code == 403:
                 if retry_count < self.max_403_retries:
                     time.sleep(1 * (retry_count + 1))
@@ -604,7 +600,8 @@ class PagerDuty(object):
                 else:
                     raise
             elif err.code == 404:
-                raise NotFound("URL (%s) Not Found." % request.get_full_url())
+                raise NotFound("URL ({0}) Not Found.".format(
+                    request.get_full_url()))
             else:
                 raise
 
@@ -621,20 +618,20 @@ class PagerDuty(object):
         for key, value in query_params.items():
             if isinstance(value, (list, set, tuple)):
                 for elem in value:
-                    new_qp.append(("{}[]".format(key), elem))
+                    new_qp.append(("{0}[]".format(key), elem))
             else:
                 new_qp.append((key, value))
 
-        return urllib.urlencode(new_qp)
+        return urllib.parse.urlencode(new_qp)
 
     def request(self, method, path, query_params=None, data=None,
                 extra_headers=None):
         auth = None
         if self.api_token:
-            auth = "Token token=%s" % self.api_token
+            auth = "Token token={0}".format(self.api_token)
         elif self.basic_auth:
-            b64_string = "%s:%s" % self.basic_auth
-            auth = "Basic %s" % base64.b64encode(b64_string)
+            b64_string = "{0}:{1}".format(**self.basic_auth)
+            auth = "Basic {0}".format(base64.b64encode(b64_string))
 
         headers = {
             "Content-type": "application/json",
@@ -647,11 +644,11 @@ class PagerDuty(object):
         if query_params is not None:
             query_params = self._process_query_params(query_params)
 
-        url = urlparse.urljoin(self._api_base, path)
+        url = urllib.parse.urljoin(self._api_base, path)
         if query_params:
-            url += "?%s" % query_params
+            url += "?{0}".format(query_params)
 
-        request = urllib2.Request(url, data=data, headers=headers)
+        request = urllib.request.Request(url, data=data, headers=headers)
         request.get_method = lambda: method.upper()
 
         return self.execute_request(request)
