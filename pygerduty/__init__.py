@@ -592,13 +592,13 @@ class PagerDuty(object):
 
     def execute_request(self, request, retry_count=0):
         try:
-            response = urllib.request.urlopen(request,
-                                              timeout=self.timeout).read()
+            response = (urllib.request.urlopen(request, timeout=self.timeout).
+                        read().decode("utf-8"))
         except urllib.error.HTTPError as err:
             if err.code / 100 == 2:
-                response = err.read()
+                response = err.read().decode("utf-8")
             elif err.code == 400:
-                raise BadRequest(json.loads(err.read()))
+                raise BadRequest(json.loads(err.read().decode("utf-8")))
             elif err.code == 403:
                 if retry_count < self.max_403_retries:
                     time.sleep(1 * (retry_count + 1))
