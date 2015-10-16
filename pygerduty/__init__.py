@@ -434,10 +434,7 @@ class ContactMethod(Container):
 
 
 class EscalationPolicy(Container):
-    def __init__(self, *args, **kwargs):
-        Container.__init__(self, *args, **kwargs)
-        self.escalation_rules = EscalationRules(self.pagerduty, self)
-
+    pass
 
 class EscalationRule(Container):
     pass
