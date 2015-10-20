@@ -221,6 +221,8 @@ class Services(Collection):
         response = self.pagerduty.request("POST", path, data="")
         return self.container(self, **response.get(self.sname, {}))
 
+class Teams(Collection):
+    pass
 
 class Alerts(Collection):
     pass
@@ -472,6 +474,8 @@ class Schedule(Container):
 class ScheduleUser(Container):
     pass
 
+class Team(Container):
+    pass
 
 class Restriction(Container):
     pass
@@ -520,6 +524,7 @@ class PagerDuty(object):
         self.users = Users(self)
         self.services = Services(self)
         self.maintenance_windows = MaintenanceWindows(self)
+        self.teams = Teams(self)
         self.log_entries = LogEntries(self)
 
     def create_event(self, service_key, description, event_type,
