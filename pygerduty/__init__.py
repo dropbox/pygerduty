@@ -221,8 +221,10 @@ class Services(Collection):
         response = self.pagerduty.request("POST", path, data="")
         return self.container(self, **response.get(self.sname, {}))
 
+
 class Teams(Collection):
     pass
+
 
 class Alerts(Collection):
     pass
@@ -474,8 +476,10 @@ class Schedule(Container):
 class ScheduleUser(Container):
     pass
 
+
 class Team(Container):
     pass
+
 
 class Restriction(Container):
     pass
