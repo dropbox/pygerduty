@@ -3,6 +3,7 @@ import copy
 import json
 import time
 
+import six
 from six.moves import urllib
 
 
@@ -647,6 +648,9 @@ class PagerDuty(object):
         url = urllib.parse.urljoin(self._api_base, path)
         if query_params:
             url += "?{0}".format(query_params)
+
+        if isinstance(data, six.text_type):
+            data = data.encode("utf-8")
 
         request = urllib.request.Request(url, data=data, headers=headers)
         request.get_method = lambda: method.upper()
