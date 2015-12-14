@@ -554,7 +554,7 @@ class PagerDuty(object):
         }
 
         request = urllib.request.Request(PagerDuty.INTEGRATION_API_URL,
-                                         data=json.dumps(data),
+                                         data=json.dumps(data).encode('utf-8'),
                                          headers=headers)
         response = self.execute_request(request)
 
