@@ -127,7 +127,7 @@ class Collection(object):
                 yield i
         else:
             offset = 0
-            limit = 25  # the default
+            limit = 100  # maximum value allowed by API
             seen_items = set()
             while True:
                 these_kwargs = copy.copy(kwargs)
