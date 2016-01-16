@@ -376,7 +376,10 @@ class Container(object):
             elif isinstance(value, list):
                 json_dict[key] = []
                 for v in value:
-                    json_dict[key].append(v.to_json())
+                    if isinstance(v, Container):
+                        json_dict[key].append(v.to_json())
+                    else:
+                        json_dict[key].append(v)
             else:
                 json_dict[key] = value
         return json_dict
