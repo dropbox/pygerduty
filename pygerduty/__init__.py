@@ -127,7 +127,7 @@ class Collection(object):
                 yield i
         else:
             offset = 0
-            limit = 25  # the default
+            limit = self.pagerduty.page_size
             seen_items = set()
             while True:
                 these_kwargs = copy.copy(kwargs)
@@ -510,7 +510,8 @@ class PagerDuty(object):
     INTEGRATION_API_URL =\
         "https://events.pagerduty.com/generic/2010-04-15/create_event.json"
 
-    def __init__(self, subdomain, api_token=None, timeout=10, basic_auth=None, max_403_retries=0):
+    def __init__(self, subdomain, api_token=None, timeout=10, basic_auth=None, max_403_retries=0,
+                 page_size=25):
         if not any([api_token, basic_auth]):
             raise Error("Must use exactly one authentication method.")
         if api_token and basic_auth:
@@ -523,6 +524,7 @@ class PagerDuty(object):
         self._api_base = "https://{0}/api/v1/".format(self._host)
         self.timeout = timeout
         self.max_403_retries = max_403_retries
+        self.page_size = page_size
 
         # Collections
         self.incidents = Incidents(self)
