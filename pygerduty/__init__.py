@@ -2,6 +2,7 @@ import base64
 import copy
 import json
 import time
+import re
 
 import six
 from six.moves import urllib
@@ -396,6 +397,14 @@ class Incident(Container):
         data = {'requester_id': requester_id}
         data.update(kwargs)
         self.pagerduty.request("PUT", path, data=json.dumps(data))
+
+    def has_subject(self):
+        has_subject = False
+        try:
+            self.trigger_summary_data.subject # try to access the subject
+            has_subject = True
+        except: pass
+        return has_subject
 
     def resolve(self, requester_id):
         self._do_action('resolve', requester_id=requester_id)
