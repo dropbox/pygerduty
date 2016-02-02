@@ -399,7 +399,7 @@ class Incident(Container):
         path = '{0}/{1}/{2}'.format(self.collection.name, self.id, verb)
         data = {'requester_id': requester_id}
         data.update(kwargs)
-        return self.pagerduty.request('GET', path, data=json.dumps(data))
+        return self.pagerduty.request('PUT', path, data=json.dumps(data))
 
     def has_subject(self):
         return hasattr(self.trigger_summary_data, 'subject')
