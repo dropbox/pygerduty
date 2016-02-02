@@ -397,7 +397,6 @@ class Incident(Container):
 
     def _do_action(self, verb, requester_id, method='PUT', **kwargs):
         path = '{0}/{1}/{2}'.format(self.collection.name, self.id, verb)
-        print path
         data = {'requester_id': requester_id}
         data.update(kwargs)
         return self.pagerduty.request(method, path, data=json.dumps(data))
