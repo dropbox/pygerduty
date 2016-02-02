@@ -402,13 +402,7 @@ class Incident(Container):
         return self.pagerduty.request(method, path, data=json.dumps(data))
 
     def has_subject(self):
-        has_subject = False
-        try:
-            self.trigger_summary_data.subject  # try to access the subject
-            has_subject = True
-        except:
-            pass
-        return has_subject
+        return hasattr(self.trigger_summary_data, 'subject')
 
     def resolve(self, requester_id):
         self._do_action('resolve', requester_id=requester_id)
