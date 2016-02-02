@@ -404,9 +404,10 @@ class Incident(Container):
     def has_subject(self):
         has_subject = False
         try:
-            self.trigger_summary_data.subject # try to access the subject
+            self.trigger_summary_data.subject  # try to access the subject
             has_subject = True
-        except: pass
+        except:
+            pass
         return has_subject
 
     def resolve(self, requester_id):
