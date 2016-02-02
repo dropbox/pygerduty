@@ -410,9 +410,9 @@ class Incident(Container):
     def acknowledge(self, requester_id):
         self._do_action('acknowledge', requester_id=requester_id)
 
-    def details_log_entry(self):
+    def get_trigger_log_entry(self, **kwargs):
         match = DETAILS_LOG_ENTRY_RE.search(self.trigger_details_html_url)
-        return self.log_entries.show(match.group('log_entry_id'), include=['channel'])
+        return self.log_entries.show(match.group('log_entry_id'), **kwargs)
 
     def reassign(self, user_ids, requester_id):
         """Reassign this incident to a user or list of users
