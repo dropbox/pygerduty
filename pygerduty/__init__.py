@@ -2,6 +2,7 @@ import base64
 import copy
 import json
 import time
+import re
 
 import six
 from six.moves import urllib
@@ -10,6 +11,9 @@ from six.moves import urllib
 __author__ = "Gary M. Josack <gary@dropbox.com>"
 from .version import __version__, version_info  # noqa
 
+DETAILS_LOG_ENTRY_RE = re.compile(
+    r'log_entries/(?P<log_entry_id>[A-Z0-9]+)'
+)
 
 # TODO:
 # Support for Log Entries
@@ -395,13 +399,20 @@ class Incident(Container):
         path = '{0}/{1}/{2}'.format(self.collection.name, self.id, verb)
         data = {'requester_id': requester_id}
         data.update(kwargs)
-        self.pagerduty.request("PUT", path, data=json.dumps(data))
+        return self.pagerduty.request('PUT', path, data=json.dumps(data))
+
+    def has_subject(self):
+        return hasattr(self.trigger_summary_data, 'subject')
 
     def resolve(self, requester_id):
         self._do_action('resolve', requester_id=requester_id)
 
     def acknowledge(self, requester_id):
         self._do_action('acknowledge', requester_id=requester_id)
+
+    def get_trigger_log_entry(self, **kwargs):
+        match = DETAILS_LOG_ENTRY_RE.search(self.trigger_details_html_url)
+        return self.log_entries.show(match.group('log_entry_id'), **kwargs)
 
     def reassign(self, user_ids, requester_id):
         """Reassign this incident to a user or list of users
@@ -662,6 +673,7 @@ class PagerDuty(object):
             query_params = self._process_query_params(query_params)
 
         url = urllib.parse.urljoin(self._api_base, path)
+
         if query_params:
             url += "?{0}".format(query_params)
 
