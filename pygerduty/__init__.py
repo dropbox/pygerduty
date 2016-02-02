@@ -12,7 +12,7 @@ __author__ = "Gary M. Josack <gary@dropbox.com>"
 from .version import __version__, version_info  # noqa
 
 DETAILS_LOG_ENTRY_RE = re.compile(
-    r'(?P<log_detail>log_entries/[A-Z0-9]+)'
+    r'log_entries/(?P<log_entry_id>[A-Z0-9]+)'
 )
 
 # TODO:
@@ -395,11 +395,11 @@ class Incident(Container):
         self.log_entries = LogEntries(self.pagerduty, self)
         self.notes = Notes(self.pagerduty, self)
 
-    def _do_action(self, verb, requester_id, method='PUT', **kwargs):
+    def _do_action(self, verb, requester_id, **kwargs):
         path = '{0}/{1}/{2}'.format(self.collection.name, self.id, verb)
         data = {'requester_id': requester_id}
         data.update(kwargs)
-        return self.pagerduty.request(method, path, data=json.dumps(data))
+        return self.pagerduty.request('GET', path, data=json.dumps(data))
 
     def has_subject(self):
         return hasattr(self.trigger_summary_data, 'subject')
@@ -410,10 +410,9 @@ class Incident(Container):
     def acknowledge(self, requester_id):
         self._do_action('acknowledge', requester_id=requester_id)
 
-    def get_details_log_entry(self, requester_id):
+    def details_log_entry(self):
         match = DETAILS_LOG_ENTRY_RE.search(self.trigger_details_html_url)
-        return self._do_action(match.group('log_detail'), requester_id=requester_id,
-                               method='GET', **{'include': ['channel']})
+        return self.log_entries.show(match.group('log_entry_id'), include=['channel'])
 
     def reassign(self, user_ids, requester_id):
         """Reassign this incident to a user or list of users
