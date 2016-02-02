@@ -557,7 +557,7 @@ class PagerDuty(object):
             "incident_key": incident_key,
             "client": client,
             "client_url": client_url,
-            "contexts": contexts
+            "contexts": contexts,
         }
 
         request = urllib.request.Request(PagerDuty.INTEGRATION_API_URL,
