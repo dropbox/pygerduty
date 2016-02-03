@@ -505,6 +505,8 @@ class User(Container):
         Container.__init__(self, *args, **kwargs)
         self.notification_rules = NotificationRules(self.pagerduty, self)
         self.contact_methods = ContactMethods(self.pagerduty, self)
+        self.schedules = Schedules(self.pagerduty, self)
+        self.escalation_policies = EscalationPolicies(self.pagerduty, self)
         self.log_entries = LogEntries(self.pagerduty, self)
 
 
