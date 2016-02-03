@@ -61,6 +61,17 @@ Listing a resource:
     # PJ48C0S Tertiary
     # PCJ94SK Secondary
 
+Getting all schedules associated with a user:
+
+::
+
+    user = pager.users.show('PDSKF08')
+    for schedule in user.schedules.list():
+        print schedule.id, schedule.name
+
+    # PDSARUD Ops
+    # PTDSKJH Support
+
 Getting a resource by ID:
 
 ::
