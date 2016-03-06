@@ -524,7 +524,7 @@ class PagerDuty(object):
         "https://events.pagerduty.com/generic/2010-04-15/create_event.json"
 
     def __init__(self, subdomain, api_token=None, timeout=10, basic_auth=None, max_403_retries=0,
-                 page_size=25):
+                 page_size=25, proxies=None):
         if not any([api_token, basic_auth]):
             raise Error("Must use exactly one authentication method.")
         if api_token and basic_auth:
@@ -538,6 +538,11 @@ class PagerDuty(object):
         self.timeout = timeout
         self.max_403_retries = max_403_retries
         self.page_size = page_size
+
+        handlers = []
+        if proxies:
+            handlers.append(urllib.request.ProxyHandler(proxies))
+        self.opener = urllib.request.build_opener(*handlers)
 
         # Collections
         self.incidents = Incidents(self)
@@ -616,7 +621,7 @@ class PagerDuty(object):
 
     def execute_request(self, request, retry_count=0):
         try:
-            response = (urllib.request.urlopen(request, timeout=self.timeout).
+            response = (self.opener.open(request, timeout=self.timeout).
                         read().decode("utf-8"))
         except urllib.error.HTTPError as err:
             if err.code / 100 == 2:
