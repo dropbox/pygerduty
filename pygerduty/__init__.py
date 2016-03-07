@@ -1,4 +1,3 @@
-import base64
 import copy
 import json
 import time
@@ -523,15 +522,10 @@ class PagerDuty(object):
     INTEGRATION_API_URL =\
         "https://events.pagerduty.com/generic/2010-04-15/create_event.json"
 
-    def __init__(self, subdomain, api_token=None, timeout=10, basic_auth=None, max_403_retries=0,
+    def __init__(self, subdomain, api_token, timeout=10, max_403_retries=0,
                  page_size=25, proxies=None):
-        if not any([api_token, basic_auth]):
-            raise Error("Must use exactly one authentication method.")
-        if api_token and basic_auth:
-            raise Error("Must use exactly one authentication method.")
 
         self.api_token = api_token
-        self.basic_auth = basic_auth
         self.subdomain = subdomain
         self._host = "{0}.pagerduty.com".format(subdomain)
         self._api_base = "https://{0}/api/v1/".format(self._host)
@@ -661,13 +655,8 @@ class PagerDuty(object):
 
     def request(self, method, path, query_params=None, data=None,
                 extra_headers=None):
-        auth = None
-        if self.api_token:
-            auth = "Token token={0}".format(self.api_token)
-        elif self.basic_auth:
-            b64_string = "{0}:{1}".format(**self.basic_auth)
-            auth = "Basic {0}".format(base64.b64encode(b64_string))
 
+        auth = "Token token={0}".format(self.api_token)
         headers = {
             "Content-type": "application/json",
             "Authorization": auth
