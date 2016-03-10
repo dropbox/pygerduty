@@ -1,9 +1,12 @@
 import copy
+import datetime
+import functools
 import json
 import time
 import re
 
 import six
+from six import string_types
 from six.moves import urllib
 
 
@@ -13,6 +16,8 @@ from .version import __version__, version_info  # noqa
 TRIGGER_LOG_ENTRY_RE = re.compile(
     r'log_entries/(?P<log_entry_id>[A-Z0-9]+)'
 )
+
+ISO8601_FORMAT = "%Y-%m-%dT%H:%M:%SZ"
 
 # TODO:
 # Support for Log Entries
@@ -80,7 +85,7 @@ class Collection(object):
 
         data[self.sname] = kwargs
 
-        response = self.pagerduty.request("POST", path, data=json.dumps(data))
+        response = self.pagerduty.request("POST", path, data=_json_dumper(data))
         return self.container(self, **response.get(self.sname, {}))
 
     def update(self, entity_id, **kwargs):
@@ -99,7 +104,7 @@ class Collection(object):
 
         data[self.sname] = kwargs
 
-        response = self.pagerduty.request("PUT", path, data=json.dumps(data))
+        response = self.pagerduty.request("PUT", path, data=_json_dumper(data))
         return self.container(self, **response.get(self.sname, {}))
 
     def _list_response(self, response):
@@ -196,7 +201,7 @@ class MaintenanceWindows(Collection):
 
     def update(self, entity_id, **kwargs):
         path = "{0}/{1}".format(self.name, entity_id)
-        response = self.pagerduty.request("PUT", path, data=json.dumps(kwargs))
+        response = self.pagerduty.request("PUT", path, data=_json_dumper(kwargs))
         return self.container(self, **response.get(self.sname, {}))
 
 
@@ -204,7 +209,7 @@ class Incidents(Collection):
     def update(self, requester_id, *args):
         path = "{0}".format(self.name)
         data = {"requester_id": requester_id, self.name: args}
-        response = self.pagerduty.request("PUT", path, data=json.dumps(data))
+        response = self.pagerduty.request("PUT", path, data=_json_dumper(data))
         return self.container(self, **response.get(self.sname, {}))
 
 
@@ -212,7 +217,7 @@ class Services(Collection):
     def disable(self, entity_id, requester_id):
         path = "{0}/{1}/disable".format(self.name, entity_id)
         data = {"requester_id": requester_id}
-        response = self.pagerduty.request("PUT", path, data=json.dumps(data))
+        response = self.pagerduty.request("PUT", path, data=_json_dumper(data))
         return response
 
     def enable(self, entity_id):
@@ -254,7 +259,7 @@ class EscalationRules(Collection):
         path = "{0}/{1}/{2}/{3}".format(
             self.base_container.collection.name,
             self.base_container.id, self.name, entity_id)
-        response = self.pagerduty.request("PUT", path, data=json.dumps(kwargs))
+        response = self.pagerduty.request("PUT", path, data=_json_dumper(kwargs))
         return self.container(self, **response.get(self.sname, {}))
 
 
@@ -263,7 +268,7 @@ class Schedules(Collection):
         path = "{0}/{1}".format(self.name, entity_id)
         data = {"overflow": kwargs["overflow"],
                 "schedule": kwargs["schedule"]}
-        response = self.pagerduty.request("PUT", path, data=json.dumps(data))
+        response = self.pagerduty.request("PUT", path, data=_json_dumper(data))
         return self.container(self, **response.get(self.sname, {}))
 
 
@@ -398,7 +403,7 @@ class Incident(Container):
         path = '{0}/{1}/{2}'.format(self.collection.name, self.id, verb)
         data = {'requester_id': requester_id}
         data.update(kwargs)
-        return self.pagerduty.request('PUT', path, data=json.dumps(data))
+        return self.pagerduty.request('PUT', path, data=_json_dumper(data))
 
     def has_subject(self):
         return hasattr(self.trigger_summary_data, 'subject')
@@ -523,7 +528,7 @@ class PagerDuty(object):
         "https://events.pagerduty.com/generic/2010-04-15/create_event.json"
 
     def __init__(self, subdomain, api_token, timeout=10, max_403_retries=0,
-                 page_size=25, proxies=None):
+                 page_size=25, proxies=None, parse_datetime=False):
 
         self.api_token = api_token
         self.subdomain = subdomain
@@ -532,6 +537,10 @@ class PagerDuty(object):
         self.timeout = timeout
         self.max_403_retries = max_403_retries
         self.page_size = page_size
+
+        self.json_loader = json.loads
+        if parse_datetime:
+            self.json_loader = _json_loader
 
         handlers = []
         if proxies:
@@ -573,7 +582,7 @@ class PagerDuty(object):
         }
 
         request = urllib.request.Request(PagerDuty.INTEGRATION_API_URL,
-                                         data=json.dumps(data).encode('utf-8'),
+                                         data=_json_dumper(data).encode('utf-8'),
                                          headers=headers)
         response = self.execute_request(request)
 
@@ -621,7 +630,7 @@ class PagerDuty(object):
             if err.code / 100 == 2:
                 response = err.read().decode("utf-8")
             elif err.code == 400:
-                raise BadRequest(json.loads(err.read().decode("utf-8")))
+                raise BadRequest(self.json_loader(err.read().decode("utf-8")))
             elif err.code == 403:
                 if retry_count < self.max_403_retries:
                     time.sleep(1 * (retry_count + 1))
@@ -635,7 +644,7 @@ class PagerDuty(object):
                 raise
 
         try:
-            response = json.loads(response)
+            response = self.json_loader(response)
         except ValueError:
             response = None
 
@@ -727,3 +736,22 @@ def _pluralize(string):
     if not string.endswith("s"):
         return string + "s"
     return string
+
+
+def _datetime_encoder(obj):
+    if isinstance(obj, (datetime.date, datetime.datetime)):
+        return obj.strftime(ISO8601_FORMAT)
+    return json.JSONEncoder.default(obj)
+
+
+def _datetime_decoder(obj):
+    for k, v in obj.items():
+        if isinstance(v, string_types):
+            try:
+                obj[k] = datetime.datetime.strptime(v, ISO8601_FORMAT)
+            except ValueError:
+                pass
+    return obj
+
+_json_dumper = functools.partial(json.dumps, default=_datetime_encoder)
+_json_loader = functools.partial(json.loads, object_hook=_datetime_decoder)
