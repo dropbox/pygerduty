@@ -1,5 +1,7 @@
 *.py[cod]
 MANIFEST
+.cache
+.eggs
 
 # C extensions
 *.so
