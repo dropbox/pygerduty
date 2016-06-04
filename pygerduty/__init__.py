@@ -414,8 +414,8 @@ class Incident(Container):
     def acknowledge(self, requester_id):
         self._do_action('acknowledge', requester_id=requester_id)
 
-    def snooze(self, duration):
-        self._do_action('snooze', duration=duration)
+    def snooze(self, requester_id, duration):
+        self._do_action('snooze', requester_id=requester_id, duration=duration)
 
     def get_trigger_log_entry(self, **kwargs):
         match = TRIGGER_LOG_ENTRY_RE.search(self.trigger_details_html_url)
