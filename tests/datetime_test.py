@@ -3,7 +3,9 @@ from __future__ import absolute_import
 import datetime
 import httpretty
 import pygerduty
+import pytest
 import textwrap
+import uuid
 
 INCIDENT_RESPONSE = textwrap.dedent("""\
     {
@@ -100,3 +102,18 @@ def test_loads_without_datetime():
     assert incident.pending_actions[0].at == "2014-01-01T08:00:00Z"
     assert incident.pending_actions[1].at == "2014-01-01T10:00:00Z"
     assert incident.pending_actions[2].at == "2014-01-01T11:00:00Z"
+
+def test_datetime_encoder_decoder():
+    obj = {
+        "d": datetime.datetime(2014, 1, 1, 8, 0),
+        "s": "string",
+        "i": 10,
+    }
+
+    # Make sure we can roundtrip
+    assert obj == pygerduty._json_loader(pygerduty._json_dumper(obj))
+
+    # Test our encoder uses default properly
+    with pytest.raises(TypeError) as excinfo:
+        pygerduty._json_dumper({"test": uuid.uuid4()})
+    excinfo.match(r"UUID\('.*'\) is not JSON serializable")

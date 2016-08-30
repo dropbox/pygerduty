@@ -741,10 +741,11 @@ def _pluralize(string):
     return string
 
 
-def _datetime_encoder(obj):
-    if isinstance(obj, (datetime.date, datetime.datetime)):
-        return obj.strftime(ISO8601_FORMAT)
-    return json.JSONEncoder.default(obj)
+class _DatetimeEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, (datetime.date, datetime.datetime)):
+            return obj.strftime(ISO8601_FORMAT)
+        super(_DatetimeEncoder, self).default(obj)
 
 
 def _datetime_decoder(obj):
@@ -756,5 +757,5 @@ def _datetime_decoder(obj):
                 pass
     return obj
 
-_json_dumper = functools.partial(json.dumps, default=_datetime_encoder)
+_json_dumper = functools.partial(json.dumps, cls=_DatetimeEncoder)
 _json_loader = functools.partial(json.loads, object_hook=_datetime_decoder)
