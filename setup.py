@@ -42,7 +42,7 @@ kwargs = {
     "install_requires": ["six"],
     "tests_require": [
         "httpretty",
-        "pytest",
+        "pytest>=3.0",
     ],
     "cmdclass": {"test": PyTest}
 }
