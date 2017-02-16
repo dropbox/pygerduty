@@ -57,7 +57,7 @@ Listing a resource:
 ::
 
     for schedule in pager.schedules.list():
-        print schedule.id, schedule.name
+        print(schedule.id, schedule.name)
 
     # PX7F8S3 Primary
     # PJ48C0S Tertiary
@@ -69,7 +69,7 @@ Getting all schedules associated with a user:
 
     user = pager.users.show('PDSKF08')
     for schedule in user.schedules.list():
-        print schedule.id, schedule.name
+        print(schedule.id, schedule.name)
 
     # PDSARUD Ops
     # PTDSKJH Support
