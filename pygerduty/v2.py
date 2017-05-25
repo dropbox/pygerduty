@@ -560,39 +560,6 @@ class PagerDuty(object):
         self.teams = Teams(self)
         self.log_entries = LogEntries(self)
 
-    def create_event(self, service_key, description, event_type,
-                     details, incident_key, **kwargs):
-
-        # Only assign client/client_url/contexts if they exist, only for trigger_incident
-        client = kwargs.pop('client', None)
-        client_url = kwargs.pop('client_url', None)
-        contexts = kwargs.pop('contexts', None)
-
-        headers = {
-            "Content-type": "application/json",
-            "Accept": "application/vnd.pagerduty+json;version=2",
-        }
-
-        data = {
-            "service_key": service_key,
-            "event_type": event_type,
-            "description": description,
-            "details": details,
-            "incident_key": incident_key,
-            "client": client,
-            "client_url": client_url,
-            "contexts": contexts,
-        }
-
-        request = urllib.request.Request(PagerDuty.INTEGRATION_API_URL,
-                                         data=_json_dumper(data).encode('utf-8'),
-                                         headers=headers)
-        response = self.execute_request(request)
-
-        if not response["status"] == "success":
-            raise IntegrationAPIError(response["message"], event_type)
-        return response["incident_key"]
-
     def execute_request(self, request):
         try:
             response = (self.opener.open(request, timeout=self.timeout).
