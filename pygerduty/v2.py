@@ -568,6 +568,11 @@ class PagerDuty(object):
             "Authorization": auth
         }
 
+        # Requester_id needs to be in the header for v2.
+        if requester_id in data.keys():
+            headers["From"] = data["requester_id"]
+            del data["requester_id"]
+
         if extra_headers:
             headers.update(extra_headers)
 
