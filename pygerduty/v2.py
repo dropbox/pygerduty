@@ -8,7 +8,7 @@ import re
 import six
 from six import string_types
 from six.moves import urllib
-
+from requester import execute_request
 
 __author__ = "Gary M. Josack <gary@dropbox.com>"
 from .version import __version__, version_info  # noqa
@@ -26,17 +26,6 @@ ISO8601_FORMAT = "%Y-%m-%dT%H:%M:%SZ"
 
 class Error(Exception):
     pass
-
-
-class IntegrationAPIError(Error):
-    def __init__(self, message, event_type):
-        self.event_type = event_type
-        self.message = message
-
-    def __str__(self):
-        return "Creating {0} event failed: {1}".format(self.event_type,
-                                                       self.message)
-
 
 class BadRequest(Error):
     def __init__(self, payload, *args, **kwargs):
@@ -527,9 +516,6 @@ class LogEntry(Container):
 
 class PagerDuty(object):
 
-    INTEGRATION_API_URL =\
-        "https://events.pagerduty.com/generic/2010-04-15/create_event.json"
-
     def __init__(self, subdomain, api_token, timeout=10, page_size=25,
                 proxies=None, parse_datetime=False):
 
@@ -559,32 +545,6 @@ class PagerDuty(object):
         self.maintenance_windows = MaintenanceWindows(self)
         self.teams = Teams(self)
         self.log_entries = LogEntries(self)
-
-    def execute_request(self, request):
-        try:
-            response = (self.opener.open(request, timeout=self.timeout).
-                        read().decode("utf-8"))
-        except urllib.error.HTTPError as err:
-            if err.code / 100 == 2:
-                response = err.read().decode("utf-8")
-            elif err.code == 400:
-                raise BadRequest(self.json_loader(err.read().decode("utf-8")))
-            elif err.code == 403:
-                raise
-            elif err.code == 404:
-                raise NotFound("URL ({0}) Not Found.".format(
-                    request.get_full_url()))
-            elif err.code == 429:
-                raise
-            else:
-                raise
-
-        try:
-            response = self.json_loader(response)
-        except ValueError:
-            response = None
-
-        return response
 
     @staticmethod
     def _process_query_params(query_params):
@@ -625,7 +585,7 @@ class PagerDuty(object):
         request = urllib.request.Request(url, data=data, headers=headers)
         request.get_method = lambda: method.upper()
 
-        return self.execute_request(request)
+        return execute_request(self, request)
 
 
 def _lower(string):

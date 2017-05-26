@@ -1,12 +1,25 @@
-# Events module for pygerduty version 2. These methods are compatible with
+# Event module for pygerduty version 2. These methods are compatible with
 # Pagerduty Events API.
 
 import urllib
-from v2 import (
-    Pagerduty,
-    IntegrationAPIError,
-    INTEGRATION_API_URL,
-)
+from v2 import Pagerduty
+from requester import execute_request
+
+INTEGRATION_API_URL =\
+        "https://events.pagerduty.com/generic/2010-04-15/create_event.json"
+
+class Error(Exception):
+    pass
+
+
+class IntegrationAPIError(Error):
+    def __init__(self, message, event_type):
+        self.event_type = event_type
+        self.message = message
+
+    def __str__(self):
+        return "Creating {0} event failed: {1}".format(self.event_type,
+                                                       self.message)
 
 class Events(Pagerduty):
     def create_event(self, service_key, description, event_type,
@@ -36,7 +49,7 @@ class Events(Pagerduty):
         request = urllib.request.Request(PagerDuty.INTEGRATION_API_URL,
                                          data=_json_dumper(data).encode('utf-8'),
                                          headers=headers)
-        response = self.execute_request(request)
+        response = execute_request(self, request)
 
         if not response["status"] == "success":
             raise IntegrationAPIError(response["message"], event_type)
