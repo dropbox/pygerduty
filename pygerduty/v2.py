@@ -1,14 +1,16 @@
 import copy
-import datetime
-import functools
-import json
-import time
 import re
 
 import six
-from six import string_types
 from six.moves import urllib
-from requester import execute_request
+from common import (
+    Requester,
+    _lower,
+    _upper,
+    _singularize,
+    _pluralize,
+    _json_dumper,
+)
 
 __author__ = "Gary M. Josack <gary@dropbox.com>"
 from .version import __version__, version_info  # noqa
@@ -69,12 +71,13 @@ class Collection(object):
 
         # requester_id needs to be up a level
         if "requester_id" in kwargs:
-            data["requester_id"] = kwargs["requester_id"]
+            extra_headers= {"From": kwargs["requester_id"]}
             del kwargs["requester_id"]
 
         data[self.sname] = kwargs
 
-        response = self.pagerduty.request("POST", path, data=_json_dumper(data))
+        response = self.pagerduty.request("POST", path, data=_json_dumper(data),
+                                            extra_headers=extra_headers)
         return self.container(self, **response.get(self.sname, {}))
 
     def update(self, entity_id, **kwargs):
@@ -88,12 +91,13 @@ class Collection(object):
 
         # requester_id needs to be up a level
         if "requester_id" in kwargs:
-            data["requester_id"] = kwargs["requester_id"]
+            extra_headers = {"From": kwargs["requester_id"]}
             del kwargs["requester_id"]
 
         data[self.sname] = kwargs
 
-        response = self.pagerduty.request("PUT", path, data=_json_dumper(data))
+        response = self.pagerduty.request("PUT", path, data=_json_dumper(data),
+                                          extra_headers=extra_headers)
         return self.container(self, **response.get(self.sname, {}))
 
     def _list_response(self, response):
@@ -204,14 +208,17 @@ class Incidents(Collection):
 
 class Services(Collection):
     def disable(self, entity_id, requester_id):
-        path = "{0}/{1}/disable".format(self.name, entity_id)
-        data = {"requester_id": requester_id}
-        response = self.pagerduty.request("PUT", path, data=_json_dumper(data))
+        path = "{0}/{1}".format(self.name, entity_id)
+        extra_headers = { "From": requester_id }
+        data = { "status": "disable" }
+        response = self.pagerduty.request("PUT", path, data=_json_dumper(data),
+                                            extra_headers=extra_headers)
         return response
 
     def enable(self, entity_id):
-        path = "{0}/{1}/enable".format(self.name, entity_id)
-        response = self.pagerduty.request("PUT", path, data="")
+        path = "{0}/{1}".format(self.name, entity_id)
+        data = { "status": "enable"}
+        response = self.pagerduty.request("PUT", path, data=_json_dumper(data))
         return response
 
     def regenerate_key(self, entity_id):
@@ -390,9 +397,8 @@ class Incident(Container):
 
     def _do_action(self, verb, requester_id, **kwargs):
         path = '{0}/{1}/{2}'.format(self.collection.name, self.id, verb)
-        data = {'requester_id': requester_id}
-        data.update(kwargs)
-        return self.pagerduty.request('PUT', path, data=_json_dumper(data))
+        extra_headers = {'From': requester_id}
+        return self.pagerduty.request('PUT', path, extra_headers=extra_headers)
 
     def has_subject(self):
         return hasattr(self.trigger_summary_data, 'subject')
@@ -525,15 +531,7 @@ class PagerDuty(object):
         self._api_base = "https://{0}/".format(self._host)
         self.timeout = timeout
         self.page_size = page_size
-
-        self.json_loader = json.loads
-        if parse_datetime:
-            self.json_loader = _json_loader
-
-        handlers = []
-        if proxies:
-            handlers.append(urllib.request.ProxyHandler(proxies))
-        self.opener = urllib.request.build_opener(*handlers)
+        self.requester= Requester(timeout=timeout, proxies=proxies, parse_datetime=parse_datetime)
 
         # Collections
         self.incidents = Incidents(self)
@@ -568,11 +566,6 @@ class PagerDuty(object):
             "Authorization": auth
         }
 
-        # Requester_id needs to be in the header for v2.
-        if requester_id in data.keys():
-            headers["From"] = data["requester_id"]
-            del data["requester_id"]
-
         if extra_headers:
             headers.update(extra_headers)
 
@@ -590,72 +583,7 @@ class PagerDuty(object):
         request = urllib.request.Request(url, data=data, headers=headers)
         request.get_method = lambda: method.upper()
 
-        return execute_request(self, request)
+        return self.requester.execute_request(request)
 
 
-def _lower(string):
-    """Custom lower string function.
 
-    Examples:
-        FooBar -> foo_bar
-    """
-    if not string:
-        return ""
-
-    new_string = [string[0].lower()]
-    for char in string[1:]:
-        if char.isupper():
-            new_string.append("_")
-        new_string.append(char.lower())
-
-    return "".join(new_string)
-
-
-def _upper(string):
-    """Custom upper string function.
-
-    Examples:
-        foo_bar -> FooBar
-    """
-    return string.title().replace("_", "")
-
-
-def _singularize(string):
-    """Hacky singularization function."""
-
-    if string.endswith("ies"):
-        return string[:-3] + "y"
-    if string.endswith("s"):
-        return string[:-1]
-    return string
-
-
-def _pluralize(string):
-    """Hacky pluralization function."""
-
-    if string.endswith("y"):
-        return string[:-1] + "ies"
-    if not string.endswith("s"):
-        return string + "s"
-    return string
-
-
-class _DatetimeEncoder(json.JSONEncoder):
-    def default(self, obj):
-        if isinstance(obj, (datetime.date, datetime.datetime)):
-            return obj.strftime(ISO8601_FORMAT)
-        super(_DatetimeEncoder, self).default(obj)
-
-
-def _datetime_decoder(obj):
-    for k, v in obj.items():
-        if isinstance(v, string_types):
-            try:
-                obj[k] = datetime.datetime.strptime(v, ISO8601_FORMAT)
-            except ValueError:
-                pass
-    return obj
-
-
-_json_dumper = functools.partial(json.dumps, cls=_DatetimeEncoder)
-_json_loader = functools.partial(json.loads, object_hook=_datetime_decoder)
