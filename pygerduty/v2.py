@@ -70,7 +70,7 @@ class Collection(object):
 
         extra_headers = {}
         if "requester_id" in kwargs:
-            extra_headers["From"] =: kwargs.pop("requester_id")
+            extra_headers["From"] = kwargs.pop("requester_id")
 
         data[self.sname] = kwargs
 
@@ -88,7 +88,7 @@ class Collection(object):
 
         extra_headers = {}
         if "requester_id" in kwargs:
-            extra_headers["From"] =: kwargs.pop("requester_id")
+            extra_headers["From"] = kwargs.pop("requester_id")
 
         data[self.sname] = kwargs
 
