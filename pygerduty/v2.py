@@ -19,8 +19,6 @@ TRIGGER_LOG_ENTRY_RE = re.compile(
     r'log_entries/(?P<log_entry_id>[A-Z0-9]+)'
 )
 
-ISO8601_FORMAT = "%Y-%m-%dT%H:%M:%SZ"
-
 # TODO:
 # Support for Log Entries
 # Support for Reports
@@ -28,6 +26,7 @@ ISO8601_FORMAT = "%Y-%m-%dT%H:%M:%SZ"
 
 class Error(Exception):
     pass
+
 
 class BadRequest(Error):
     def __init__(self, payload, *args, **kwargs):
@@ -38,6 +37,7 @@ class BadRequest(Error):
         self.message = payload.get("error", {}).get('message', str(payload))
 
         Error.__init__(self, *args, **kwargs)
+
 
     def __str__(self):
         return "{0} ({1}): {2}".format(
@@ -71,7 +71,7 @@ class Collection(object):
 
         # requester_id needs to be up a level
         if "requester_id" in kwargs:
-            extra_headers= {"From": kwargs["requester_id"]}
+            extra_headers = {"From": kwargs["requester_id"]}
             del kwargs["requester_id"]
 
         data[self.sname] = kwargs
@@ -209,15 +209,14 @@ class Incidents(Collection):
 class Services(Collection):
     def disable(self, entity_id, requester_id):
         path = "{0}/{1}".format(self.name, entity_id)
-        extra_headers = { "From": requester_id }
-        data = { "status": "disable" }
-        response = self.pagerduty.request("PUT", path, data=_json_dumper(data),
-                                            extra_headers=extra_headers)
+        extra_headers = {"From": requester_id}
+        data = {"status": "disable"}
+        response = self.pagerduty.request("PUT", path, data=_json_dumper(data), extra_headers=extra_headers)
         return response
 
     def enable(self, entity_id):
         path = "{0}/{1}".format(self.name, entity_id)
-        data = { "status": "enable"}
+        data = {"status": "enable"}
         response = self.pagerduty.request("PUT", path, data=_json_dumper(data))
         return response
 
@@ -584,6 +583,3 @@ class PagerDuty(object):
         request.get_method = lambda: method.upper()
 
         return self.requester.execute_request(request)
-
-
-

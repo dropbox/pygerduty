@@ -7,6 +7,7 @@ from six.moves import urllib
 
 ISO8601_FORMAT = "%Y-%m-%dT%H:%M:%SZ"
 
+
 class Error(Exception):
     pass
 
@@ -132,6 +133,6 @@ def _datetime_decoder(obj):
                 pass
     return obj
 
+
 _json_dumper = functools.partial(json.dumps, cls=_DatetimeEncoder)
 _json_loader = functools.partial(json.loads, object_hook=_datetime_decoder)
-

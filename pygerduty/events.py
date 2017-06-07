@@ -2,14 +2,14 @@
 # Pagerduty Events API.
 
 from six.moves import urllib
-from common import _json_dumper
+from common import (
+    _json_dumper,
+    Error,
+)
 from v2 import PagerDuty
 
 INTEGRATION_API_URL =\
         "https://events.pagerduty.com/generic/2010-04-15/create_event.json"
-
-class Error(Exception):
-    pass
 
 
 class IntegrationAPIError(Error):
@@ -92,5 +92,3 @@ class Events(object):
         return self.create_event(description, "trigger",
                                  details, incident_key,
                                  client=client, client_url=client_url, contexts=contexts)
-
-
