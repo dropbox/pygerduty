@@ -38,7 +38,6 @@ class BadRequest(Error):
 
         Error.__init__(self, *args, **kwargs)
 
-
     def __str__(self):
         return "{0} ({1}): {2}".format(
             self.message, self.code, self.errors)
@@ -76,8 +75,7 @@ class Collection(object):
 
         data[self.sname] = kwargs
 
-        response = self.pagerduty.request("POST", path, data=_json_dumper(data),
-                                            extra_headers=extra_headers)
+        response = self.pagerduty.request("POST", path, data=_json_dumper(data), extra_headers=extra_headers)
         return self.container(self, **response.get(self.sname, {}))
 
     def update(self, entity_id, **kwargs):
@@ -530,7 +528,7 @@ class PagerDuty(object):
         self._api_base = "https://{0}/".format(self._host)
         self.timeout = timeout
         self.page_size = page_size
-        self.requester= Requester(timeout=timeout, proxies=proxies, parse_datetime=parse_datetime)
+        self.requester = Requester(timeout=timeout, proxies=proxies, parse_datetime=parse_datetime)
 
         # Collections
         self.incidents = Incidents(self)

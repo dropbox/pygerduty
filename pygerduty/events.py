@@ -9,7 +9,7 @@ from common import (
 from v2 import PagerDuty
 
 INTEGRATION_API_URL =\
-        "https://events.pagerduty.com/generic/2010-04-15/create_event.json"
+    "https://events.pagerduty.com/generic/2010-04-15/create_event.json"
 
 
 class IntegrationAPIError(Error):
@@ -21,11 +21,11 @@ class IntegrationAPIError(Error):
         return "Creating {0} event failed: {1}".format(self.event_type,
                                                        self.message)
 
+
 class Events(object):
     def __init__(self, service_key, requester):
         self.service_key = service_key
         self.requester = requester
-
 
     def create_event(self, description, event_type,
                      details, incident_key, **kwargs):
@@ -60,7 +60,6 @@ class Events(object):
         if not response["status"] == "success":
             raise IntegrationAPIError(response["message"], event_type)
         return response["incident_key"]
-
 
     def resolve_incident(self, incident_key,
                          description=None, details=None):
