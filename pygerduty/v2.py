@@ -68,10 +68,9 @@ class Collection(object):
 
         data = {self.sname: {}}
 
-        # requester_id needs to be up a level
+        extra_headers = {}
         if "requester_id" in kwargs:
-            extra_headers = {"From": kwargs["requester_id"]}
-            del kwargs["requester_id"]
+            extra_headers["From"] = : kwargs.pop("requester_id")
 
         data[self.sname] = kwargs
 
@@ -87,10 +86,9 @@ class Collection(object):
 
         data = {self.sname: {}}
 
-        # requester_id needs to be up a level
+        extra_headers = {}
         if "requester_id" in kwargs:
-            extra_headers = {"From": kwargs["requester_id"]}
-            del kwargs["requester_id"]
+            extra_headers["From"] = : kwargs.pop("requester_id")
 
         data[self.sname] = kwargs
 
@@ -199,8 +197,9 @@ class MaintenanceWindows(Collection):
 class Incidents(Collection):
     def update(self, requester_id, *args):
         path = "{0}".format(self.name)
-        data = {"requester_id": requester_id, self.name: args}
-        response = self.pagerduty.request("PUT", path, data=_json_dumper(data))
+        extra_headers = {"From": requester_id}
+        data = {self.name: args}
+        response = self.pagerduty.request("PUT", path, data=_json_dumper(data), extra_headers=extra_headers)
         return self.container(self, **response.get(self.sname, {}))
 
 
@@ -519,7 +518,7 @@ class LogEntry(Container):
 
 class PagerDuty(object):
     def __init__(self, subdomain, api_token, timeout=10, page_size=25,
-                proxies=None, parse_datetime=False):
+                 proxies=None, parse_datetime=False):
 
         self.api_token = api_token
         self.subdomain = subdomain
