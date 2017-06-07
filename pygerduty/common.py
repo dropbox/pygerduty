@@ -5,15 +5,37 @@ import json
 from six import string_types
 from six.moves import urllib
 
-_json_dumper = functools.partial(json.dumps, cls=_DatetimeEncoder)
-_json_loader = functools.partial(json.loads, object_hook=_datetime_decoder)
+ISO8601_FORMAT = "%Y-%m-%dT%H:%M:%SZ"
+
+class Error(Exception):
+    pass
+
+
+class BadRequest(Error):
+    def __init__(self, payload, *args, **kwargs):
+        # Error Reponses don't always contain all fields.
+        # Sane defaults must be set.
+        self.code = payload.get("error", {}).get('code', 99999)
+        self.errors = payload.get("error", {}).get('errors', [])
+        self.message = payload.get("error", {}).get('message', str(payload))
+
+        Error.__init__(self, *args, **kwargs)
+
+    def __str__(self):
+        return "{0} ({1}): {2}".format(
+            self.message, self.code, self.errors)
+
+
+class NotFound(Error):
+    pass
+
 
 class Requester(object):
     def __init__(self, timeout=10, proxies=None, parse_datetime=False):
-		self.timeout = timeout
-		self.json_loader = json.loads
+        self.timeout = timeout
+        self.json_loader = json.loads
 
-		if parse_datetime:
+        if parse_datetime:
             self.json_loader = _json_loader
 
         handlers = []
@@ -110,4 +132,6 @@ def _datetime_decoder(obj):
                 pass
     return obj
 
+_json_dumper = functools.partial(json.dumps, cls=_DatetimeEncoder)
+_json_loader = functools.partial(json.loads, object_hook=_datetime_decoder)
 
