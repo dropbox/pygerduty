@@ -518,7 +518,6 @@ class LogEntry(Container):
 
 
 class PagerDuty(object):
-
     def __init__(self, subdomain, api_token, timeout=10, page_size=25,
                 proxies=None, parse_datetime=False):
 
