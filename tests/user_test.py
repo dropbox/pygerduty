@@ -214,5 +214,5 @@ def test_get_user_contact_methods_v2():
     assert len([c for c in contact_methods if c.type == "email"]) == 1
     assert len([c for c in contact_methods if c.type == "phone"]) == 1
     assert len([c for c in contact_methods if c.type == "SMS"]) == 1
-
+    assert user.self_ == 'https://api.pagerduty.com/users/PXPGF42'
 
