@@ -1,6 +1,5 @@
 import copy
 import re
-
 import six
 from six.moves import urllib
 from common import (
@@ -108,12 +107,12 @@ class Collection(object):
             path = "{0}/{1}/{2}".format(
                 self.base_container.collection.name,
                 self.base_container.id, self.name)
-
         suffix_path = kwargs.pop("_suffix_path", None)
+
         if suffix_path is not None:
             path += "/{0}".format(suffix_path)
-
         response = self.pagerduty.request("GET", path, query_params=kwargs)
+
         return self._list_response(response)
 
     def list(self, **kwargs):
@@ -158,9 +157,9 @@ class Collection(object):
             path = "{0}/{1}/{2}/{3}".format(
                 self.base_container.collection.name,
                 self.base_container.id, self.name, entity_id)
-
         response = self.pagerduty.request(
             "GET", path, query_params=kwargs)
+
         if response.get(self.sname):
             return self.container(self, **response.get(self.sname, {}))
         else:
@@ -579,3 +578,4 @@ class PagerDuty(object):
         request.get_method = lambda: method.upper()
 
         return self.requester.execute_request(request)
+

@@ -66,11 +66,29 @@ class Requester(object):
 
         try:
             response = self.json_loader(response)
-        except ValueError:
+        except ValueError as e:
+            print e
             response = None
+
+        response = recurse_dict(response)
 
         return response
 
+def recurse_dict(d):
+    '''Recurse through dictionary are replace any keys "self" with
+    "self_"'''
+    if type(d) is list:
+        for elem in d:
+            recurse_dict(elem)
+    elif type(d) is dict:
+        for key, val in d.items():
+            if key == 'self':
+                val = d.pop('self')
+                d['self_'] = val
+                recurse_dict(val)
+            else:
+                recurse_dict(d[key])
+    return d
 
 def _lower(string):
     """Custom lower string function.
