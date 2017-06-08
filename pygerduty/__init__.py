@@ -481,6 +481,7 @@ class Service(Container):
     def __init__(self, *args, **kwargs):
         Container.__init__(self, *args, **kwargs)
         self.email_filters = EmailFilters(self.pagerduty, self)
+        self.escalation_policy = EscalationPolicies(self.pagerduty, self)
 
 
 class Schedule(Container):
