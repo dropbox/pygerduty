@@ -29,4 +29,22 @@ def test_to_json_list_convertion_v1():
 ###################
 
 
-def
+def test_to_json_v2():
+    p = pygerduty.v2.PagerDuty("testing", "password")
+    collection = pygerduty.v2.Collection(p)
+
+    container1 = pygerduty.v2.Container(collection, name='test1')
+    container2 = pygerduty.v2.Container(collection, container=container1)
+
+    assert {'container': {'name': 'test1'}} == container2.to_json()
+
+
+def test_to_json_list_convertion_v2():
+    p = pygerduty.v2.PagerDuty("testing", "password")
+    collection = pygerduty.Collection(p)
+
+    container = pygerduty.v2.Container(collection, handlers=['test1', 'test2'])
+
+    print container.to_json()
+
+    assert {'handlers': ['test1', 'test2']} == container.to_json()
