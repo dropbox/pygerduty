@@ -73,6 +73,7 @@ class Requester(object):
 
         return response
 
+
 def recurse_dict(d):
     '''Recurse through dictionary are replace any keys "self" with
     "self_"'''
@@ -88,6 +89,7 @@ def recurse_dict(d):
             else:
                 recurse_dict(d[key])
     return d
+
 
 def _lower(string):
     """Custom lower string function.

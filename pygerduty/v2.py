@@ -578,4 +578,3 @@ class PagerDuty(object):
         request.get_method = lambda: method.upper()
 
         return self.requester.execute_request(request)
-
