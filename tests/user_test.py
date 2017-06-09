@@ -5,8 +5,10 @@ import pygerduty
 import pygerduty.v2
 import textwrap
 
+###################
+# Version 1 Tests #
+###################
 
-authorization_token = 'y_NbAkKc66ryYTWUXYEu'
 @httpretty.activate
 def test_get_user_v1():
     httpretty.register_uri(
@@ -102,6 +104,10 @@ def test_get_user_contact_methods_v1():
     assert len([c for c in contact_methods if c.type == "email"]) == 1
     assert len([c for c in contact_methods if c.type == "phone"]) == 1
     assert len([c for c in contact_methods if c.type == "SMS"]) == 1
+
+###################
+# Version 2 Tests #
+###################
 
 @httpretty.activate
 def test_get_user_v2():
