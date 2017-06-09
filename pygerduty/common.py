@@ -66,8 +66,7 @@ class Requester(object):
 
         try:
             response = self.json_loader(response)
-        except ValueError as e:
-            print e
+        except ValueError:
             response = None
 
         response = recurse_dict(response)
