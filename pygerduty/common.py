@@ -69,26 +69,26 @@ class Requester(object):
         except ValueError:
             response = None
 
-        response = recurse_dict(response)
+        response = clean_response(response)
 
         return response
 
 
-def recurse_dict(d):
-    '''Recurse through dictionary are replace any keys "self" with
+def clean_response(response):
+    '''Recurse through dictionary and replace any keys "self" with
     "self_"'''
-    if type(d) is list:
-        for elem in d:
-            recurse_dict(elem)
-    elif type(d) is dict:
-        for key, val in d.items():
+    if type(response) is list:
+        for elem in response:
+            clean_response(elem)
+    elif type(response) is dict:
+        for key, val in response.items():
             if key == 'self':
-                val = d.pop('self')
-                d['self_'] = val
-                recurse_dict(val)
+                val = response.pop('self')
+                response['self_'] = val
+                clean_response(val)
             else:
-                recurse_dict(d[key])
-    return d
+                clean_response(response[key])
+    return response
 
 
 def _lower(string):
