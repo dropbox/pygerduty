@@ -222,3 +222,51 @@ def test_get_user_contact_methods_v2():
     assert len([c for c in contact_methods if c.type == "SMS"]) == 1
     assert user.self_ == 'https://api.pagerduty.com/users/PXPGF42'
 
+def test_clean_response():
+    mock_response = {
+          "user" : {
+            "id": "PHDGK84",
+            "type": "user",
+            "self": "https://api.pagerduty.com/users/PHDGK84",
+            "name": "Snoopy",
+            "contact_methods": [
+              {
+                "address": "betty@example.com",
+                "id": "PZMO0JF",
+                "self": "https://api.pagerduty.com/users/PHDGK84/contact_method/PZMO0JF",
+                "label": "Default"
+              },
+              {
+                "address": "8928393498",
+                "id": "PZMN843",
+                "self": "https://api.pagerduty.com/users/PHDGK84/contact_method/PZMN843",
+                "label": "Default"
+              }
+            ]
+          }
+        }
+    clean_response = pygerduty.common.clean_response(mock_response)
+
+    assert clean_response == {
+          "user" : {
+            "id": "PHDGK84",
+            "type": "user",
+            "self_": "https://api.pagerduty.com/users/PHDGK84",
+            "name": "Snoopy",
+            "contact_methods": [
+              {
+                "address": "betty@example.com",
+                "id": "PZMO0JF",
+                "self_": "https://api.pagerduty.com/users/PHDGK84/contact_method/PZMO0JF",
+                "label": "Default"
+              },
+              {
+                "address": "8928393498",
+                "id": "PZMN843",
+                "self_": "https://api.pagerduty.com/users/PHDGK84/contact_method/PZMN843",
+                "label": "Default"
+              }
+            ]
+          }
+        }
+
