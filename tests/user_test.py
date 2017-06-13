@@ -242,7 +242,16 @@ def test_clean_response():
                 "self": "https://api.pagerduty.com/users/PHDGK84/contact_method/PZMN843",
                 "label": "Default"
               }
-            ]
+            ],
+           "notification_rules": [
+             {
+               "id": "P8WETWW",
+               "contact_method": {
+                 "id": "PZMO0JF",
+                 "self": "https://api.pagerduty.com/users/PHDGK84/contact_method/PZMO0JF",
+               }
+             }
+           ]
           }
         }
     clean_response = pygerduty.common.clean_response(mock_response)
@@ -266,7 +275,17 @@ def test_clean_response():
                 "self_": "https://api.pagerduty.com/users/PHDGK84/contact_method/PZMN843",
                 "label": "Default"
               }
-            ]
+            ],
+           "notification_rules": [
+             {
+               "id": "P8WETWW",
+               "contact_method": {
+                 "id": "PZMO0JF",
+                 "self_": "https://api.pagerduty.com/users/PHDGK84/contact_method/PZMO0JF",
+               }
+             }
+           ]
+
           }
         }
 
