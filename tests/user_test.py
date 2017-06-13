@@ -285,7 +285,63 @@ def test_clean_response():
                }
              }
            ]
-
           }
         }
 
+@httpretty.activate
+def test_user_notification_rules_v2():
+    httpretty.register_uri(
+        httpretty.GET, "https://api.pagerduty.com/users/PXPGF42",
+        body=textwrap.dedent("""\
+            {
+              "user": {
+                "id": "PXPGF42",
+                "avatar_url": "https://secure.gravatar.com/avatar/6e1b6fc29a03fc3c13756bd594e314f7.png?d=mm&r=PG",
+                "summary": "Betty Simpson",
+                "self": "https://api.pagerduty.com/users/PXPGF42",
+                "html_url": "https://subdomain.pagerduty.com/users/PXPGF42",
+                "type": "user",
+                "color": "green",
+                "email": "betty@example.com",
+                "invitation_sent": true,
+                "job_title": "Developer",
+                "name": "Betty Simpson",
+                "role": "admin",
+                "time_zone": "Eastern Time (US & Canada)",
+                "description": "Betty Simpson",
+                "user_url": "/users/PXPGF42"
+              }
+            }"""), status=200),
+    httpretty.register_uri(
+        httpretty.GET, "https://api.pagerduty.com/users/PXPGF42/notification_rules",
+        body=textwrap.dedent("""\
+            {
+              "notification_rules": [
+              {
+                "id": "PXPGF42",
+                "type": "assignment_notification_rule",
+                "summary": "Work",
+                "self": "https://api.pagerduty.com/users/PXPGF42/notification_rules/PPSCXAN",
+                "html_url": null,
+                "start_delay_in_minutes": 0,
+                "contact_method": {
+                  "id": "PXPGF42",
+                  "type": "contact_method_reference",
+                  "summary": "Work",
+                  "self": "https://api.pagerduty.com/users/PXPGF42/contact_methods/PXPGF42",
+                  "html_url": null
+                },
+                "created_at": "2016-02-01T16:06:27-05:00",
+                "urgency": "high"
+              }
+              ]
+            }"""), status=200)
+
+    p = pygerduty.v2.PagerDuty("contosso", "password")
+    user = p.users.show("PXPGF42")
+
+    notification_rules = [n for n in user.notification_rules.list()]
+
+    assert len(notification_rules) == 1
+    assert len([n for n in notification_rules if n.type == "assignment_notification_rule"]) == 1
+    assert user.self_ == "https://api.pagerduty.com/users/PXPGF42"
