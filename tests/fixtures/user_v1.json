@@ -1,0 +1,15 @@
+{
+  "user": {
+	"avatar_url": "https://secure.gravatar.com/avatar/6e1b6fc29a03fc3c13756bd594e314f7.png?d=mm&r=PG",
+	"color": "dark-slate-grey",
+	"email": "bart@example.com",
+	"id": "PIJ90N7",
+	"invitation_sent": true,
+	"job_title": "Developer",
+	"marketing_opt_out": true,
+	"name": "Bart Simpson",
+	"role": "admin",
+	"time_zone": "Eastern Time (US & Canada)",
+	"user_url": "/users/PIJ90N7"
+  }
+}

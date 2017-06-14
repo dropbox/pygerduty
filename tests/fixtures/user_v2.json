@@ -1,0 +1,19 @@
+{
+  "user": {
+	"id": "PXPGF42",
+	"avatar_url": "https://secure.gravatar.com/avatar/6e1b6fc29a03fc3c13756bd594e314f7.png?d=mm&r=PG",
+	"summary": "Betty Simpson",
+	"self": "https://api.pagerduty.com/users/PXPGF42",
+	"html_url": "https://subdomain.pagerduty.com/users/PXPGF42",
+	"type": "user",
+	"color": "green",
+	"email": "betty@example.com",
+	"invitation_sent": true,
+	"job_title": "Developer",
+	"name": "Betty Simpson",
+	"role": "admin",
+	"time_zone": "Eastern Time (US & Canada)",
+	"description": "Betty Simpson",
+	"user_url": "/users/PXPGF42"
+  }
+}
