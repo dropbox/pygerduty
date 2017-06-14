@@ -85,6 +85,26 @@ def test_get_user_contact_methods_v2():
     assert len([c for c in contact_methods if c.type == "SMS"]) == 1
     assert user.self_ == 'https://api.pagerduty.com/users/PXPGF42'
 
+@httpretty.activate
+def test_user_notification_rules_v2():
+    user_body = open('tests/fixtures/user_v2.json').read()
+    notification_body = open('tests/fixtures/notification_v2.json').read()
+    httpretty.register_uri(
+        httpretty.GET, "https://api.pagerduty.com/users/PXPGF42",
+        body=user_body, status=200)
+    httpretty.register_uri(
+        httpretty.GET, "https://api.pagerduty.com/users/PXPGF42/notification_rules",
+        body=notification_body, status=200)
+
+    p = pygerduty.v2.PagerDuty("contosso", "password")
+    user = p.users.show("PXPGF42")
+
+    notification_rules = [n for n in user.notification_rules.list()]
+
+    assert len(notification_rules) == 1
+    assert len([n for n in notification_rules if n.type == "assignment_notification_rule"]) == 1
+    assert user.self_ == "https://api.pagerduty.com/users/PXPGF42"
+
 def test_clean_response():
     mock_response = {
           "user" : {
@@ -151,22 +171,4 @@ def test_clean_response():
           }
         }
 
-@httpretty.activate
-def test_user_notification_rules_v2():
-    user_body = open('tests/fixtures/user_v2.json').read()
-    notification_body = open('tests/fixtures/notification_v2.json').read()
-    httpretty.register_uri(
-        httpretty.GET, "https://api.pagerduty.com/users/PXPGF42",
-        body=user_body, status=200)
-    httpretty.register_uri(
-        httpretty.GET, "https://api.pagerduty.com/users/PXPGF42/notification_rules",
-        body=notification_body, status=200)
 
-    p = pygerduty.v2.PagerDuty("contosso", "password")
-    user = p.users.show("PXPGF42")
-
-    notification_rules = [n for n in user.notification_rules.list()]
-
-    assert len(notification_rules) == 1
-    assert len([n for n in notification_rules if n.type == "assignment_notification_rule"]) == 1
-    assert user.self_ == "https://api.pagerduty.com/users/PXPGF42"

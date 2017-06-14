@@ -99,7 +99,6 @@ class Collection(object):
         entities = []
         for entity in response.get(self.name, []):
             entities.append(self.container(self, **entity))
-        print entities
         return entities
 
     def _list_no_pagination(self, **kwargs):
@@ -114,7 +113,6 @@ class Collection(object):
             path += "/{0}".format(suffix_path)
 
         response = self.pagerduty.request("GET", path, query_params=kwargs)
-
         return self._list_response(response)
 
     def list(self, **kwargs):
@@ -134,6 +132,7 @@ class Collection(object):
                     'offset': offset,
                 })
                 this_paginated_result = self._list_no_pagination(**these_kwargs)
+                print this_paginated_result
                 if not this_paginated_result:
                     break
                 for item in this_paginated_result:
@@ -142,6 +141,9 @@ class Collection(object):
                     seen_items.add(item.id)
                     yield item
                 offset += len(this_paginated_result)
+                print len(this_paginated_result) 
+                print "limit is: %s" % limit
+                print "offset is: %s" % offset
                 if len(this_paginated_result) > limit:
                     # sometimes pagerduty decides to ignore your limit and
                     # just return everything. it seems to only do this when
@@ -159,7 +161,6 @@ class Collection(object):
             path = "{0}/{1}/{2}/{3}".format(
                 self.base_container.collection.name,
                 self.base_container.id, self.name, entity_id)
-        print path
         response = self.pagerduty.request(
             "GET", path, query_params=kwargs)
 
