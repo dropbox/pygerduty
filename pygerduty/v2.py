@@ -99,6 +99,7 @@ class Collection(object):
         entities = []
         for entity in response.get(self.name, []):
             entities.append(self.container(self, **entity))
+        print entities
         return entities
 
     def _list_no_pagination(self, **kwargs):
@@ -111,6 +112,7 @@ class Collection(object):
 
         if suffix_path is not None:
             path += "/{0}".format(suffix_path)
+
         response = self.pagerduty.request("GET", path, query_params=kwargs)
 
         return self._list_response(response)
@@ -157,6 +159,7 @@ class Collection(object):
             path = "{0}/{1}/{2}/{3}".format(
                 self.base_container.collection.name,
                 self.base_container.id, self.name, entity_id)
+        print path
         response = self.pagerduty.request(
             "GET", path, query_params=kwargs)
 
