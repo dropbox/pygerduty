@@ -22,16 +22,17 @@ def test_get_schedule_v2():
     assert len(schedule.schedule_layers) == 1
     assert schedule.schedule_layers[0].start == "2015-11-06T21:00:00-05:00"
 
+
 @httpretty.activate
 def test_list_schedules_v2():
-    body = open('tests/fixtures/schedule_list_v2.json').read()
+    body = open('tests/fixtures/schedule_list_v1.json').read()
     httpretty.register_uri(
 	    httpretty.GET, "https://api.pagerduty.com/schedules",
 	    body=body, status=200)
     p = pygerduty.v2.PagerDuty("contosso", "password")
     schedules = []
-    #for s in p.schedules.list():
-    #    print s
-    #    schedules.append(s)
+    for s in p.schedules.list():
+        print s
+        schedules.append(s)
 
     assert schedules == []

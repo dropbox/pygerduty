@@ -141,7 +141,7 @@ class Collection(object):
                     seen_items.add(item.id)
                     yield item
                 offset += len(this_paginated_result)
-                print len(this_paginated_result) 
+                print len(this_paginated_result)
                 print "limit is: %s" % limit
                 print "offset is: %s" % offset
                 if len(this_paginated_result) > limit:
@@ -243,8 +243,7 @@ class Entries(Collection):
 
 
 class EscalationPolicies(Collection):
-    def on_call(self, **kwargs):
-        return self.list(_suffix_path="on_call", **kwargs)
+    pass
 
 
 class EscalationRules(Collection):
@@ -273,8 +272,7 @@ class ScheduleUsers(Collection):
 
 
 class Users(Collection):
-    def on_call(self, **kwargs):
-        return self.list(_suffix_path="on_call", **kwargs)
+    pass
 
 
 class Restrictions(Collection):
