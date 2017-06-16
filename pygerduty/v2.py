@@ -57,6 +57,7 @@ class Collection(object):
 
         self.pagerduty = pagerduty
         self.base_container = base_container
+        self.more = False
 
     def create(self, **kwargs):
         path = "{0}".format(self.name)
@@ -113,6 +114,8 @@ class Collection(object):
             path += "/{0}".format(suffix_path)
 
         response = self.pagerduty.request("GET", path, query_params=kwargs)
+        self.more = response.get('more', False)
+
         return self._list_response(response)
 
     def list(self, **kwargs):
@@ -121,6 +124,7 @@ class Collection(object):
         if not self.paginated or any(key in kwargs for key in ('offset', 'limit')):
             for i in self._list_no_pagination(**kwargs):
                 yield i
+
         else:
             offset = 0
             limit = self.pagerduty.page_size
@@ -132,7 +136,7 @@ class Collection(object):
                     'offset': offset,
                 })
                 this_paginated_result = self._list_no_pagination(**these_kwargs)
-                print this_paginated_result
+
                 if not this_paginated_result:
                     break
                 for item in this_paginated_result:
@@ -140,15 +144,17 @@ class Collection(object):
                         continue
                     seen_items.add(item.id)
                     yield item
-                offset += len(this_paginated_result)
-                print len(this_paginated_result)
-                print "limit is: %s" % limit
-                print "offset is: %s" % offset
+                offset -= len(this_paginated_result)
                 if len(this_paginated_result) > limit:
                     # sometimes pagerduty decides to ignore your limit and
                     # just return everything. it seems to only do this when
                     # you're near the last page.
                     break
+
+                # If self.more = True, then continue the loop.
+                if not self.more or offset < limit:
+                    break
+
 
     def count(self, **kwargs):
         path = "{0}/count".format(self.name)

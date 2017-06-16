@@ -25,14 +25,14 @@ def test_get_schedule_v2():
 
 @httpretty.activate
 def test_list_schedules_v2():
-    body = open('tests/fixtures/schedule_list_v1.json').read()
+    body = open('tests/fixtures/schedule_list_v2.json').read()
     httpretty.register_uri(
 	    httpretty.GET, "https://api.pagerduty.com/schedules",
 	    body=body, status=200)
     p = pygerduty.v2.PagerDuty("contosso", "password")
-    schedules = []
-    for s in p.schedules.list():
-        print s
-        schedules.append(s)
+    schedules = [s for s in p.schedules.list()]
 
-    assert schedules == []
+    assert len(schedules) == 1
+    assert schedules[0].name == 'Daily Engineering Rotation'
+    assert schedules[0].self_ == 'https://api.pagerduty.com/schedules/PI7DH85'
+    assert len(schedules[0].escalation_policies) == 1

@@ -6,7 +6,6 @@
 	  "self": "https://api.pagerduty.com/users/PXPGF42/contact_method/PZMO0JF",
 	  "label": "Default",
 	  "send_short_email": false,
-	  "send_html_email": true,
 	  "type": "email",
 	  "html_url": null,
 	  "user_id": "PXPGF42"
@@ -17,7 +16,6 @@
 	  "self": "https://api.pagerduty.com/users/PXPGF42/contact_method/PWEN34G",
 	  "label": "Default",
 	  "send_short_email": false,
-	  "send_html_email": true,
 	  "type": "SMS",
 	  "html_url": null,
 	  "user_id": "PXPGF42"
@@ -28,7 +26,6 @@
 	  "self": "https://api.pagerduty.com/users/PXPGF42/contact_method/PZMP0KL",
 	  "label": "Default",
 	  "send_short_email": false,
-	  "send_html_email": true,
 	  "type": "phone",
 	  "html_url": null,
 	  "user_id": "PXPGF42"

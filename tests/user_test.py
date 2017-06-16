@@ -24,7 +24,7 @@ def test_get_user_v1():
     assert user.role == "admin"
 
 @httpretty.activate
-def test_get_user_contact_methods_v1():
+def test_list_user_contact_methods_v1():
     user_body = open('tests/fixtures/user_v1.json').read()
     contact_body = open('tests/fixtures/contacts_v1.json').read()
     httpretty.register_uri(
@@ -58,12 +58,12 @@ def test_get_user_v2():
     user = p.users.show("PXPGF42")
 
     assert user.id == "PXPGF42"
-    assert user.name == "Betty Simpson"
+    assert user.name == "Earline Greenholt"
     assert user.role == "admin"
     assert user.self_ == 'https://api.pagerduty.com/users/PXPGF42'
 
 @httpretty.activate
-def test_get_user_contact_methods_v2():
+def test_list_user_contact_methods_v2():
     user_body = open('tests/fixtures/user_v2.json').read()
     contact_body = open('tests/fixtures/contacts_v2.json').read()
     httpretty.register_uri(
@@ -104,6 +104,7 @@ def test_user_notification_rules_v2():
     assert len(notification_rules) == 1
     assert len([n for n in notification_rules if n.type == "assignment_notification_rule"]) == 1
     assert user.self_ == "https://api.pagerduty.com/users/PXPGF42"
+
 
 def test_clean_response():
     mock_response = {
