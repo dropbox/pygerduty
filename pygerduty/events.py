@@ -6,7 +6,6 @@ from common import (
     _json_dumper,
     Error,
 )
-from v2 import PagerDuty
 
 INTEGRATION_API_URL =\
     "https://events.pagerduty.com/generic/2010-04-15/create_event.json"
