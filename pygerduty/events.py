@@ -6,7 +6,6 @@ from common import (
     _json_dumper,
     Error,
 )
-from v2 import PagerDuty
 
 INTEGRATION_API_URL =\
     "https://events.pagerduty.com/generic/2010-04-15/create_event.json"
@@ -51,7 +50,7 @@ class Events(object):
             "contexts": contexts,
         }
 
-        request = urllib.request.Request(PagerDuty.INTEGRATION_API_URL,
+        request = urllib.request.Request(INTEGRATION_API_URL,
                                          data=_json_dumper(data).encode('utf-8'),
                                          headers=headers)
 
