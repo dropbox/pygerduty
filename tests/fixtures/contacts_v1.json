@@ -1,0 +1,32 @@
+{
+  "contact_methods": [
+	{
+	  "address": "bart@example.com",
+	  "email": "bart@example.com",
+	  "id": "PZMO0JF",
+	  "label": "Default",
+	  "send_short_email": false,
+	  "type": "email",
+	  "user_id": "PIJ90N7"
+	},
+	{
+	  "address": "9373249222",
+	  "country_code": 1,
+	  "id": "PDGR818",
+	  "label": "Mobile",
+	  "phone_number": "9373249222",
+	  "type": "phone",
+	  "user_id": "PIJ90N7"
+	},
+	{
+	  "address": "9373249222",
+	  "country_code": 1,
+	  "enabled": true,
+	  "id": "P25E95E",
+	  "label": "Mobile",
+	  "phone_number": "9373249222",
+	  "type": "SMS",
+	  "user_id": "PIJ90N7"
+	}
+  ]
+}

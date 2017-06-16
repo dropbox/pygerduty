@@ -1,6 +1,5 @@
 import copy
 import re
-
 import six
 from six.moves import urllib
 from common import (
@@ -108,12 +107,13 @@ class Collection(object):
             path = "{0}/{1}/{2}".format(
                 self.base_container.collection.name,
                 self.base_container.id, self.name)
-
         suffix_path = kwargs.pop("_suffix_path", None)
+
         if suffix_path is not None:
             path += "/{0}".format(suffix_path)
 
         response = self.pagerduty.request("GET", path, query_params=kwargs)
+
         return self._list_response(response)
 
     def list(self, **kwargs):
@@ -122,6 +122,7 @@ class Collection(object):
         if not self.paginated or any(key in kwargs for key in ('offset', 'limit')):
             for i in self._list_no_pagination(**kwargs):
                 yield i
+
         else:
             offset = 0
             limit = self.pagerduty.page_size
@@ -133,13 +134,16 @@ class Collection(object):
                     'offset': offset,
                 })
                 this_paginated_result = self._list_no_pagination(**these_kwargs)
+
                 if not this_paginated_result:
                     break
+
                 for item in this_paginated_result:
                     if item.id in seen_items:
                         continue
                     seen_items.add(item.id)
                     yield item
+
                 offset += len(this_paginated_result)
                 if len(this_paginated_result) > limit:
                     # sometimes pagerduty decides to ignore your limit and
@@ -158,9 +162,9 @@ class Collection(object):
             path = "{0}/{1}/{2}/{3}".format(
                 self.base_container.collection.name,
                 self.base_container.id, self.name, entity_id)
-
         response = self.pagerduty.request(
             "GET", path, query_params=kwargs)
+
         if response.get(self.sname):
             return self.container(self, **response.get(self.sname, {}))
         else:
@@ -240,8 +244,7 @@ class Entries(Collection):
 
 
 class EscalationPolicies(Collection):
-    def on_call(self, **kwargs):
-        return self.list(_suffix_path="on_call", **kwargs)
+    pass
 
 
 class EscalationRules(Collection):
@@ -270,8 +273,7 @@ class ScheduleUsers(Collection):
 
 
 class Users(Collection):
-    def on_call(self, **kwargs):
-        return self.list(_suffix_path="on_call", **kwargs)
+    pass
 
 
 class Restrictions(Collection):
@@ -517,11 +519,10 @@ class LogEntry(Container):
 
 
 class PagerDuty(object):
-    def __init__(self, subdomain, api_token, timeout=10, page_size=25,
+    def __init__(self, api_token, timeout=10, page_size=25,
                  proxies=None, parse_datetime=False):
 
         self.api_token = api_token
-        self.subdomain = subdomain
         self._host = "api.pagerduty.com"
         self._api_base = "https://{0}/".format(self._host)
         self.timeout = timeout

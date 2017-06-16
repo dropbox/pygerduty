@@ -1,0 +1,92 @@
+{
+  "schedule": {
+    "id": "PI7DH85",
+    "type": "schedule",
+    "summary": "Daily Engineering Rotation",
+    "self": "https://api.pagerduty.com/schedules/PI7DH85",
+    "html_url": "https://subdomain.pagerduty.com/schedules/PI7DH85",
+    "name": "Daily Engineering Rotation",
+    "time_zone": "America/New_York",
+    "description": "Rotation schedule for engineering",
+    "escalation_policies": [
+      {
+        "id": "PT20YPA",
+        "type": "escalation_policy_reference",
+        "summary": "Another Escalation Policy",
+        "self": "https://api.pagerduty.com/escalation_policies/PT20YPA",
+        "html_url": "https://subdomain.pagerduty.com/escalation_policies/PT20YPA"
+      }
+    ],
+    "users": [
+      {
+        "id": "PXPGF42",
+        "type": "user",
+        "summary": "Regina Phalange",
+        "self": "https://api.pagerduty.com/users/PXPGF42",
+        "html_url": "https://subdomain.pagerduty.com/users/PXPGF42"
+      }
+    ],
+    "schedule_layers": [
+      {
+        "name": "Layer 1",
+        "rendered_schedule_entries": [
+          {
+            "start": "2015-11-09T08:00:00-05:00",
+            "end": "2015-11-09T17:00:00-05:00",
+            "user": {
+              "id": "PXPGF42",
+              "type": "user",
+              "summary": "Regina Phalange",
+              "self": "https://api.pagerduty.com/users/PXPGF42",
+              "html_url": "https://subdomain.pagerduty.com/users/PXPGF42"
+            }
+          }
+        ],
+        "rendered_coverage_percentage": 37.5,
+        "id": "PG68P1M",
+        "start": "2015-11-06T21:00:00-05:00",
+        "end": null,
+        "rotation_virtual_start": "2015-11-06T20:00:00-05:00",
+        "rotation_turn_length_seconds": 86400,
+        "users": [
+          {
+            "id": "PXPGF42",
+            "type": "user",
+            "summary": "Regina Phalange",
+            "self": "https://api.pagerduty.com/users/PXPGF42",
+            "html_url": "https://subdomain.pagerduty.com/users/PXPGF42"
+          }
+        ],
+        "restrictions": [
+          {
+            "type": "daily_restriction",
+            "start_time_of_day": "08:00:00",
+            "duration_seconds": 32400
+          }
+        ]
+      }
+    ],
+    "overrides_subschedule": {
+      "name": "Overrides",
+      "rendered_schedule_entries": [],
+      "rendered_coverage_percentage": 0
+    },
+    "final_schedule": {
+      "name": "Final Schedule",
+      "rendered_schedule_entries": [
+        {
+          "start": "2015-11-10T08:00:00-05:00",
+          "end": "2015-11-10T17:00:00-05:00",
+          "user": {
+            "id": "PXPGF42",
+            "type": "user",
+            "summary": "Regina Phalange",
+            "self": "https://api.pagerduty.com/users/PXPGF42",
+            "html_url": "https://subdomain.pagerduty.com/users/PXPGF42"
+          }
+        }
+      ],
+      "rendered_coverage_percentage": 37.5
+    }
+  }
+}

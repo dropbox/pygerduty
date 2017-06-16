@@ -1,0 +1,25 @@
+{
+  "schedules": [
+    {
+      "id": "PWEVPB6",
+      "name": "Primary",
+      "time_zone": "Eastern Time (US & Canada)",
+      "today": "2013-03-26",
+      "escalation_policies": [
+
+      ]
+    },
+    {
+      "id": "PT57OLG",
+      "name": "Secondary",
+      "time_zone": "Eastern Time (US & Canada)",
+      "today": "2013-03-26",
+      "escalation_policies": [
+
+      ]
+    }
+  ],
+  "limit": 100,
+  "offset": 0,
+  "total": 2
+}
