@@ -1,7 +1,5 @@
 import httpretty
 import json
-import pygerduty
-import pygerduty.v2
 import textwrap
 import pygerduty.events
 
