@@ -1,0 +1,32 @@
+{
+  "service_key": "e93facc04764012d7bfb002500d5d1a6",
+  "incident_key": "srv01/HTTP",
+  "event_type": "trigger",
+  "description": "FAILURE for production/HTTP on machine srv01.acme.com",
+  "client": "Sample Monitoring Service",
+  "client_url": "https://monitoring.service.com",
+  "details": {
+    "ping time": "1500ms",
+    "load avg": 0.75
+  },
+  "contexts": [
+    {
+      "type": "link",
+      "href": "http://acme.pagerduty.com"
+    },
+    {
+      "type": "link",
+      "href": "http://acme.pagerduty.com"
+    },
+    {
+      "text": "View the incident on PagerDuty",
+      "type": "image",
+      "src": "https://chart.googleapis.com/chart?chs=600x400&chd=t:6,2,9,5,2,5,7,4,8,2,1&cht=lc&chds=a&chxt=y&chm=D,0033FF,0,0,5,1"
+    },
+    {
+      "type": "image",
+      "src": "https://chart.googleapis.com/chart?chs=600x400&chd=t:6,2,9,5,2,5,7,4,8,2,1&cht=lc&chds=a&chxt=y&chm=D,0033FF,0,0,5,1",
+      "href": "https://google.com"
+    }
+  ]
+}

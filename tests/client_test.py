@@ -10,7 +10,7 @@ import pytest
 ###################
 
 @httpretty.activate
-def test_unknown_subdomain():
+def test_unknown_subdomain_v1():
     httpretty.register_uri(
         httpretty.GET, "https://contosso.pagerduty.com/api/v1/users/ABCDEFG",
         body='{"error":{"message":"Account Not Found","code":2007}}', status=404)

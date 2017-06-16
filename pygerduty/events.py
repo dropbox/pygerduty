@@ -51,7 +51,7 @@ class Events(object):
             "contexts": contexts,
         }
 
-        request = urllib.request.Request(PagerDuty.INTEGRATION_API_URL,
+        request = urllib.request.Request(INTEGRATION_API_URL,
                                          data=_json_dumper(data).encode('utf-8'),
                                          headers=headers)
 

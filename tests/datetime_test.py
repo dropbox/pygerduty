@@ -5,7 +5,6 @@ import httpretty
 import pygerduty
 import pygerduty.v2
 import pytest
-import textwrap
 import uuid
 
 ###################
@@ -13,7 +12,7 @@ import uuid
 ###################
 
 @httpretty.activate
-def test_loads_with_datetime():
+def test_loads_with_datetime_v1():
     body = open('tests/fixtures/incident_resp_v1.json').read()
     httpretty.register_uri(
         httpretty.GET, "https://acme.pagerduty.com/api/v1/incidents/PIJ90N7",
@@ -34,7 +33,7 @@ def test_loads_with_datetime():
 
 
 @httpretty.activate
-def test_loads_without_datetime():
+def test_loads_without_datetime_v1():
     body = open('tests/fixtures/incident_resp_v1.json').read()
     httpretty.register_uri(
         httpretty.GET, "https://acme.pagerduty.com/api/v1/incidents/PIJ90N7",
@@ -53,7 +52,7 @@ def test_loads_without_datetime():
     assert incident.pending_actions[1].at == "2014-01-01T10:00:00Z"
     assert incident.pending_actions[2].at == "2014-01-01T11:00:00Z"
 
-def test_datetime_encoder_decoder():
+def test_datetime_encoder_decoder_v1():
     obj = {
         "d": datetime.datetime(2014, 1, 1, 8, 0),
         "s": "string",

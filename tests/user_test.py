@@ -3,7 +3,6 @@ from __future__ import absolute_import
 import httpretty
 import pygerduty
 import pygerduty.v2
-import textwrap
 
 ###################
 # Version 1 Tests #
