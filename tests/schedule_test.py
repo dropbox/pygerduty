@@ -14,7 +14,7 @@ def test_get_schedule_v2():
     httpretty.register_uri(
         httpretty.GET, "https://api.pagerduty.com/schedules/PI7DH85",
         body=body, status=200)
-    p = pygerduty.v2.PagerDuty("contosso", "password")
+    p = pygerduty.v2.PagerDuty("password")
     schedule = p.schedules.show("PI7DH85")
 
     assert schedule.self_ == "https://api.pagerduty.com/schedules/PI7DH85"
@@ -27,9 +27,20 @@ def test_get_schedule_v2():
 def test_list_schedules_v2():
     body = open('tests/fixtures/schedule_list_v2.json').read()
     httpretty.register_uri(
-	    httpretty.GET, "https://api.pagerduty.com/schedules",
-	    body=body, status=200)
-    p = pygerduty.v2.PagerDuty("contosso", "password")
+	    httpretty.GET, "https://api.pagerduty.com/schedules", responses=[
+            httpretty.Response(body=body, status=200),
+            httpretty.Response(body=textwrap.dedent("""\
+                {
+                    "limit": 25,
+                    "more": false,
+                    "offset": 1,
+                    "schedules": [],
+                    "total": null
+                }
+            """), status=200),
+        ]
+     )
+    p = pygerduty.v2.PagerDuty("password")
     schedules = [s for s in p.schedules.list()]
 
     assert len(schedules) == 1

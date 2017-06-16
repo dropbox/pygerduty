@@ -57,7 +57,6 @@ class Collection(object):
 
         self.pagerduty = pagerduty
         self.base_container = base_container
-        self.more = False
 
     def create(self, **kwargs):
         path = "{0}".format(self.name)
@@ -114,7 +113,6 @@ class Collection(object):
             path += "/{0}".format(suffix_path)
 
         response = self.pagerduty.request("GET", path, query_params=kwargs)
-        self.more = response.get('more', False)
 
         return self._list_response(response)
 
@@ -139,22 +137,19 @@ class Collection(object):
 
                 if not this_paginated_result:
                     break
+
                 for item in this_paginated_result:
                     if item.id in seen_items:
                         continue
                     seen_items.add(item.id)
                     yield item
-                offset -= len(this_paginated_result)
+
+                offset += len(this_paginated_result)
                 if len(this_paginated_result) > limit:
                     # sometimes pagerduty decides to ignore your limit and
                     # just return everything. it seems to only do this when
                     # you're near the last page.
                     break
-
-                # If self.more = True, then continue the loop.
-                if not self.more or offset < limit:
-                    break
-
 
     def count(self, **kwargs):
         path = "{0}/count".format(self.name)
@@ -524,11 +519,10 @@ class LogEntry(Container):
 
 
 class PagerDuty(object):
-    def __init__(self, subdomain, api_token, timeout=10, page_size=25,
+    def __init__(self, api_token, timeout=10, page_size=25,
                  proxies=None, parse_datetime=False):
 
         self.api_token = api_token
-        self.subdomain = subdomain
         self._host = "api.pagerduty.com"
         self._api_base = "https://{0}/".format(self._host)
         self.timeout = timeout

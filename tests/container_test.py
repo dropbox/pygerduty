@@ -30,7 +30,7 @@ def test_to_json_list_convertion_v1():
 
 
 def test_to_json_v2():
-    p = pygerduty.v2.PagerDuty("testing", "password")
+    p = pygerduty.v2.PagerDuty("password")
     collection = pygerduty.v2.Collection(p)
 
     container1 = pygerduty.v2.Container(collection, name='test1')
@@ -40,7 +40,7 @@ def test_to_json_v2():
 
 
 def test_to_json_list_convertion_v2():
-    p = pygerduty.v2.PagerDuty("testing", "password")
+    p = pygerduty.v2.PagerDuty("password")
     collection = pygerduty.Collection(p)
 
     container = pygerduty.v2.Container(collection, handlers=['test1', 'test2'])

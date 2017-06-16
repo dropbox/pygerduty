@@ -14,7 +14,7 @@ def test_get_incident_v2():
     httpretty.register_uri(
         httpretty.GET, "https://api.pagerduty.com/incidents/PT4KHLK",
         body=body, status=200)
-    p = pygerduty.v2.PagerDuty("contosso", "password")
+    p = pygerduty.v2.PagerDuty("password")
     incident = p.incidents.show("PT4KHLK")
 
     assert incident.self_ == 'https://api.pagerduty.com/incidents/PT4KHLK'
@@ -27,9 +27,21 @@ def test_get_incident_v2():
 def test_list_incidents_v2():
     body = open('tests/fixtures/incident_list_v2.json').read()
     httpretty.register_uri(
-        httpretty.GET, "https://api.pagerduty.com/incidents",
-        body=body, status=200)
-    p = pygerduty.v2.PagerDuty("contosso", "password")
+        httpretty.GET, "https://api.pagerduty.com/incidents", responses=[
+            httpretty.Response(body=body, status=200),
+            httpretty.Response(body=textwrap.dedent("""\
+                {
+                    "limit": 25,
+                    "more": false,
+                    "offset": 1,
+                    "incidents": [],
+                    "total": null
+                }
+            """), status=200),
+        ],
+    )
+
+    p = pygerduty.v2.PagerDuty("password")
     incidents = [s for s in p.incidents.list()]
 
     assert len(incidents) == 1

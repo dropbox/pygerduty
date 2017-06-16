@@ -54,7 +54,7 @@ def test_get_user_v2():
         httpretty.GET, "https://api.pagerduty.com/users/PXPGF42",
         body=body, status=200)
 
-    p = pygerduty.v2.PagerDuty("contosso", "password")
+    p = pygerduty.v2.PagerDuty("password")
     user = p.users.show("PXPGF42")
 
     assert user.id == "PXPGF42"
@@ -73,7 +73,7 @@ def test_list_user_contact_methods_v2():
         httpretty.GET, "https://api.pagerduty.com/users/PXPGF42/contact_methods",
         body=contact_body, status=200)
 
-    p = pygerduty.v2.PagerDuty("contosso", "password")
+    p = pygerduty.v2.PagerDuty("password")
 
     user = p.users.show("PXPGF42")
 
@@ -96,7 +96,7 @@ def test_user_notification_rules_v2():
         httpretty.GET, "https://api.pagerduty.com/users/PXPGF42/notification_rules",
         body=notification_body, status=200)
 
-    p = pygerduty.v2.PagerDuty("contosso", "password")
+    p = pygerduty.v2.PagerDuty("password")
     user = p.users.show("PXPGF42")
 
     notification_rules = [n for n in user.notification_rules.list()]

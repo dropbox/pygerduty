@@ -80,7 +80,7 @@ def test_loads_with_datetime_v2():
         body=body, status=200
     )
 
-    pd = pygerduty.v2.PagerDuty("testing", "password", parse_datetime=True)
+    pd = pygerduty.v2.PagerDuty("password", parse_datetime=True)
     incident = pd.incidents.show("PT4KHLK")
 
     assert incident.last_status_change_at == datetime.datetime(2015, 10, 6, 21, 38, 23)
@@ -100,7 +100,7 @@ def test_loads_without_datetime_v2():
         body=body, status=200
     )
 
-    pd = pygerduty.v2.PagerDuty("acme", "password", parse_datetime=False)
+    pd = pygerduty.v2.PagerDuty("password", parse_datetime=False)
     incident = pd.incidents.show("PT4KHLK")
 
     assert incident.last_status_change_at == "2015-10-06T21:38:23Z"
