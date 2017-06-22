@@ -51,8 +51,7 @@ version 1 library remains in the file called `__init__.py` inside of the pygerdu
 Also in that directory you will see four other files:
 
 - `v2.py` — This file contains all updated logic compatible with v2 of the API.
-- `events.py` — PygerDuty also provides an Events API which is separate from the REST API that has had the recent update.
-Since the logic is mostly disjoint, we have created a new module for logic related to the Events API.
+- `events.py` — PygerDuty also provides an Events API which is separate from the REST API that has had the recent update. Since the logic is mostly disjoint, we have created a new module for logic related to the Events API.
 - `common.py` — This file contains all common functions used by both `v2.py` and `events.py`.
 - `version.py` — Contains version info.
 
