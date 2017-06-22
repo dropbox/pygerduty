@@ -6,7 +6,8 @@
 Pygerduty
 =========
 
-Python Library for PagerDuty's v1 REST API.
+Python Library for PagerDuty's REST API and Events API. This library was originally written to support v1 and
+is currently being updated to be compatible with v2 of the API. See "Migrating from v1 to v2" for more details.
 
 This library is currently evolving and backwards compatibility cannot always be guaranteed at this time.
 
@@ -42,15 +43,40 @@ Top level resources will be accessible via the PagerDuty object and nested
 resources available on containers returned from their parent resource.
 
 
+Migrating from v1 to v2
+=======================
+
+In order to allow for a smooth transition between versions 1 and 2 of the library,
+version 1 library remains in the file called `__init__.py` inside of the pygerduty directory.
+Also in that directory you will see four other files:
+
+- `v2.py` — This file contains all updated logic compatible with v2 of the API.
+- `events.py` — PygerDuty also provides an Events API which is separate from the REST API that has had the recent update.
+Since the logic is mostly disjoint, we have created a new module for logic related to the Events API.
+- `common.py` — This file contains all common functions used by both `v2.py` and `events.py`.
+- `version.py` — Contains version info.
+
+See the examples below to see how this affects how you will instantiate a client in v2.
+
+
 Examples
 ========
 
 Instantiating a client:
 
+Version 1:
+
 ::
 
     import pygerduty
     pager = pygerduty.PagerDuty("foobar", "SOMEAPIKEY123456")
+
+Version 2:
+
+::
+
+    import pygerduty
+    pager = pygerduty.v2.PagerDuty("SOMEAPIKEY123456")
 
 Listing a resource:
 

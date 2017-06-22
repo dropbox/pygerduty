@@ -71,7 +71,18 @@ class Collection(object):
         if "requester_id" in kwargs:
             extra_headers["From"] = kwargs.pop("requester_id")
 
-        data[self.sname] = kwargs
+        new_kwargs = {}
+
+        for kwarg_key, kwarg_value in kwargs.iteritems():
+            if kwarg_key.endswith('_id'):
+                new_key = kwarg_key[:-3]
+                new_kwargs[new_key] = {
+                    'id': kwarg_value,
+                    'type': new_key
+                }
+            else:
+                new_kwargs[kwarg_key] = kwarg_value
+        data[self.sname] = new_kwargs
 
         response = self.pagerduty.request("POST", path, data=_json_dumper(data), extra_headers=extra_headers)
         return self.container(self, **response.get(self.sname, {}))
@@ -268,6 +279,9 @@ class Schedules(Collection):
 
 
 class ScheduleUsers(Collection):
+	"""This class exists because Users returned from a Schedule query are not
+	paginated, whereas responses for Users class are. This causes a pagination
+	bug if removed."""
     name = 'users'
     paginated = False
 
