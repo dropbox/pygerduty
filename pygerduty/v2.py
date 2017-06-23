@@ -256,8 +256,7 @@ class Entries(Collection):
 
 
 class EscalationPolicies(Collection):
-    self.type = 'escalation_policy'
-
+    pass
 
 class EscalationRules(Collection):
     paginated = False
