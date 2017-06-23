@@ -57,6 +57,7 @@ class Collection(object):
 
         self.pagerduty = pagerduty
         self.base_container = base_container
+        self.type = None
 
     def create(self, **kwargs):
         path = "{0}".format(self.name)
@@ -255,7 +256,7 @@ class Entries(Collection):
 
 
 class EscalationPolicies(Collection):
-    pass
+    self.type = 'escalation_policy'
 
 
 class EscalationRules(Collection):
@@ -279,9 +280,9 @@ class Schedules(Collection):
 
 
 class ScheduleUsers(Collection):
-	"""This class exists because Users returned from a Schedule query are not
-	paginated, whereas responses for Users class are. This causes a pagination
-	bug if removed."""
+    """This class exists because Users returned from a Schedule query are not
+    paginated, whereas responses for Users class are. This causes a pagination
+    bug if removed."""
     name = 'users'
     paginated = False
 
