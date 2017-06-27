@@ -57,7 +57,6 @@ class Collection(object):
 
         self.pagerduty = pagerduty
         self.base_container = base_container
-        self.type = None
 
     def create(self, **kwargs):
         path = "{0}".format(self.name)
@@ -77,6 +76,12 @@ class Collection(object):
         for kwarg_key, kwarg_value in kwargs.iteritems():
             if kwarg_key.endswith('_id'):
                 new_key = kwarg_key[:-3]
+                new_kwargs[new_key] = {
+                    'id': kwarg_value,
+                    'type': new_key
+                }
+            elif kwarg_key.endswith('_ids'):
+                new_key = %s + '_reference' % kwarg_key[:-3]
                 new_kwargs[new_key] = {
                     'id': kwarg_value,
                     'type': new_key
