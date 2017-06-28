@@ -74,7 +74,7 @@ Version 2:
 
 ::
 
-    import pygerduty
+    import pygerduty.v2
     pager = pygerduty.v2.PagerDuty("SOMEAPIKEY123456")
 
 Listing a resource:
