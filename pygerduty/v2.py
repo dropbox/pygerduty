@@ -75,9 +75,9 @@ class Collection(object):
 
         for kwarg_key, kwarg_value in kwargs.iteritems():
             if kwarg_key.endswith('_id'):
-                new_kwargs = id_to_obj(kwarg_key, kwarg_value)
+                new_kwargs = Collection.id_to_obj(kwarg_key, kwarg_value)
             elif kwarg_key.endswith('_ids'):
-                new_kwargs = ids_to_objs(kwarg_key, kwarg_value)
+                new_kwargs = Collection.ids_to_objs(kwarg_key, kwarg_value)
             else:
                 new_kwargs[kwarg_key] = kwarg_value
         data[self.sname] = new_kwargs
