@@ -82,10 +82,13 @@ class Collection(object):
                 }
             elif kwarg_key.endswith('_ids'):
                 new_key = '{0}_reference'.format(kwarg_key[:-3])
-                new_kwargs[new_key] = {
-                    'id': kwarg_value,
-                    'type': new_key
-                }
+                new_kwargs = []
+                for value in kwarg_value:
+                    new_kwarg = {
+                        'id': value,
+                        'type': new_key
+                    }
+                    new_kwargs.append(new_kwarg)
             else:
                 new_kwargs[kwarg_key] = kwarg_value
         data[self.sname] = new_kwargs
