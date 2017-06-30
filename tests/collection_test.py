@@ -13,9 +13,9 @@ def test_id_to_obj():
     }
     new_key = pygerduty.v2.Collection.cut_suffix("escalation_policy_id")
     assert new_key == 'escalation_policy'
-    new_kwarg = pygerduty.v2.Collection.id_to_obj(new_key, kwargs["escalation_policy_id"])
 
-    assert new_kwarg == {
+    new_kwargs = pygerduty.v2.Collection.id_to_obj(new_key, kwargs["escalation_policy_id"])
+    assert new_kwargs == {
         "id": "PIJ90N7",
         "type": "escalation_policy"
     }
@@ -31,8 +31,8 @@ def test_ids_to_objs():
     }
     new_key = pygerduty.v2.Collection.cut_suffix("service_ids")
     assert new_key == "service"
-    new_kwargs = pygerduty.v2.Collection.ids_to_objs(new_key, kwargs["service_ids"])
 
+    new_kwargs = pygerduty.v2.Collection.ids_to_objs(new_key, kwargs["service_ids"])
     assert new_kwargs == [
         {
             "id": "PF9KMXH",

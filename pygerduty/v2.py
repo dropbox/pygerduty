@@ -70,7 +70,7 @@ class Collection(object):
         extra_headers = {}
         if "requester_id" in kwargs:
             extra_headers["From"] = kwargs.pop("requester_id")
-        new_kwargs = process_kwargs(kwargs)
+        new_kwargs = Collection.process_kwargs(kwargs)
         data[self.sname] = new_kwargs
         response = self.pagerduty.request("POST", path, data=_json_dumper(data), extra_headers=extra_headers)
         return self.container(self, **response.get(self.sname, {}))
