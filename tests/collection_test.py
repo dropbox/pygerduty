@@ -8,36 +8,69 @@ import pygerduty.v2
 
 def test_id_to_obj():
 
-	kwarg = {
-		"escalation_policy_id": "PIJ90N7",
-	}
+    kwargs = {
+        "escalation_policy_id": "PIJ90N7",
+    }
+    new_key = pygerduty.v2.Collection.cut_suffix("escalation_policy_id")
+    assert new_key == 'escalation_policy'
+    new_kwarg = pygerduty.v2.Collection.id_to_obj(new_key, kwargs["escalation_policy_id"])
 
-	new_kwarg = pygerduty.v2.Collection.id_to_obj("escalation_policy_id", kwarg["escalation_policy_id"])
-
-	assert new_kwarg == {
-		"id": "PIJ90N7",
-		"type": "escalation_policy"
-	}
+    assert new_kwarg == {
+        "id": "PIJ90N7",
+        "type": "escalation_policy"
+    }
 
 
 def test_ids_to_objs():
 
-    kwarg = {
+    kwargs = {
         "service_ids": [
             "PF9KMXH",
             "PIJ90N7"
         ]
     }
-
-    new_kwargs = pygerduty.v2.Collection.ids_to_objs("service_ids", kwarg["service_ids"])
+    new_key = pygerduty.v2.Collection.cut_suffix("service_ids")
+    assert new_key == "service"
+    new_kwargs = pygerduty.v2.Collection.ids_to_objs(new_key, kwargs["service_ids"])
 
     assert new_kwargs == [
         {
-    	    "id": "PF9KMXH",
-    	    "type": "services"
+            "id": "PF9KMXH",
+            "type": "service"
         },
         {
             "id": "PIJ90N7",
-            "type": "services"
+            "type": "service"
         }
     ]
+
+
+def test_process_kwargs():
+
+    kwargs_1 = {
+        "start_time": "2012-06-16T13:00:00-04:00Z",
+        "end_time": "2012-06-16T14:00:00-04:00Z",
+        "description": "Description goes here",
+        "service_ids": [
+            "PF9KMXH"
+        ]
+    }
+
+    new_kwargs = pygerduty.v2.Collection.process_kwargs(kwargs_1)
+
+    print new_kwargs
+
+    assert new_kwargs == {
+        "start_time": "2012-06-16T13:00:00-04:00Z",
+        "end_time": "2012-06-16T14:00:00-04:00Z",
+        "description": "Description goes here",
+        "services": [
+            {
+                "id": "PF9KMXH",
+                "type": "service"
+            }
+        ]
+    }
+
+
+
