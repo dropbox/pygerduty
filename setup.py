@@ -2,6 +2,7 @@
 
 from setuptools import setup
 from setuptools.command.test import test as TestCommand
+import sys
 
 
 class PyTest(TestCommand):
@@ -14,7 +15,7 @@ class PyTest(TestCommand):
     def run_tests(self):
         #import here, cause outside the eggs aren't loaded
         import pytest
-        pytest.main(self.test_args)
+        sys.exit(pytest.main(self.test_args))
 
 
 with open('pygerduty/version.py') as version_file:

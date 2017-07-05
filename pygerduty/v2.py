@@ -2,7 +2,7 @@ import copy
 import re
 import six
 from six.moves import urllib
-from common import (
+from .common import (
     Requester,
     _lower,
     _upper,
@@ -78,7 +78,7 @@ class Collection(object):
     @staticmethod
     def process_kwargs(kwargs):
         new_kwargs = {}
-        for kwarg_key, kwarg_value in kwargs.iteritems():
+        for kwarg_key, kwarg_value in kwargs.items():
             if kwarg_key.endswith('_id'):
                 new_key = Collection.cut_suffix(kwarg_key)
                 new_kwargs[new_key] = Collection.id_to_obj(new_key, kwarg_value)
