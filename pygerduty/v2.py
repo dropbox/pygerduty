@@ -70,11 +70,48 @@ class Collection(object):
         extra_headers = {}
         if "requester_id" in kwargs:
             extra_headers["From"] = kwargs.pop("requester_id")
-
-        data[self.sname] = kwargs
-
+        new_kwargs = Collection.process_kwargs(kwargs)
+        data[self.sname] = new_kwargs
         response = self.pagerduty.request("POST", path, data=_json_dumper(data), extra_headers=extra_headers)
         return self.container(self, **response.get(self.sname, {}))
+
+    @staticmethod
+    def process_kwargs(kwargs):
+        new_kwargs = {}
+        for kwarg_key, kwarg_value in kwargs.iteritems():
+            if kwarg_key.endswith('_id'):
+                new_key = Collection.cut_suffix(kwarg_key)
+                new_kwargs[new_key] = Collection.id_to_obj(new_key, kwarg_value)
+            elif kwarg_key.endswith('_ids'):
+                new_key = Collection.cut_suffix(kwarg_key)
+                new_kwargs[_pluralize(new_key)] = Collection.ids_to_objs(new_key, kwarg_value)
+            else:
+                new_kwargs[kwarg_key] = kwarg_value
+        return new_kwargs
+
+    @staticmethod
+    def cut_suffix(key):
+        if key.endswith('_id'):
+            return key[:-3]
+        elif key.endswith('_ids'):
+            return key[:-4]
+        else:
+            return key
+
+    @staticmethod
+    def id_to_obj(key, value):
+        return {
+            "id": value,
+            "type": key
+        }
+
+    @staticmethod
+    def ids_to_objs(key, value):
+        new_kwargs = []
+        for v in value:
+            new_kwarg = Collection.id_to_obj(key, v)
+            new_kwargs.append(new_kwarg)
+        return new_kwargs
 
     def update(self, entity_id, **kwargs):
         path = "{0}/{1}".format(self.name, entity_id)
@@ -268,6 +305,9 @@ class Schedules(Collection):
 
 
 class ScheduleUsers(Collection):
+    """This class exists because Users returned from a Schedule query are not
+    paginated, whereas responses for Users class are. This causes a pagination
+    bug if removed."""
     name = 'users'
     paginated = False
 
