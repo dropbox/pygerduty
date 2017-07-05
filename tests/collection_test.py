@@ -45,20 +45,41 @@ def test_ids_to_objs():
     ]
 
 
-def test_process_kwargs():
+def test_process_kwargs_id():
 
-    kwargs_1 = {
+    kwargs = {
+        "name": "default-email",
+        "description": "default email service",
+        "escalation_policy_id": "PIJ90N7",
+        "service_key": "default-email"
+    }
+
+    new_kwargs = pygerduty.v2.Collection.process_kwargs(kwargs)
+
+    assert new_kwargs == {
+        "name": "default-email",
+        "description": "default email service",
+        "escalation_policy": {
+            "id": "PIJ90N7",
+            "type": "escalation_policy"
+        },
+        "service_key": "default-email"
+    }
+
+
+def test_process_kwargs_ids():
+
+    kwargs = {
         "start_time": "2012-06-16T13:00:00-04:00Z",
         "end_time": "2012-06-16T14:00:00-04:00Z",
         "description": "Description goes here",
         "service_ids": [
-            "PF9KMXH"
+            "PF9KMXH",
+            "P45HJSK"
         ]
     }
 
-    new_kwargs = pygerduty.v2.Collection.process_kwargs(kwargs_1)
-
-    print new_kwargs
+    new_kwargs = pygerduty.v2.Collection.process_kwargs(kwargs)
 
     assert new_kwargs == {
         "start_time": "2012-06-16T13:00:00-04:00Z",
@@ -67,6 +88,10 @@ def test_process_kwargs():
         "services": [
             {
                 "id": "PF9KMXH",
+                "type": "service"
+            },
+            {
+                "id": "P45HJSK",
                 "type": "service"
             }
         ]
