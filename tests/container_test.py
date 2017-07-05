@@ -45,6 +45,4 @@ def test_to_json_list_convertion_v2():
 
     container = pygerduty.v2.Container(collection, handlers=['test1', 'test2'])
 
-    print container.to_json()
-
     assert {'handlers': ['test1', 'test2']} == container.to_json()

@@ -2,7 +2,7 @@
 # Pagerduty Events API.
 
 from six.moves import urllib
-from common import (
+from .common import (
     _json_dumper,
     Error,
 )
