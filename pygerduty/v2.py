@@ -525,7 +525,6 @@ class Schedule(Container):
         Container.__init__(self, *args, **kwargs)
         self.overrides = Overrides(self.pagerduty, self)
         self.users = ScheduleUsers(self.pagerduty, self)
-        self.entries = Entries(self.pagerduty, self)
 
 
 class ScheduleUser(Container):
@@ -555,6 +554,14 @@ class Entry(Container):
 
 
 class LogEntry(Container):
+    pass
+
+
+class FinalSchedule(Container):
+    pass
+
+
+class RenderSchedule(Container):
     pass
 
 

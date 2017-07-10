@@ -22,9 +22,9 @@ class IntegrationAPIError(Error):
 
 
 class Events(object):
-    def __init__(self, service_key, requester):
+    def __init__(self, service_key):
         self.service_key = service_key
-        self.requester = requester
+        self.requester = pygerduty.common.Requester()
 
     def create_event(self, description, event_type,
                      details, incident_key, **kwargs):
