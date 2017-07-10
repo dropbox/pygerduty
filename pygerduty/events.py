@@ -5,6 +5,7 @@ from six.moves import urllib
 from .common import (
     _json_dumper,
     Error,
+    Requester,
 )
 
 INTEGRATION_API_URL =\
@@ -22,9 +23,12 @@ class IntegrationAPIError(Error):
 
 
 class Events(object):
-    def __init__(self, service_key):
+    def __init__(self, service_key, requester):
         self.service_key = service_key
-        self.requester = pygerduty.common.Requester()
+        if requester is None:
+            self.requester = Requester()
+        else:
+            self.requester = requester
 
     def create_event(self, description, event_type,
                      details, incident_key, **kwargs):
