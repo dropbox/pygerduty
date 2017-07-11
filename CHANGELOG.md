@@ -8,6 +8,14 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
 ### Added
 - This CHANGELOG file.
+- `FinalSchedule`, `RenderSchedule` containers added to provide more readable responses.
+
+## Removed
+- `Entries` collection and `entries` attribute from `Schedule` from v2 module as they're not supported in the v2 API.
+
+## Changed
+- `Events` class now has a default `Requester` to improve ergonomics.
+
 
 ## [0.36.0] - 2017-07-05
 
