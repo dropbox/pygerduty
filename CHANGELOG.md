@@ -6,6 +6,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+
+## [0.36.1] - 2017-07-11
+
 ### Added
 - This CHANGELOG file.
 - `FinalSchedule`, `RenderSchedule` containers added to provide more readable responses.
