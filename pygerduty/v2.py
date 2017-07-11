@@ -276,10 +276,6 @@ class Overrides(Collection):
     paginated = False
 
 
-class Entries(Collection):
-    paginated = False
-
-
 class EscalationPolicies(Collection):
     pass
 
