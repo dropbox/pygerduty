@@ -64,8 +64,9 @@ def test_verb_action_v2():
         httpretty.PUT, "https://api.pagerduty.com/incidents/PT4KHLK",
         body=body2, status=200)
     p = pygerduty.v2.PagerDuty("password")
-    incident = p.incidents.show('PT4KHLK')
-    incident.acknowledge(requester_id='PXPGF42')
-    incident = p.incidents.show('PT4KHLK')
+    incident1 = p.incidents.show('PT4KHLK')
+    incident1.acknowledge(requester_id='PXPGF42')
+    incident2 = p.incidents.show('PT4KHLK')
 
-    assert incident.acknowledgements[0].acknowledger.id == 'PXPGF42'
+    assert incident1.acknowledgements == []
+    assert incident2.acknowledgements[0].acknowledger.id == 'PXPGF42'
