@@ -1,0 +1,50 @@
+{
+  "incident": {
+    "id": "PT4KHLK",
+    "type": "incident",
+    "summary": "[#1234] The server is on fire.",
+    "self": "https://api.pagerduty.com/incidents/PT4KHLK",
+    "html_url": "https://subdomain.pagerduty.com/incidents/PT4KHLK",
+    "incident_number": 1234,
+    "created_at": "2015-10-06T21:30:42Z",
+    "status": "resolved",
+    "title": "The server is on fire.",
+    "resolve_reason": null,
+    "alert_counts": {
+      "all": 2,
+      "triggered": 0,
+      "resolved": 2
+    },
+    "pending_actions": [
+      {
+        "type": "unacknowledge",
+        "at": "2015-11-10T01:02:52Z"
+      },
+      {
+        "type": "resolve",
+        "at": "2015-11-10T04:31:52Z"
+      }
+    ],
+    "incident_key": "baf7cf21b1da41b4b0221008339ff357",
+    "service": {
+      "id": "PIJ90N7",
+      "type": "generic_email_reference",
+      "summary": "My Mail Service",
+      "self": "https://api.pagerduty.com/services/PIJ90N7",
+      "html_url": "https://subdomain.pagerduty.com/services/PIJ90N7"
+    },
+    "priority": {
+      "id": "P53ZZH5",
+      "type": "priority_reference",
+      "summary": "P2",
+      "self": "https://api.pagerduty.com/priorities/P53ZZH5",
+      "html_url": null
+    },
+    "assignments": [
+      {
+        "at": "2015-11-10T00:31:52Z",
+        "assignee": {
+          "id": "PXPGF42",
+          "type": "user_reference",
+          "summary": "Earline Greenholt",
+          "self": "https://api.pagerduty.com/users/PXPGF42",
