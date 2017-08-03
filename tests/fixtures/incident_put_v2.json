@@ -64,18 +64,6 @@
         }
       }
     ],
-    "acknowledgements": [
-      {
-        "at": "2015-11-10T00:32:52Z",
-        "acknowledger": {
-          "id": "PXPGF42",
-          "type": "user_reference",
-          "summary": "Earline Greenholt",
-          "self": "https://api.pagerduty.com/users/PXPGF42",
-          "html_url": "https://subdomain.pagerduty.com/users/PXPGF42"
-        }
-      }
-    ],
     "last_status_change_at": "2015-10-06T21:38:23Z",
     "last_status_change_by": {
       "id": "PXPGF42",
