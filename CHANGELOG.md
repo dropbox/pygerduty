@@ -7,6 +7,14 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 ## [Unreleased]
 
 
+## [0.36.2] - 2017-08-07
+
+### Fixed
+* `incidents/{id}/{verb}` has been deprecated with v2 of the PagerDuty API. Fixed.
+
+### Added
+* Tests for the new incidents behavior.
+
 ## [0.36.1] - 2017-07-11
 
 ### Added
