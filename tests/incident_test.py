@@ -48,3 +48,25 @@ def test_list_incidents_v2():
     assert incidents[0].created_at == '2015-10-06T21:30:42Z'
     assert incidents[0].self_ == 'https://api.pagerduty.com/incidents/PT4KHLK'
     assert len(incidents[0].pending_actions) == 2
+
+
+@httpretty.activate
+def test_verb_action_v2():
+    body1 = open('tests/fixtures/incident_get_v2.json').read()
+    body2 = open('tests/fixtures/incident_put_v2.json').read()
+    httpretty.register_uri(
+        httpretty.GET, "https://api.pagerduty.com/incidents/PT4KHLK", responses=[
+            httpretty.Response(body=body1, status=200),
+            httpretty.Response(body=body2, status=200),
+        ],
+    )
+    httpretty.register_uri(
+        httpretty.PUT, "https://api.pagerduty.com/incidents/PT4KHLK",
+        body=body2, status=200)
+    p = pygerduty.v2.PagerDuty("password")
+    incident1 = p.incidents.show('PT4KHLK')
+    incident1.acknowledge(requester_id='PXPGF42')
+    incident2 = p.incidents.show('PT4KHLK')
+
+    assert incident1.acknowledgements == []
+    assert incident2.acknowledgements[0].acknowledger.id == 'PXPGF42'

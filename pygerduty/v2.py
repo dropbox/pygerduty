@@ -430,9 +430,15 @@ class Incident(Container):
         self.notes = Notes(self.pagerduty, self)
 
     def _do_action(self, verb, requester_id, **kwargs):
-        path = '{0}/{1}/{2}'.format(self.collection.name, self.id, verb)
+        path = '{0}/{1}'.format(self.collection.name, self.id)
+        data = {
+            "incident": {
+                "type": "incident_reference",
+                "status": verb
+            }
+        }
         extra_headers = {'From': requester_id}
-        return self.pagerduty.request('PUT', path, extra_headers=extra_headers)
+        return self.pagerduty.request('PUT', path, data=_json_dumper(data), extra_headers=extra_headers)
 
     def has_subject(self):
         return hasattr(self.trigger_summary_data, 'subject')
