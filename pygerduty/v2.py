@@ -435,7 +435,8 @@ class Incident(Container):
             "incident": {
                 "type": "incident_reference",
                 "status": verb
-            }
+            },
+            "requester_id": requester_id
         }
         extra_headers = {'From': requester_id}
         return self.pagerduty.request('PUT', path, data=_json_dumper(data), extra_headers=extra_headers)
