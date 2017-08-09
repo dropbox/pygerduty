@@ -429,34 +429,37 @@ class Incident(Container):
         self.log_entries = LogEntries(self.pagerduty, self)
         self.notes = Notes(self.pagerduty, self)
 
-    def _do_action(self, verb, requester_id, **kwargs):
+    def _do_action(self, verb, requester, **kwargs):
         path = '{0}/{1}'.format(self.collection.name, self.id)
         data = {
             "incident": {
                 "type": "incident_reference",
                 "status": verb
-            },
-            "requester_id": requester_id
+            }
         }
-        extra_headers = {'From': requester_id}
+        extra_headers = {'From': requester}
         return self.pagerduty.request('PUT', path, data=_json_dumper(data), extra_headers=extra_headers)
 
     def has_subject(self):
         return hasattr(self.trigger_summary_data, 'subject')
 
-    def resolve(self, requester_id):
-        self._do_action('resolve', requester_id=requester_id)
+    def resolve(self, requester):
+        # Takes email address of the requester.
+        self._do_action('resolved', requester=requester)
 
-    def acknowledge(self, requester_id):
-        self._do_action('acknowledge', requester_id=requester_id)
+    def acknowledge(self, requester):
+        # Takes email address of the requester.
+        self._do_action('acknowledged', requester_id=requester)
 
     def snooze(self, requester_id, duration):
+    # TODO: FIX THIS, GOES TO incidents/id/snooze, cant use _do_action as is.
         self._do_action('snooze', requester_id=requester_id, duration=duration)
 
     def get_trigger_log_entry(self, **kwargs):
         match = TRIGGER_LOG_ENTRY_RE.search(self.trigger_details_html_url)
         return self.log_entries.show(match.group('log_entry_id'), **kwargs)
 
+    # TODO: FIX THIS -- NO LONGER CAN USE _do_action
     def reassign(self, user_ids, requester_id):
         """Reassign this incident to a user or list of users
 
