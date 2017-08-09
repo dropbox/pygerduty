@@ -452,15 +452,15 @@ class Incident(Container):
         self._do_action('acknowledged', requester=requester)
 
     def snooze(self, requester_id, duration):
-    # TODO: FIX THIS, GOES TO incidents/id/snooze, cant use _do_action as is.
+        # TODO: FIX THIS, GOES TO incidents/id/snooze, cant use _do_action as is.
         self._do_action('snooze', requester=requester_id, duration=duration)
 
     def get_trigger_log_entry(self, **kwargs):
         match = TRIGGER_LOG_ENTRY_RE.search(self.trigger_details_html_url)
         return self.log_entries.show(match.group('log_entry_id'), **kwargs)
 
-    # TODO: FIX THIS -- NO LONGER CAN USE _do_action
     def reassign(self, user_ids, requester_id):
+        # TODO: FIX THIS -- NO LONGER CAN USE _do_action
         """Reassign this incident to a user or list of users
 
         :param user_ids: A non-empty list of user ids
