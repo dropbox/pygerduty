@@ -449,11 +449,11 @@ class Incident(Container):
 
     def acknowledge(self, requester):
         # Takes email address of the requester.
-        self._do_action('acknowledged', requester_id=requester)
+        self._do_action('acknowledged', requester=requester)
 
     def snooze(self, requester_id, duration):
     # TODO: FIX THIS, GOES TO incidents/id/snooze, cant use _do_action as is.
-        self._do_action('snooze', requester_id=requester_id, duration=duration)
+        self._do_action('snooze', requester=requester_id, duration=duration)
 
     def get_trigger_log_entry(self, **kwargs):
         match = TRIGGER_LOG_ENTRY_RE.search(self.trigger_details_html_url)
@@ -467,7 +467,7 @@ class Incident(Container):
         """
         if not user_ids:
             raise Error('Must pass at least one user id')
-        self._do_action('reassign', requester_id=requester_id, assigned_to_user=','.join(user_ids))
+        self._do_action('reassign', requester=requester_id, assigned_to_user=','.join(user_ids))
 
 
 class Note(Container):
