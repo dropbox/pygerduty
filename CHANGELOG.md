@@ -7,13 +7,21 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 ## [Unreleased]
 
 
+## [0.36.3] - 2017-08-10
+
+### Fixed
+- Bug with Incident.ack/resolve. The should now work.
+
+### Changed
+- Renamed requestor_id to requestor to make it more clear you pass an e-mail now instead of user id on various Incident methods
+
 ## [0.36.2] - 2017-08-07
 
 ### Fixed
-* `incidents/{id}/{verb}` has been deprecated with v2 of the PagerDuty API. Fixed.
+- `incidents/{id}/{verb}` has been deprecated with v2 of the PagerDuty API. Fixed.
 
 ### Added
-* Tests for the new incidents behavior.
+- Tests for the new incidents behavior.
 
 ## [0.36.1] - 2017-07-11
 
