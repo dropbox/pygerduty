@@ -469,7 +469,6 @@ class Incident(Container):
         """
         path = '{0}'.format(self.collection.name)
         assignments = []
-
         if not user_ids:
             raise Error('Must pass at least one user id')
         for user_id in user_ids:
@@ -480,7 +479,6 @@ class Incident(Container):
                 }
             }
             assignments.append(ref)
-
         data = {
             "incidents": [
               {

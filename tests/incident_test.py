@@ -100,21 +100,23 @@ def test_snooze_v2():
 
 @httpretty.activate
 def test_reassign_v2():
-    body1 = open('tests/fixtures/incident_get_v2.json').read()
-    body2 = open('tests/fixtures/incident_reassign.json').read()
+    body1 = open('tests/fixtures/incident_preassign.json').read()
+    body2 = open('tests/fixtures/incident_postassign.json').read()
     httpretty.register_uri(
         httpretty.GET, "https://api.pagerduty.com/incidents/PT4KHLK", responses=[
             httpretty.Response(body=body1, status=200),
             httpretty.Response(body=body2, status=200),
         ],
     )
+    body3 = open('tests/fixtures/incident_reassign.json').read()
     httpretty.register_uri(
         httpretty.PUT, 'https://api.pagerduty.com/incidents',
-        body=body2, status=200)
+        body=body3, status=200)
 
     p = pygerduty.v2.PagerDuty("password")
     incident1 = p.incidents.show('PT4KHLK')
     incident1.reassign(user_ids=['PXPGF42', 'PG23GSK'], requester='test@dropbox.com')
     incident2 = p.incidents.show('PT4KHLK')
 
-    assert len(incident2.incidents[0].assignments) == 2
+    assert len(incident1.assignments) == 0
+    assert len(incident2.assignments) == 2
