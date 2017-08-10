@@ -444,15 +444,21 @@ class Incident(Container):
         return hasattr(self.trigger_summary_data, 'subject')
 
     def resolve(self, requester):
-        # Takes email address of the requester.
+        """Resolve this incident.
+        :param requester: The email address of the individual acknowledging.
+        """
         self._do_action('resolved', requester=requester)
 
     def acknowledge(self, requester):
-        # Takes email address of the requester.
+        """Acknowledge this incident.
+        :param requester: The email address of the individual acknowledging.
+        """
         self._do_action('acknowledged', requester=requester)
 
     def snooze(self, requester, duration):
-        # Takes email address of the requester.
+        """Snooze incident.
+        :param requester: The email address of the individual requesting snooze.
+        """
         path = '{0}/{1}/{2}'.format(self.collection.name, self.id, 'snooze')
         data = {"duration": duration}
         extra_headers = {"From": requester}
@@ -466,6 +472,7 @@ class Incident(Container):
         """Reassign this incident to a user or list of users
 
         :param user_ids: A non-empty list of user ids
+        :param requester: The email address of individual requesting reassign
         """
         path = '{0}'.format(self.collection.name)
         assignments = []
