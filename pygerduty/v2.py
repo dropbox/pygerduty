@@ -488,15 +488,16 @@ class Incident(Container):
             assignments.append(ref)
         data = {
             "incidents": [
-              {
-                "id": self.id,
-                "type": "incident_reference",
-                "assignments": assignments
-              }
+                {
+                    "id": self.id,
+                    "type": "incident_reference",
+                    "assignments": assignments
+                }
             ]
         }
         extra_headers = {"From": requester}
         return self.pagerduty.request('PUT', path, data=_json_dumper(data), extra_headers=extra_headers)
+
 
 class Note(Container):
     pass
