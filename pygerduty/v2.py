@@ -440,9 +440,6 @@ class Incident(Container):
         extra_headers = {'From': requester}
         return self.pagerduty.request('PUT', path, data=_json_dumper(data), extra_headers=extra_headers)
 
-    def has_subject(self):
-        return hasattr(self.trigger_summary_data, 'subject')
-
     def resolve(self, requester):
         """Resolve this incident.
         :param requester: The email address of the individual acknowledging.
