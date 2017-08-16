@@ -7,7 +7,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 ## [Unreleased]
 ### Fixed
 * `incidents/{id}/snooze` was not deprecated and requires old logic from `_do_action`. Fixed.
-
+* `trigger_summary_data` attribute was removed from incident response, removed `has_subject` function which referenced this.
 ### Added
 * `incidents/reassign` is a new endpoint, added logic for this.
 * Tests for the new incidents behavior.
@@ -15,10 +15,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 ## [0.36.3] - 2017-08-10
 
 ### Fixed
-- Bug with Incident.ack/resolve. The should now work.
+- Bug with Incident.ack/resolve. This should now work.
 
 ### Changed
-- Renamed requestor_id to requestor to make it more clear you pass an e-mail now instead of user id on various Incident methods
+- Renamed requester_id to requester to make it more clear you pass an e-mail now instead of user id on various Incident methods.
 
 ## [0.36.2] - 2017-08-07
 
