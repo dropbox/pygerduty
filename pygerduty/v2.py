@@ -119,8 +119,6 @@ class Collection(object):
             if k not in kwargs:
                 kwargs[k] = v
         return kwargs
-                kwargs[k] = v
-        return kwargs
 
     def update(self, entity_id, **kwargs):
         path = "{0}/{1}".format(self.name, entity_id)
