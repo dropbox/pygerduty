@@ -48,6 +48,7 @@ class NotFound(Error):
 
 class Collection(object):
     paginated = True
+    default_query_params = {}
 
     def __init__(self, pagerduty, base_container=None):
         self.name = getattr(self, "name", False) or _lower(self.__class__.__name__)
@@ -113,6 +114,12 @@ class Collection(object):
             new_kwargs.append(new_kwarg)
         return new_kwargs
 
+    def _apply_default_kwargs(self, kwargs):
+        for k, v in self.default_query_params.items():
+            if k not in kwargs:
+                kwargs[k] = v
+        return kwargs
+
     def update(self, entity_id, **kwargs):
         path = "{0}/{1}".format(self.name, entity_id)
         if self.base_container:
@@ -154,6 +161,7 @@ class Collection(object):
         return self._list_response(response)
 
     def list(self, **kwargs):
+        kwargs = self._apply_default_kwargs(kwargs)
         # Some APIs are paginated. If they are, and the user isn't doing
         # pagination themselves, let's do it for them
         if not self.paginated or any(key in kwargs for key in ('offset', 'limit')):
@@ -194,6 +202,7 @@ class Collection(object):
         return response.get("total", None)
 
     def show(self, entity_id, **kwargs):
+        kwargs = self._apply_default_kwargs(kwargs)
         path = "{0}/{1}".format(self.name, entity_id)
         if self.base_container:
             path = "{0}/{1}/{2}/{3}".format(
@@ -329,7 +338,8 @@ class EmailFilters(Collection):
 
 
 class LogEntries(Collection):
-    pass
+    # https://support.pagerduty.com/v1/docs/retrieve-trigger-event-data-using-the-api#section-how-to-obtain-the-data  # noqa
+    default_query_params = {'include': ['channels']}
 
 
 class Notes(Collection):
