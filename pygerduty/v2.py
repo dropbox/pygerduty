@@ -115,7 +115,7 @@ class Collection(object):
         return new_kwargs
 
     def _apply_default_kwargs(self, kwargs):
-        for k, v in self.default_query_params.iteritems():
+        for k, v in self.default_query_params.items():
             if k not in kwargs:
                 kwargs[k] = v
         return kwargs

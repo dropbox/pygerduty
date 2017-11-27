@@ -11,6 +11,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 ### Added
 * `incidents/reassign` is a new endpoint, added logic for this.
 * Tests for the new incidents behavior.
+* LogEntries default to adding include[]=channels for list and show to get "custom details".
 
 ## [0.36.3] - 2017-08-10
 
