@@ -5,9 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
+
+## [0.37.0] - 2017-11-27
+
 ### Fixed
 * `incidents/{id}/snooze` was not deprecated and requires old logic from `_do_action`. Fixed.
 * `trigger_summary_data` attribute was removed from incident response, removed `has_subject` function which referenced this.
+
 ### Added
 * `incidents/reassign` is a new endpoint, added logic for this.
 * Tests for the new incidents behavior.
