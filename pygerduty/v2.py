@@ -257,13 +257,13 @@ class Services(Collection):
     def disable(self, entity_id, requester_id):
         path = "{0}/{1}".format(self.name, entity_id)
         extra_headers = {"From": requester_id}
-        data = {"status": "disable"}
+        data = {"service": {"status": "disabled"}}
         response = self.pagerduty.request("PUT", path, data=_json_dumper(data), extra_headers=extra_headers)
         return response
 
     def enable(self, entity_id):
         path = "{0}/{1}".format(self.name, entity_id)
-        data = {"status": "enable"}
+        data = {"service": {"status": "active"}}
         response = self.pagerduty.request("PUT", path, data=_json_dumper(data))
         return response
 
