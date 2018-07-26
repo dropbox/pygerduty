@@ -337,6 +337,10 @@ class EmailFilters(Collection):
     pass
 
 
+class Extensions(Collection):
+    pass
+
+
 class LogEntries(Collection):
     # https://support.pagerduty.com/v1/docs/retrieve-trigger-event-data-using-the-api#section-how-to-obtain-the-data  # noqa
     default_query_params = {'include': ['channels']}
@@ -431,6 +435,10 @@ class Container(object):
             else:
                 json_dict[key] = value
         return json_dict
+
+
+class Extension(Container):
+    pass
 
 
 class Incident(Container):
@@ -628,6 +636,7 @@ class PagerDuty(object):
         self.maintenance_windows = MaintenanceWindows(self)
         self.teams = Teams(self)
         self.log_entries = LogEntries(self)
+        self.extensions = Extensions(self)
 
     @staticmethod
     def _process_query_params(query_params):
