@@ -184,6 +184,10 @@ class Collection(object):
                     break
 
                 for item in this_paginated_result:
+                    # add items to seen_items only if id is present in response
+                    # oncalls does not have a id in response
+                    if not hasattr(item, 'id'):
+                        continue
                     if item.id in seen_items:
                         continue
                     seen_items.add(item.id)
@@ -341,6 +345,18 @@ class Extensions(Collection):
     pass
 
 
+class Oncalls(Collection):
+    sname = 'Oncall'
+
+    def show(self, **kwargs):
+        kwargs = self._apply_default_kwargs(kwargs)
+        path = self.name
+        response = self.pagerduty.request(
+            "GET", path, query_params=kwargs)
+
+        return self.container(self, **response)
+
+
 class LogEntries(Collection):
     # https://support.pagerduty.com/v1/docs/retrieve-trigger-event-data-using-the-api#section-how-to-obtain-the-data  # noqa
     default_query_params = {'include': ['channels']}
@@ -438,6 +454,10 @@ class Container(object):
 
 
 class Extension(Container):
+    pass
+
+
+class Oncall(Container):
     pass
 
 
@@ -637,6 +657,7 @@ class PagerDuty(object):
         self.teams = Teams(self)
         self.log_entries = LogEntries(self)
         self.extensions = Extensions(self)
+        self.oncalls = Oncalls(self)
 
     @staticmethod
     def _process_query_params(query_params):
