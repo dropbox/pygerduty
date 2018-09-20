@@ -184,10 +184,6 @@ class Collection(object):
                     break
 
                 for item in this_paginated_result:
-                    # add items to seen_items only if id is present in response
-                    # oncalls does not have a id in response
-                    if not hasattr(item, 'id'):
-                        continue
                     if item.id in seen_items:
                         continue
                     seen_items.add(item.id)
@@ -346,15 +342,7 @@ class Extensions(Collection):
 
 
 class Oncalls(Collection):
-    sname = 'Oncall'
-
-    def show(self, **kwargs):
-        kwargs = self._apply_default_kwargs(kwargs)
-        path = self.name
-        response = self.pagerduty.request(
-            "GET", path, query_params=kwargs)
-
-        return self.container(self, **response)
+    pass
 
 
 class LogEntries(Collection):
@@ -458,7 +446,11 @@ class Extension(Container):
 
 
 class Oncall(Container):
-    pass
+    def __init__(self, *args, **kwargs):
+        Container.__init__(self, *args, **kwargs)
+        self.id = '%s:%s:%s' % (self.user.id,
+                                self.schedule.id,
+                                self.escalation_policy.id)
 
 
 class Incident(Container):
