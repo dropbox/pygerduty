@@ -1,0 +1,58 @@
+{
+  "extensions": [
+    {
+      "id": "PPGPXHO",
+      "self": "https://api.pagerduty.com/extensions/PPGPXHO",
+      "html_url": null,
+      "endpoint_url": "https://example.com/recieve_a_pagerduty_webhook",
+      "name": "My Webhook",
+      "summary": "My Webhook",
+      "type": "extension",
+      "extension_schema": {
+        "id": "PJFWPEP",
+        "type": "extension_schema_reference",
+        "summary": "Generic Webhook",
+        "self": "https://api.pagerduty.com/extension_schemas/PJFWPEP",
+        "html_url": null
+      },
+      "extension_objects": [
+        {
+          "id": "PIJ90N7",
+          "type": "service_reference",
+          "summary": "My Application Service",
+          "self": "https://api.pagerduty.com/services/PIJ90N7",
+          "html_url": "https://subdomain.pagerduty.com/services/PIJ90N7"
+        }
+      ]
+    },
+    {
+      "id": "PPGPXHI",
+      "self": "https://api.pagerduty.com/extensions/PPGPXHI",
+      "html_url": null,
+      "endpoint_url": "https://example.com/recieve_a_pagerduty_webhook_2",
+      "name": "My Webhook 2",
+      "summary": "My Webhook w",
+      "type": "extension",
+      "extension_schema": {
+        "id": "PJFWPEP",
+        "type": "extension_schema_reference",
+        "summary": "Generic Webhook",
+        "self": "https://api.pagerduty.com/extension_schemas/PJFWPEP",
+        "html_url": null
+      },
+      "extension_objects": [
+        {
+          "id": "PIJ90N8",
+          "type": "service_reference",
+          "summary": "My Application Service",
+          "self": "https://api.pagerduty.com/services/PIJ90N8",
+          "html_url": "https://subdomain.pagerduty.com/services/PIJ90N8"
+        }
+      ]
+    }
+  ],
+  "limit": 25,
+  "offset": 0,
+  "total": null,
+  "more": false
+}
