@@ -6,6 +6,16 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+## [0.38.0] - 2018-09-26
+
+#### Fixed
+* `Services.enable()/Services.disable()` fixed.
+
+### Added
+* `oncalls` is a new endpoint for querying current oncalls.
+* `extensions` collection added for querying extensions.
+
+
 ## [0.37.0] - 2017-11-27
 
 ### Fixed
