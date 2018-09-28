@@ -10,7 +10,7 @@ from six import string_types
 from six.moves import urllib
 
 
-__author__ = "Gary M. Josack <gary@dropbox.com>"
+__author__ = "Mike Cugini <cugini@dropbox.com>"
 from .version import __version__, version_info  # noqa
 
 TRIGGER_LOG_ENTRY_RE = re.compile(
