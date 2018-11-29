@@ -341,6 +341,10 @@ class Extensions(Collection):
     pass
 
 
+class Addons(Collection):
+    pass
+
+
 class Oncalls(Collection):
     pass
 
@@ -444,6 +448,8 @@ class Container(object):
 class Extension(Container):
     pass
 
+class Addon(Container):
+    pass
 
 class Oncall(Container):
     def __init__(self, *args, **kwargs):
@@ -649,6 +655,7 @@ class PagerDuty(object):
         self.teams = Teams(self)
         self.log_entries = LogEntries(self)
         self.extensions = Extensions(self)
+        self.addons = Addons(self)
         self.oncalls = Oncalls(self)
 
     @staticmethod
