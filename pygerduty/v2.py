@@ -448,8 +448,10 @@ class Container(object):
 class Extension(Container):
     pass
 
+
 class Addon(Container):
     pass
+
 
 class Oncall(Container):
     def __init__(self, *args, **kwargs):
