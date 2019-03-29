@@ -53,8 +53,8 @@ class Collection(object):
     def __init__(self, pagerduty, base_container=None):
         self.name = getattr(self, "name", False) or _lower(self.__class__.__name__)
         self.sname = getattr(self, "sname", False) or _singularize(self.name)
-        self.container = (getattr(self, "container", False) or
-                          globals()[_upper(self.sname)])
+        self.container = (
+            getattr(self, "container", False) or globals()[_upper(self.sname)])
 
         self.pagerduty = pagerduty
         self.base_container = base_container
@@ -448,9 +448,9 @@ class Extension(Container):
 class Oncall(Container):
     def __init__(self, *args, **kwargs):
         Container.__init__(self, *args, **kwargs)
-        self.id = '%s:%s:%s' % (self.user.id,
-                                self.schedule.id,
-                                self.escalation_policy.id)
+        self.id = '%s:%s:%s' % (self.user.id if self.user else '',
+                                self.schedule.id if self.schedule else '',
+                                self.escalation_policy.id if self.escalation_policy else '')
 
 
 class Incident(Container):
