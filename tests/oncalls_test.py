@@ -79,3 +79,28 @@ def test_list_oncalls_filtered_v2():
     assert oncalls[0].escalation_policy.self_ == 'https://api.pagerduty.com/escalation_policies/PT20YPA'
     assert oncalls[0].start == '2015-03-06T15:28:51-05:00'
     assert oncalls[0].end == '2015-03-07T15:28:51-05:00'
+
+def test_oncall_ids():
+    p = pygerduty.v2.PagerDuty("password")
+    collection = pygerduty.v2.Collection(p)
+
+    oncall = pygerduty.v2.Oncall(
+            collection=collection,
+            user=None,
+            schedule={'id': 'schedule'},
+            escalation_policy={'id': 'escalation_policy'})
+    assert oncall.id == ':schedule:escalation_policy'
+
+    oncall = pygerduty.v2.Oncall(
+            collection=collection,
+            user={'id': 'user'},
+            schedule=None,
+            escalation_policy={'id': 'escalation_policy'})
+    assert oncall.id == 'user::escalation_policy'
+
+    oncall = pygerduty.v2.Oncall(
+            collection=collection,
+            user={'id': 'user'},
+            schedule={'id': 'schedule'},
+            escalation_policy=None)
+    assert oncall.id == 'user:schedule:'
