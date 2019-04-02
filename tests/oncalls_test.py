@@ -104,3 +104,21 @@ def test_oncall_ids():
             schedule={'id': 'schedule'},
             escalation_policy=None)
     assert oncall.id == 'user:schedule:'
+
+    oncall = pygerduty.v2.Oncall(
+            collection=collection,
+            schedule={'id': 'schedule'},
+            escalation_policy={'id': 'escalation_policy'})
+    assert oncall.id == ':schedule:escalation_policy'
+
+    oncall = pygerduty.v2.Oncall(
+            collection=collection,
+            user={'id': 'user'},
+            escalation_policy={'id': 'escalation_policy'})
+    assert oncall.id == 'user::escalation_policy'
+
+    oncall = pygerduty.v2.Oncall(
+            collection=collection,
+            user={'id': 'user'},
+            schedule={'id': 'schedule'})
+    assert oncall.id == 'user:schedule:'
