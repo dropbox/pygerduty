@@ -448,9 +448,11 @@ class Extension(Container):
 class Oncall(Container):
     def __init__(self, *args, **kwargs):
         Container.__init__(self, *args, **kwargs)
-        self.id = '%s:%s:%s' % (self.user.id if self.user else '',
-                                self.schedule.id if self.schedule else '',
-                                self.escalation_policy.id if self.escalation_policy else '')
+        self.id = '%s:%s:%s' % (self.user.id if hasattr(self, 'user') and self.user else '',
+                                self.schedule.id if hasattr(
+                                    self, 'schedule') and self.schedule else '',
+                                self.escalation_policy.id if hasattr(
+                                    self, 'escalation_policy') and self.escalation_policy else '')
 
 
 class Incident(Container):
