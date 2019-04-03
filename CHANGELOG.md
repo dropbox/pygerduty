@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+## [0.38.1] - 2019-04-03
+
+### Fixed
+* Better handling for`oncalls.list()` optional fields.
+
 ## [0.38.0] - 2018-09-26
 
 #### Fixed
