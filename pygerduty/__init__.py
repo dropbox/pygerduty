@@ -8,7 +8,7 @@ import re
 import six
 from six import string_types
 from six.moves import urllib
-from exceptions import Error, IntegrationAPIError, BadRequest
+from exceptions import Error, IntegrationAPIError, BadRequest, NotFound
 
 __author__ = "Mike Cugini <cugini@dropbox.com>"
 from .version import __version__, version_info  # noqa

@@ -2,6 +2,7 @@ import copy
 import re
 import six
 from six.moves import urllib
+from exceptions import Error
 from .common import (
     Requester,
     _lower,
