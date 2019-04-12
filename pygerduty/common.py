@@ -2,33 +2,11 @@
 import datetime
 import functools
 import json
+from exceptions import BadRequest, NotFound
 from six import string_types
 from six.moves import urllib
 
 ISO8601_FORMAT = "%Y-%m-%dT%H:%M:%SZ"
-
-
-class Error(Exception):
-    pass
-
-
-class BadRequest(Error):
-    def __init__(self, payload, *args, **kwargs):
-        # Error Reponses don't always contain all fields.
-        # Sane defaults must be set.
-        self.code = payload.get("error", {}).get('code', 99999)
-        self.errors = payload.get("error", {}).get('errors', [])
-        self.message = payload.get("error", {}).get('message', str(payload))
-
-        Error.__init__(self, *args, **kwargs)
-
-    def __str__(self):
-        return "{0} ({1}): {2}".format(
-            self.message, self.code, self.errors)
-
-
-class NotFound(Error):
-    pass
 
 
 class Requester(object):
