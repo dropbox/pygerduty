@@ -2,7 +2,7 @@
 # Pagerduty Events API.
 
 from six.moves import urllib
-from .exceptions import IntegrationAPIError, NotFound, Error, BadRequest
+from .exceptions import Error, IntegrationAPIError, BadRequest, NotFound
 from .common import (
     _json_dumper,
     Requester,

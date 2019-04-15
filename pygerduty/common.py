@@ -2,7 +2,7 @@
 import datetime
 import functools
 import json
-from .exceptions import BadRequest, NotFound, Error, IntegrationAPIError
+from .exceptions import Error, IntegrationAPIError, BadRequest, NotFound
 from six import string_types
 from six.moves import urllib
 
