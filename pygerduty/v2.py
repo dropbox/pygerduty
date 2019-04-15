@@ -2,7 +2,7 @@ import copy
 import re
 import six
 from six.moves import urllib
-from .exceptions import Error
+from .exceptions import Error, BadRequest, IntegrationAPIError, NotFound
 from .common import (
     Requester,
     _lower,
