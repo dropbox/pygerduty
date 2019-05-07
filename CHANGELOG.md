@@ -6,6 +6,14 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+## [0.38.2] - 2019-05-07
+
+### Changed
+* Consolidated exception types to ease error handling between modules.
+
+### Fixed
+* Better handling for`oncalls.list()` optional fields.
+
 ## [0.38.1] - 2019-04-03
 
 ### Fixed
