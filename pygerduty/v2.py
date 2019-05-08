@@ -175,7 +175,12 @@ class Collection(object):
                     break
 
     def count(self, **kwargs):
-        path = "{0}/count".format(self.name)
+        path = "{0}".format(self.name)
+        kwargs["total"] = "true"
+        if self.base_container:
+            path = "{0}/{1}/{2}".format(
+                self.base_container.collection.name,
+                self.base_container.id, self.name)
         response = self.pagerduty.request("GET", path, query_params=kwargs)
         return response.get("total", None)
 
