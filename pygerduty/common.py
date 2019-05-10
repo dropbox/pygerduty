@@ -35,7 +35,7 @@ class Requester(object):
         try:
             response = (self.opener.open(request, timeout=self.timeout).
                         read().decode("utf-8"))
-        except urllib.error.URLError as err:
+        except urllib.error.URLError:
             if retry_count < self.max_retries:
                 return self.execute_request(request, retry_count + 1)
             else:
