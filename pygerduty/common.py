@@ -5,15 +5,19 @@ import json
 from .exceptions import Error, IntegrationAPIError, BadRequest, NotFound
 from six import string_types
 from six.moves import urllib
+from random import randint
+from time import sleep
 
 ISO8601_FORMAT = "%Y-%m-%dT%H:%M:%SZ"
 
 
 class Requester(object):
-    def __init__(self, timeout=10, proxies=None, parse_datetime=False):
+    def __init__(self, timeout=10, proxies=None, parse_datetime=False, min_backoff=15.0, max_retries=5):
         self.timeout = timeout
-        self.json_loader = json.loads
+        self.min_backoff = min_backoff
+        self.max_retries = max_retries
 
+        self.json_loader = json.loads
         if parse_datetime:
             self.json_loader = _json_loader
 
@@ -22,11 +26,20 @@ class Requester(object):
             handlers.append(urllib.request.ProxyHandler(proxies))
         self.opener = urllib.request.build_opener(*handlers)
 
-    def execute_request(self, request):
+    def execute_request(self, request, retry_count=0):
+        if retry_count > 0:
+            exponential_backoff = self.min_backoff * (2 ** retry_count)
+            randomness = randint(0,1000) / 1000.0
+            sleep(exponential_backoff + randomness)
 
         try:
             response = (self.opener.open(request, timeout=self.timeout).
                         read().decode("utf-8"))
+        except urllib.error.URLError as err:
+            if retry_count < self.max_retries:
+                return self.execute_request(request, retry_count + 1)
+            else:
+                raise
         except urllib.error.HTTPError as err:
             if err.code / 100 == 2:
                 response = err.read().decode("utf-8")
@@ -38,7 +51,10 @@ class Requester(object):
                 raise NotFound("URL ({0}) Not Found.".format(
                     request.get_full_url()))
             elif err.code == 429:
-                raise
+                if retry_count < self.max_retries:
+                    return self.execute_request(request, retry_count + 1)
+                else:
+                    raise
             else:
                 raise
 
