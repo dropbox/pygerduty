@@ -29,7 +29,7 @@ class Requester(object):
     def execute_request(self, request, retry_count=0):
         if retry_count > 0:
             exponential_backoff = self.min_backoff * (2 ** retry_count)
-            randomness = randint(0,1000) / 1000.0
+            randomness = randint(0, 1000) / 1000.0
             sleep(exponential_backoff + randomness)
 
         try:
