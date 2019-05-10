@@ -1,0 +1,592 @@
+{
+  "log_entries": [
+    {
+      "service": {
+        "self": "https://api.pagerduty.com/services/P0K4MD5",
+        "summary": "Test Service",
+        "type": "service_reference",
+        "id": "P0K4MD5",
+        "html_url": "https://subdomain.pagerduty.com/services/P0K4MD5"
+      },
+      "contexts": [],
+      "created_at": "2019-01-01T00:57:11Z",
+      "html_url": null,
+      "agent": {
+        "self": "https://api.pagerduty.com/services/P0K4MD5/integrations/PM4L3BM",
+        "summary": "Test-Service-API-v2",
+        "type": "events_api_v2_inbound_integration_reference",
+        "id": "PM4L3BM",
+        "html_url": "https://subdomain.pagerduty.com/services/P0K4MD5/integrations/PM4L3BM"
+      },
+      "teams": [
+        {
+          "self": "https://api.pagerduty.com/teams/PL09PSG",
+          "summary": "Team 123",
+          "type": "team_reference",
+          "id": "PL09PSG",
+          "html_url": "https://subdomain.pagerduty.com/teams/PL09PSG"
+        }
+      ],
+      "self": "https://api.pagerduty.com/log_entries/RP2836ITHU9F3ADA1T9MF3F97O",
+      "incident": {
+        "self": "https://api.pagerduty.com/incidents/PT4KHLK",
+        "summary": "[#1234567] The server is on fire.",
+        "type": "incident_reference",
+        "id": "PT4KHLK",
+        "html_url": "https://subdomain.pagerduty.com/incidents/PT4KHLK"
+      },
+      "id": "RP2836ITHU9F3ADA1T9MF3F97O",
+      "summary": "Resolved through the API",
+      "type": "resolve_log_entry",
+      "event_details": {},
+      "channel": {
+        "type": "integration"
+      }
+    },
+    {
+      "service": {
+        "self": "https://api.pagerduty.com/services/P0K4MD5",
+        "summary": "Test Service",
+        "type": "service_reference",
+        "id": "P0K4MD5",
+        "html_url": "https://subdomain.pagerduty.com/services/P0K4MD5"
+      },
+      "contexts": [],
+      "created_at": "2019-01-01T00:30:01Z",
+      "html_url": null,
+      "teams": [
+        {
+          "self": "https://api.pagerduty.com/teams/PL09PSG",
+          "summary": "Team 123",
+          "type": "team_reference",
+          "id": "PL09PSG",
+          "html_url": "https://subdomain.pagerduty.com/teams/PL09PSG"
+        }
+      ],
+      "self": "https://api.pagerduty.com/log_entries/R2PDIDKABLHDOXPXVG6YQPDJUD",
+      "incident": {
+        "self": "https://api.pagerduty.com/incidents/PT4KHLK",
+        "summary": "[#1234567] The server is on fire.",
+        "type": "incident_reference",
+        "id": "PT4KHLK",
+        "html_url": "https://subdomain.pagerduty.com/incidents/PT4KHLK"
+      },
+      "user": {
+        "self": "https://api.pagerduty.com/users/PT3D7UU",
+        "summary": "FakeUser",
+        "type": "user_reference",
+        "id": "PT3D7UU",
+        "html_url": "https://subdomain.pagerduty.com/users/PT3D7UU"
+      },
+      "summary": "Notified FakeUser by email",
+      "type": "notify_log_entry",
+      "id": "R2PDIDKABLHDOXPXVG6YQPDJUD",
+      "channel": {
+        "notification": {
+          "status": "bad_address",
+          "conferenceAddress": null,
+          "type": "email",
+          "address": "FakeUser@subdomain.com"
+        },
+        "type": "auto"
+      }
+    },
+    {
+      "service": {
+        "self": "https://api.pagerduty.com/services/P0K4MD5",
+        "summary": "Test Service",
+        "type": "service_reference",
+        "id": "P0K4MD5",
+        "html_url": "https://subdomain.pagerduty.com/services/P0K4MD5"
+      },
+      "contexts": [],
+      "created_at": "2019-01-01T00:17:26Z",
+      "html_url": null,
+      "agent": {
+        "self": "https://api.pagerduty.com/users/P2BXFK0",
+        "summary": "FakeUser2",
+        "type": "user_reference",
+        "id": "P2BXFK0",
+        "html_url": "https://subdomain.pagerduty.com/users/P2BXFK0"
+      },
+      "teams": [
+        {
+          "self": "https://api.pagerduty.com/teams/PL09PSG",
+          "summary": "Team 123",
+          "type": "team_reference",
+          "id": "PL09PSG",
+          "html_url": "https://subdomain.pagerduty.com/teams/PL09PSG"
+        }
+      ],
+      "self": "https://api.pagerduty.com/log_entries/RQ84W5G7Y0VQ2JFN5U85PFUGKK",
+      "incident": {
+        "self": "https://api.pagerduty.com/incidents/PT4KHLK",
+        "summary": "[#1234567] The server is on fire.",
+        "type": "incident_reference",
+        "id": "PT4KHLK",
+        "html_url": "https://subdomain.pagerduty.com/incidents/PT4KHLK"
+      },
+      "summary": "Snoozed by FakeUser2 for 8 hrs 0 min",
+      "type": "snooze_log_entry",
+      "id": "RQ84W5G7Y0VQ2JFN5U85PFUGKK",
+      "channel": {
+        "duration": 28800,
+        "type": "website"
+      },
+      "changed_actions": [
+        {
+          "type": "unacknowledge",
+          "at": "2019-01-01T08:17:26Z"
+        }
+      ]
+    },
+    {
+      "service": {
+        "self": "https://api.pagerduty.com/services/P0K4MD5",
+        "summary": "Test Service",
+        "type": "service_reference",
+        "id": "P0K4MD5",
+        "html_url": "https://subdomain.pagerduty.com/services/P0K4MD5"
+      },
+      "contexts": [],
+      "created_at": "2019-01-01T00:10:49Z",
+      "teams": [
+        {
+          "self": "https://api.pagerduty.com/teams/PL09PSG",
+          "summary": "Team 123",
+          "type": "team_reference",
+          "id": "PL09PSG",
+          "html_url": "https://subdomain.pagerduty.com/teams/PL09PSG"
+        }
+      ],
+      "html_url": null,
+      "agent": {
+        "self": "https://api.pagerduty.com/users/P2BXFK0",
+        "summary": "FakeUser2",
+        "type": "user_reference",
+        "id": "P2BXFK0",
+        "html_url": "https://subdomain.pagerduty.com/users/P2BXFK0"
+      },
+      "acknowledgement_timeout": 7200,
+      "self": "https://api.pagerduty.com/log_entries/R01BG1J3L9NLRCC69YS7BNFNBB",
+      "incident": {
+        "self": "https://api.pagerduty.com/incidents/PT4KHLK",
+        "summary": "[#1234567] The server is on fire.",
+        "type": "incident_reference",
+        "id": "PT4KHLK",
+        "html_url": "https://subdomain.pagerduty.com/incidents/PT4KHLK"
+      },
+      "id": "R01BG1J3L9NLRCC69YS7BNFNBB",
+      "summary": "Acknowledged by FakeUser2",
+      "type": "acknowledge_log_entry",
+      "event_details": {},
+      "channel": {
+        "type": "website"
+      }
+    },
+    {
+      "service": {
+        "self": "https://api.pagerduty.com/services/P0K4MD5",
+        "summary": "Test Service",
+        "type": "service_reference",
+        "id": "P0K4MD5",
+        "html_url": "https://subdomain.pagerduty.com/services/P0K4MD5"
+      },
+      "contexts": [],
+      "created_at": "2019-01-01T00:08:43Z",
+      "html_url": null,
+      "teams": [
+        {
+          "self": "https://api.pagerduty.com/teams/PL09PSG",
+          "summary": "Team 123",
+          "type": "team_reference",
+          "id": "PL09PSG",
+          "html_url": "https://subdomain.pagerduty.com/teams/PL09PSG"
+        }
+      ],
+      "self": "https://api.pagerduty.com/log_entries/R09XFP122Z3S4J8B9S8DWELVYZ",
+      "incident": {
+        "self": "https://api.pagerduty.com/incidents/PT4KHLK",
+        "summary": "[#1234567] The server is on fire.",
+        "type": "incident_reference",
+        "id": "PT4KHLK",
+        "html_url": "https://subdomain.pagerduty.com/incidents/PT4KHLK"
+      },
+      "user": {
+        "self": "https://api.pagerduty.com/users/P2BXFK0",
+        "summary": "FakeUser2",
+        "type": "user_reference",
+        "id": "P2BXFK0",
+        "html_url": "https://subdomain.pagerduty.com/users/P2BXFK0"
+      },
+      "summary": "Notified FakeUser2 by push notification",
+      "type": "notify_log_entry",
+      "id": "R09XFP122Z3S4J8B9S8DWELVYZ",
+      "channel": {
+        "notification": {
+          "status": "success",
+          "conferenceAddress": null,
+          "type": "android_push_notification",
+          "address": "SM-N9005"
+        },
+        "type": "auto"
+      }
+    },
+    {
+      "service": {
+        "self": "https://api.pagerduty.com/services/P0K4MD5",
+        "summary": "Test Service",
+        "type": "service_reference",
+        "id": "P0K4MD5",
+        "html_url": "https://subdomain.pagerduty.com/services/P0K4MD5"
+      },
+      "contexts": [],
+      "created_at": "2019-01-01T00:08:34Z",
+      "html_url": null,
+      "teams": [
+        {
+          "self": "https://api.pagerduty.com/teams/PL09PSG",
+          "summary": "Team 123",
+          "type": "team_reference",
+          "id": "PL09PSG",
+          "html_url": "https://subdomain.pagerduty.com/teams/PL09PSG"
+        }
+      ],
+      "self": "https://api.pagerduty.com/log_entries/RNJ5P6LTMD7GBKQPTWSFUT7094",
+      "incident": {
+        "self": "https://api.pagerduty.com/incidents/PT4KHLK",
+        "summary": "[#1234567] The server is on fire.",
+        "type": "incident_reference",
+        "id": "PT4KHLK",
+        "html_url": "https://subdomain.pagerduty.com/incidents/PT4KHLK"
+      },
+      "user": {
+        "self": "https://api.pagerduty.com/users/P2BXFK0",
+        "summary": "FakeUser2",
+        "type": "user_reference",
+        "id": "P2BXFK0",
+        "html_url": "https://subdomain.pagerduty.com/users/P2BXFK0"
+      },
+      "summary": "Notified FakeUser2 by push notification",
+      "type": "notify_log_entry",
+      "id": "RNJ5P6LTMD7GBKQPTWSFUT7094",
+      "channel": {
+        "notification": {
+          "status": "success",
+          "conferenceAddress": null,
+          "type": "android_push_notification",
+          "address": "MI 5"
+        },
+        "type": "auto"
+      }
+    },
+    {
+      "service": {
+        "self": "https://api.pagerduty.com/services/P0K4MD5",
+        "summary": "Test Service",
+        "type": "service_reference",
+        "id": "P0K4MD5",
+        "html_url": "https://subdomain.pagerduty.com/services/P0K4MD5"
+      },
+      "contexts": [],
+      "created_at": "2019-01-01T00:08:24Z",
+      "html_url": null,
+      "teams": [
+        {
+          "self": "https://api.pagerduty.com/teams/PL09PSG",
+          "summary": "Team 123",
+          "type": "team_reference",
+          "id": "PL09PSG",
+          "html_url": "https://subdomain.pagerduty.com/teams/PL09PSG"
+        }
+      ],
+      "self": "https://api.pagerduty.com/log_entries/RP0FXADPZIDGOCSKC76A8F2KXS",
+      "incident": {
+        "self": "https://api.pagerduty.com/incidents/PT4KHLK",
+        "summary": "[#1234567] The server is on fire.",
+        "type": "incident_reference",
+        "id": "PT4KHLK",
+        "html_url": "https://subdomain.pagerduty.com/incidents/PT4KHLK"
+      },
+      "user": {
+        "self": "https://api.pagerduty.com/users/P2BXFK0",
+        "summary": "FakeUser2",
+        "type": "user_reference",
+        "id": "P2BXFK0",
+        "html_url": "https://subdomain.pagerduty.com/users/P2BXFK0"
+      },
+      "summary": "Notified FakeUser2 by push notification",
+      "type": "notify_log_entry",
+      "id": "RP0FXADPZIDGOCSKC76A8F2KXS",
+      "channel": {
+        "notification": {
+          "status": "success",
+          "conferenceAddress": null,
+          "type": "android_push_notification",
+          "address": "SM-A520F"
+        },
+        "type": "auto"
+      }
+    },
+    {
+      "service": {
+        "self": "https://api.pagerduty.com/services/P0K4MD5",
+        "summary": "Test Service",
+        "type": "service_reference",
+        "id": "P0K4MD5",
+        "html_url": "https://subdomain.pagerduty.com/services/P0K4MD5"
+      },
+      "contexts": [],
+      "created_at": "2019-01-01T00:08:12Z",
+      "html_url": null,
+      "agent": {
+        "self": "https://api.pagerduty.com/services/P0K4MD5",
+        "summary": "Test Service",
+        "type": "service_reference",
+        "id": "P0K4MD5",
+        "html_url": "https://subdomain.pagerduty.com/services/P0K4MD5"
+      },
+      "teams": [
+        {
+          "self": "https://api.pagerduty.com/teams/PL09PSG",
+          "summary": "Team 123",
+          "type": "team_reference",
+          "id": "PL09PSG",
+          "html_url": "https://subdomain.pagerduty.com/teams/PL09PSG"
+        }
+      ],
+      "self": "https://api.pagerduty.com/log_entries/R23A105I7I0HS4BUWWTEI79OV4",
+      "assignees": [
+        {
+          "self": "https://api.pagerduty.com/users/P2BXFK0",
+          "summary": "FakeUser2",
+          "type": "user_reference",
+          "id": "P2BXFK0",
+          "html_url": "https://subdomain.pagerduty.com/users/P2BXFK0"
+        }
+      ],
+      "incident": {
+        "self": "https://api.pagerduty.com/incidents/PT4KHLK",
+        "summary": "[#1234567] The server is on fire.",
+        "type": "incident_reference",
+        "id": "PT4KHLK",
+        "html_url": "https://subdomain.pagerduty.com/incidents/PT4KHLK"
+      },
+      "summary": "Escalated to FakeUser2 through the API",
+      "type": "escalate_log_entry",
+      "id": "R23A105I7I0HS4BUWWTEI79OV4",
+      "channel": {
+        "type": "timeout"
+      }
+    },
+    {
+      "service": {
+        "self": "https://api.pagerduty.com/services/P0K4MD5",
+        "summary": "Test Service",
+        "type": "service_reference",
+        "id": "P0K4MD5",
+        "html_url": "https://subdomain.pagerduty.com/services/P0K4MD5"
+      },
+      "contexts": [],
+      "created_at": "2019-01-01T00:03:12Z",
+      "html_url": null,
+      "agent": {
+        "self": "https://api.pagerduty.com/services/P0K4MD5/integrations/PM4L3BM",
+        "summary": "Test-Service-API-v2",
+        "type": "events_api_v2_inbound_integration_reference",
+        "id": "PM4L3BM",
+        "html_url": "https://subdomain.pagerduty.com/services/P0K4MD5/integrations/PM4L3BM"
+      },
+      "teams": [
+        {
+          "self": "https://api.pagerduty.com/teams/PL09PSG",
+          "summary": "Team 123",
+          "type": "team_reference",
+          "id": "PL09PSG",
+          "html_url": "https://subdomain.pagerduty.com/teams/PL09PSG"
+        }
+      ],
+      "self": "https://api.pagerduty.com/log_entries/R1LRHYM5AS4Z5CM1SPMCX3R32U",
+      "incident": {
+        "self": "https://api.pagerduty.com/incidents/PT4KHLK",
+        "summary": "[#1234567] The server is on fire.",
+        "type": "incident_reference",
+        "id": "PT4KHLK",
+        "html_url": "https://subdomain.pagerduty.com/incidents/PT4KHLK"
+      },
+      "summary": "Event rule set urgency to high through the API",
+      "type": "event_rule_action_log_entry",
+      "id": "R1LRHYM5AS4Z5CM1SPMCX3R32U",
+      "channel": {
+        "alert_based_severity": "critical",
+        "type": "",
+        "urgency": "high"
+      }
+    },
+    {
+      "service": {
+        "self": "https://api.pagerduty.com/services/P0K4MD5",
+        "summary": "Test Service",
+        "type": "service_reference",
+        "id": "P0K4MD5",
+        "html_url": "https://subdomain.pagerduty.com/services/P0K4MD5"
+      },
+      "contexts": [],
+      "created_at": "2019-01-01T00:03:12Z",
+      "linked_incident": {
+        "self": "https://api.pagerduty.com/alerts/P61BLED",
+        "summary": "The server is on fire.",
+        "type": "alert_reference",
+        "id": "P61BLED",
+        "html_url": "https://subdomain.pagerduty.com/alerts/P61BLED"
+      },
+      "html_url": null,
+      "agent": {
+        "self": "https://api.pagerduty.com/services/P0K4MD5",
+        "summary": "Test Service",
+        "type": "service_reference",
+        "id": "P0K4MD5",
+        "html_url": "https://subdomain.pagerduty.com/services/P0K4MD5"
+      },
+      "teams": [
+        {
+          "self": "https://api.pagerduty.com/teams/PL09PSG",
+          "summary": "Team 123",
+          "type": "team_reference",
+          "id": "PL09PSG",
+          "html_url": "https://subdomain.pagerduty.com/teams/PL09PSG"
+        }
+      ],
+      "self": "https://api.pagerduty.com/log_entries/R9KU0JVDG26SY99UHIRV6WD1JU",
+      "incident": {
+        "self": "https://api.pagerduty.com/incidents/PT4KHLK",
+        "summary": "[#1234567] The server is on fire.",
+        "type": "incident_reference",
+        "id": "PT4KHLK",
+        "html_url": "https://subdomain.pagerduty.com/incidents/PT4KHLK"
+      },
+      "summary": "Alert \"The server is on fire.\" added through the API",
+      "type": "link_log_entry",
+      "id": "R9KU0JVDG26SY99UHIRV6WD1JU",
+      "channel": {
+        "type": "website"
+      }
+    },
+    {
+      "service": {
+        "self": "https://api.pagerduty.com/services/P0K4MD5",
+        "summary": "Test Service",
+        "type": "service_reference",
+        "id": "P0K4MD5",
+        "html_url": "https://subdomain.pagerduty.com/services/P0K4MD5"
+      },
+      "contexts": [],
+      "created_at": "2019-01-01T00:03:12Z",
+      "html_url": null,
+      "agent": {
+        "self": "https://api.pagerduty.com/services/P0K4MD5",
+        "summary": "Test Service",
+        "type": "service_reference",
+        "id": "P0K4MD5",
+        "html_url": "https://subdomain.pagerduty.com/services/P0K4MD5"
+      },
+      "teams": [
+        {
+          "self": "https://api.pagerduty.com/teams/PL09PSG",
+          "summary": "Team 123",
+          "type": "team_reference",
+          "id": "PL09PSG",
+          "html_url": "https://subdomain.pagerduty.com/teams/PL09PSG"
+        }
+      ],
+      "self": "https://api.pagerduty.com/log_entries/R4S2OL7UGPYDHV0CQ3C7IMP3WX",
+      "assignees": [
+        {
+          "self": "https://api.pagerduty.com/users/PT3D7UU",
+          "summary": "FakeUser1",
+          "type": "user_reference",
+          "id": "PT3D7UU",
+          "html_url": "https://subdomain.pagerduty.com/users/PT3D7UU"
+        }
+      ],
+      "incident": {
+        "self": "https://api.pagerduty.com/incidents/PT4KHLK",
+        "summary": "[#1234567] The server is on fire.",
+        "type": "incident_reference",
+        "id": "PT4KHLK",
+        "html_url": "https://subdomain.pagerduty.com/incidents/PT4KHLK"
+      },
+      "summary": "Assigned to FakeUser1",
+      "type": "assign_log_entry",
+      "id": "R4S2OL7UGPYDHV0CQ3C7IMP3WX",
+      "channel": {
+        "type": "auto"
+      }
+    },
+    {
+      "service": {
+        "self": "https://api.pagerduty.com/services/P0K4MD5",
+        "summary": "Test Service",
+        "type": "service_reference",
+        "id": "P0K4MD5",
+        "html_url": "https://subdomain.pagerduty.com/services/P0K4MD5"
+      },
+      "contexts": [],
+      "created_at": "2019-01-01T00:03:12Z",
+      "html_url": "https://subdomain.pagerduty.com/incidents/PT4KHLK/log_entries/RNSAN8BDFJ9LJXR92T19ERR70D",
+      "agent": {
+        "self": "https://api.pagerduty.com/services/P0K4MD5/integrations/PM4L3BM",
+        "summary": "Test-Service-API-v2",
+        "type": "events_api_v2_inbound_integration_reference",
+        "id": "PM4L3BM",
+        "html_url": "https://subdomain.pagerduty.com/services/P0K4MD5/integrations/PM4L3BM"
+      },
+      "teams": [
+        {
+          "self": "https://api.pagerduty.com/teams/PL09PSG",
+          "summary": "Team 123",
+          "type": "team_reference",
+          "id": "PL09PSG",
+          "html_url": "https://subdomain.pagerduty.com/teams/PL09PSG"
+        }
+      ],
+      "self": "https://api.pagerduty.com/log_entries/RNSAN8BDFJ9LJXR92T19ERR70D",
+      "incident": {
+        "self": "https://api.pagerduty.com/incidents/PT4KHLK",
+        "summary": "[#1234567] The server is on fire.",
+        "type": "incident_reference",
+        "id": "PT4KHLK",
+        "html_url": "https://subdomain.pagerduty.com/incidents/PT4KHLK"
+      },
+      "id": "RNSAN8BDFJ9LJXR92T19ERR70D",
+      "summary": "Triggered through the API",
+      "type": "trigger_log_entry",
+      "event_details": {
+        "description": "The server is on fire."
+      },
+      "channel": {
+        "cef_details": {
+          "severity": "critical",
+          "contexts": [],
+          "mutations": [],
+          "dedup_key": "The server is on fire.",
+          "version": "1.0",
+          "source_origin": "localhost",
+          "details": {},
+          "message": "The server is on fire.",
+          "description": "The server is on fire."
+        },
+        "description": "The server is on fire.",
+        "summary": "The server is on fire.",
+        "incident_key": "The server is on fire.",
+        "details": {},
+        "service_key": "b48db8033932495b827ebb1b3f825920",
+        "type": "api"
+      }
+    }
+  ],
+  "limit": 25,
+  "offset": 0,
+  "total": 12,
+  "more": false
+}
