@@ -35,11 +35,6 @@ class Requester(object):
         try:
             response = (self.opener.open(request, timeout=self.timeout).
                         read().decode("utf-8"))
-        except urllib.error.URLError:
-            if retry_count < self.max_retries:
-                return self.execute_request(request, retry_count + 1)
-            else:
-                raise
         except urllib.error.HTTPError as err:
             if err.code / 100 == 2:
                 response = err.read().decode("utf-8")
@@ -55,6 +50,11 @@ class Requester(object):
                     return self.execute_request(request, retry_count + 1)
                 else:
                     raise
+            else:
+                raise
+        except urllib.error.URLError:
+            if retry_count < self.max_retries:
+                return self.execute_request(request, retry_count + 1)
             else:
                 raise
 
