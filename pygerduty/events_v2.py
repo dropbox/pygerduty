@@ -30,20 +30,20 @@ class Events(object):
         # Required (according to documentation) PD-CEF fields
         data = {"event_action": kwargs['event_action']}
         data['payload'] = kwargs.get('payload', {})
-        for key in ['summary','source','severity']:
+        for key in ['summary', 'source', 'severity']:
             if key in kwargs:
                 data['payload'][key] = kwargs[key]
             elif key not in data['payload']:
                 raise KeyError(key)
 
         # Optional event fields
-        for key in ['dedup_key','routing_key']:
+        for key in ['dedup_key', 'routing_key']:
             if key in kwargs.keys():
                 data[key] = kwargs[key]
 
         # Optional PD-CEF fields
-        for key in ['component','group','class','links','images',
-                'custom_details','timestamp']:
+        for key in ['component', 'group', 'class', 'links', 'images',
+                    'custom_details', 'timestamp']:
             if key in kwargs.keys():
                 data['payload'][key] = kwargs[key]
 
@@ -53,9 +53,9 @@ class Events(object):
         response = self.requester.execute_request(request)
 
         if not response.get("status", "failure") == "success":
-            raise IntegrationAPIError(response["message"], event_action)
+            raise IntegrationAPIError(response["message"], kwargs['event_action'])
         return response["dedup_key"]
-        
+
     def resolve_incident(self, **kwargs):
         """ Causes the referenced incident to enter resolved state.
         Send a resolve event when the problem that caused the initial
