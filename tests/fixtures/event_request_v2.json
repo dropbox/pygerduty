@@ -1,0 +1,17 @@
+{
+  "event_action": "trigger",
+  "payload": {
+    "custom_details": {
+      "Service Name": "Test Service",
+      "Problem": "Something explanation",
+      "Service ID": "P123456",
+      "Result": "Error testing occurred"
+    },
+    "severity": "error",
+    "component": "Test Component",
+    "summary": "Service (P123456) Test Error",
+    "source": "Test Source",
+    "class": "Unit Test"
+  },
+  "dedup_key": "Service (P123456) Test Dedup Key"
+}
