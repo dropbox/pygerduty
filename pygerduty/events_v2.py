@@ -37,12 +37,12 @@ class Events(object):
                 raise KeyError(key)
 
         # Optional event fields
-        for key in ['dedup_key', 'routing_key']:
+        for key in ['dedup_key', 'routing_key', 'images', 'links']:
             if key in kwargs.keys():
                 data[key] = kwargs[key]
 
         # Optional PD-CEF fields
-        for key in ['component', 'group', 'class', 'links', 'images',
+        for key in ['component', 'group', 'class',
                     'custom_details', 'timestamp']:
             if key in kwargs.keys():
                 data['payload'][key] = kwargs[key]
