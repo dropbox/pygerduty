@@ -50,6 +50,11 @@ class Requester(object):
                     return self.execute_request(request, retry_count + 1)
                 else:
                     raise
+            elif err.code / 100 == 5:
+                if retry_count < self.max_retries:
+                    return self.execute_request(request, retry_count + 1)
+                else:
+                    raise
             else:
                 raise
         except urllib.error.URLError:
