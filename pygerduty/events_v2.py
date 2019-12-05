@@ -29,23 +29,35 @@ class Events(object):
     def enqueue(self, **kwargs):
         # Required (according to documentation) PD-CEF fields
         data = {"event_action": kwargs['event_action']}
-        data['payload'] = kwargs.get('payload', {})
-        for key in ['summary', 'source', 'severity']:
+        
+        # Determine if a 'payload' is required
+        payload_required = False
+        for key in ['payload', 'summary', 'source', 'severity',
+                'component', 'group', 'class', 'custom_details', 'timestamp']:
             if key in kwargs:
-                data['payload'][key] = kwargs[key]
-            elif key not in data['payload']:
-                raise KeyError(key)
+                payload_required = True
+
+        # Build optional payload from kwargs
+        if payload_required:
+            data['payload'] = kwargs.get('payload', {})
+
+            # Required payload fields
+            for key in ['summary', 'source', 'severity']:
+                if key in kwargs:
+                    data['payload'][key] = kwargs[key]
+                elif key not in data['payload']:
+                    raise KeyError(key)
+
+            # Optional payload fields
+            for key in ['component', 'group', 'class',
+                    'custom_details', 'timestamp']:
+                if key in kwargs:
+                    data['payload'][key] = kwargs[key]
 
         # Optional event fields
         for key in ['dedup_key', 'routing_key', 'images', 'links']:
-            if key in kwargs.keys():
+            if key in kwargs:
                 data[key] = kwargs[key]
-
-        # Optional PD-CEF fields
-        for key in ['component', 'group', 'class',
-                    'custom_details', 'timestamp']:
-            if key in kwargs.keys():
-                data['payload'][key] = kwargs[key]
 
         request = urllib.request.Request(INTEGRATION_API_URL,
                                          data=_json_dumper(data).encode('utf-8'),
