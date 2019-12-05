@@ -29,7 +29,7 @@ class Events(object):
     def enqueue(self, **kwargs):
         # Required (according to documentation) PD-CEF fields
         data = {"event_action": kwargs['event_action']}
-        
+
         # Determine if a 'payload' is required
         payload_required = False
         for key in ['payload', 'summary', 'source', 'severity',
