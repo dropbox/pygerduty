@@ -33,7 +33,8 @@ class Events(object):
         # Determine if a 'payload' is required
         payload_required = False
         for key in ['payload', 'summary', 'source', 'severity',
-                'component', 'group', 'class', 'custom_details', 'timestamp']:
+                    'component', 'group', 'class', 'custom_details',
+                    'timestamp']:
             if key in kwargs:
                 payload_required = True
 
@@ -50,7 +51,7 @@ class Events(object):
 
             # Optional payload fields
             for key in ['component', 'group', 'class',
-                    'custom_details', 'timestamp']:
+                        'custom_details', 'timestamp']:
                 if key in kwargs:
                     data['payload'][key] = kwargs[key]
 
