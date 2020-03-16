@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+## [0.38.3] - 2020-03-16
+
+### Fixed
+* Fix issue [introduced](https://github.com/python/cpython/pull/12596) in Python 3.8 that 
+errors on changing dict keys during iteration 
+
 ## [0.38.2] - 2019-05-07
 
 ### Changed
