@@ -4,6 +4,7 @@ language: python
 env:
     - TOXENV=py27
     - TOXENV=py34
+    - TOXENV=py38
 
 install:
     - "pip install ."
