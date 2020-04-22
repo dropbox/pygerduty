@@ -59,7 +59,7 @@ def clean_response(response):
         for elem in response:
             clean_response(elem)
     elif type(response) is dict:
-        for key, val in response.items():
+        for key, val in response.copy().items():
             if key == 'self':
                 val = response.pop('self')
                 response['self_'] = val
