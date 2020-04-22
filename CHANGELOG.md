@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+## [0.38.3] - 2020-04-22
+
+### Fixed
+* Fixes for Python 3.7+ compatability.
+* Fixed tests for Python 3.
+
 ## [0.38.2] - 2019-05-07
 
 ### Changed
