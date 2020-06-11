@@ -2,6 +2,7 @@ import copy
 import re
 import six
 from six.moves import urllib
+from .exceptions import Error, IntegrationAPIError, BadRequest, NotFound
 from .common import (
     Requester,
     _lower,
@@ -23,29 +24,6 @@ TRIGGER_LOG_ENTRY_RE = re.compile(
 # Support for Reports
 
 
-class Error(Exception):
-    pass
-
-
-class BadRequest(Error):
-    def __init__(self, payload, *args, **kwargs):
-        # Error Reponses don't always contain all fields.
-        # Sane defaults must be set.
-        self.code = payload.get("error", {}).get('code', 99999)
-        self.errors = payload.get("error", {}).get('errors', [])
-        self.message = payload.get("error", {}).get('message', str(payload))
-
-        Error.__init__(self, *args, **kwargs)
-
-    def __str__(self):
-        return "{0} ({1}): {2}".format(
-            self.message, self.code, self.errors)
-
-
-class NotFound(Error):
-    pass
-
-
 class Collection(object):
     paginated = True
     default_query_params = {}
@@ -53,8 +31,8 @@ class Collection(object):
     def __init__(self, pagerduty, base_container=None):
         self.name = getattr(self, "name", False) or _lower(self.__class__.__name__)
         self.sname = getattr(self, "sname", False) or _singularize(self.name)
-        self.container = (getattr(self, "container", False) or
-                          globals()[_upper(self.sname)])
+        self.container = (
+            getattr(self, "container", False) or globals()[_upper(self.sname)])
 
         self.pagerduty = pagerduty
         self.base_container = base_container
@@ -463,9 +441,11 @@ class Addon(Container):
 class Oncall(Container):
     def __init__(self, *args, **kwargs):
         Container.__init__(self, *args, **kwargs)
-        self.id = '%s:%s:%s' % (self.user.id,
-                                self.schedule.id,
-                                self.escalation_policy.id)
+        self.id = '%s:%s:%s' % (self.user.id if hasattr(self, 'user') and self.user else '',
+                                self.schedule.id if hasattr(
+                                    self, 'schedule') and self.schedule else '',
+                                self.escalation_policy.id if hasattr(
+                                    self, 'escalation_policy') and self.escalation_policy else '')
 
 
 class Incident(Container):

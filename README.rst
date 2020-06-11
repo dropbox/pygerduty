@@ -23,7 +23,7 @@ If you want to install from source, then ``python setup.py install``.
 Requirements
 ============
 
-Tested on Python 2.7, or >= 3.3.
+Tested on Python 2.7, or >= 3.6.
 
 Known to work on Python 2.6.
 

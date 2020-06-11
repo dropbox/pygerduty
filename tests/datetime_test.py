@@ -65,7 +65,8 @@ def test_datetime_encoder_decoder_v1():
     # Test our encoder uses default properly
     with pytest.raises(TypeError) as excinfo:
         pygerduty._json_dumper({"test": uuid.uuid4()})
-    excinfo.match(r"UUID\('.*'\) is not JSON serializable")
+    excinfo.match(r".* is not JSON serializable")
+
 
 ###################
 # Version 2 Tests #
@@ -124,4 +125,4 @@ def test_datetime_encoder_decoder_v2():
     # Test our encoder uses default properly
     with pytest.raises(TypeError) as excinfo:
         pygerduty.common._json_dumper({"test": uuid.uuid4()})
-    excinfo.match(r"UUID\('.*'\) is not JSON serializable")
+    excinfo.match(r".* is not JSON serializable")
