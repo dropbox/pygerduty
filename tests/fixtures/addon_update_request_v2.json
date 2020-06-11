@@ -1,0 +1,7 @@
+{
+    "addon": {
+        "type": "full_page_addon",
+        "name": "Service Runbook",
+        "src": "https://intranet.example.com/runbook.html"
+    }
+}

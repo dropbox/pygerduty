@@ -1,0 +1,17 @@
+{
+    "addon": {
+        "id": "PKX7F81",
+        "type": "incident_show_addon",
+        "name": "Service Runbook",
+        "src": "https://intranet.example.com/runbook.html",
+        "services": [
+            {
+                "id": "PIJ90N7",
+                "type": "service",
+                "summary": "My Application Service",
+                "self": "https://api.pagerduty.com/services/PIJ90N7",
+                "html_url": "https://subdomain.pagerduty.com/services/PIJ90N7"
+            }
+        ]
+    }
+}

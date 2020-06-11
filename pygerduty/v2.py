@@ -450,7 +450,14 @@ class Extension(Container):
 
 
 class Addon(Container):
-    pass
+    def install(self, *args, **kwargs):
+        raise NotImplementedError()
+
+    def delete(self, *args, **kwargs):
+        raise NotImplementedError()
+
+    def list(self, *args, **kwargs):
+        raise NotImplementedError()
 
 
 class Oncall(Container):
