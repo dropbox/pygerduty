@@ -319,6 +319,10 @@ class Extensions(Collection):
     pass
 
 
+class Addons(Collection):
+    pass
+
+
 class Oncalls(Collection):
     pass
 
@@ -421,6 +425,17 @@ class Container(object):
 
 class Extension(Container):
     pass
+
+
+class Addon(Container):
+    def install(self, *args, **kwargs):
+        raise NotImplementedError()
+
+    def delete(self, *args, **kwargs):
+        raise NotImplementedError()
+
+    def list(self, *args, **kwargs):
+        raise NotImplementedError()
 
 
 class Oncall(Container):
@@ -629,6 +644,7 @@ class PagerDuty(object):
         self.teams = Teams(self)
         self.log_entries = LogEntries(self)
         self.extensions = Extensions(self)
+        self.addons = Addons(self)
         self.oncalls = Oncalls(self)
 
     @staticmethod
