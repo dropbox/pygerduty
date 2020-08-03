@@ -120,3 +120,79 @@ def test_reassign_v2():
 
     assert len(incident1.assignments) == 0
     assert len(incident2.assignments) == 2
+
+@httpretty.activate
+def test_log_entries_count():
+    body1 = open('tests/fixtures/get_incident_v2.json').read()
+    httpretty.register_uri(
+        httpretty.GET, "https://api.pagerduty.com/incidents/PT4KHLK",
+        body=body1, status=200)
+
+    p = pygerduty.v2.PagerDuty("password")
+    incident = p.incidents.show("PT4KHLK")
+    assert str(incident.id) == "PT4KHLK"
+    assert incident.created_at == '2015-10-06T21:30:42Z'
+
+    body2 = open('tests/fixtures/incident_log_entries.json').read()
+    httpretty.register_uri(
+        httpretty.GET, "https://api.pagerduty.com/incidents/PT4KHLK/log_entries",
+        body=body2, status=200)
+
+    total = incident.log_entries.count()
+    assert total == 12
+    
+@httpretty.activate
+def test_log_entries_list_offset():
+    body1 = open('tests/fixtures/get_incident_v2.json').read()
+    httpretty.register_uri(
+        httpretty.GET, "https://api.pagerduty.com/incidents/PT4KHLK",
+        body=body1, status=200)
+
+    p = pygerduty.v2.PagerDuty("password")
+    incident = p.incidents.show("PT4KHLK")
+    assert str(incident.id) == "PT4KHLK"
+    assert incident.created_at == '2015-10-06T21:30:42Z'
+
+    body2 = open('tests/fixtures/incident_log_entries.json').read()
+    httpretty.register_uri(
+        httpretty.GET, "https://api.pagerduty.com/incidents/PT4KHLK/log_entries",
+        body=body2, status=200)
+
+    log_entries = [i for i in incident.log_entries.list(offset=0,limit=25)]
+    assert len(log_entries) == 12
+    assert log_entries[0].created_at == '2019-01-01T00:57:11Z'
+    assert log_entries[0].self_ == 'https://api.pagerduty.com/log_entries/RP2836ITHU9F3ADA1T9MF3F97O'
+
+@httpretty.activate
+def test_log_entries_list():
+    body1 = open('tests/fixtures/get_incident_v2.json').read()
+    httpretty.register_uri(
+        httpretty.GET, "https://api.pagerduty.com/incidents/PT4KHLK",
+        body=body1, status=200)
+
+    p = pygerduty.v2.PagerDuty("password")
+    incident = p.incidents.show("PT4KHLK")
+    assert str(incident.id) == "PT4KHLK"
+    assert incident.created_at == '2015-10-06T21:30:42Z'
+
+    body2 = open('tests/fixtures/incident_log_entries.json').read()
+    httpretty.register_uri(
+        httpretty.GET, "https://api.pagerduty.com/incidents/PT4KHLK/log_entries",
+        responses=[
+            httpretty.Response(body=body2, status=200),
+            httpretty.Response(body=textwrap.dedent("""\
+                {
+                    "limit": 25,
+                    "more": false,
+                    "offset": 13,
+                    "log_entries": [],
+                    "total": null
+                }
+            """), status=200)
+        ]
+    )
+
+    log_entries = [i for i in incident.log_entries.list()]
+    assert len(log_entries) == 12
+    assert log_entries[0].created_at == '2019-01-01T00:57:11Z'
+    assert log_entries[0].self_ == 'https://api.pagerduty.com/log_entries/RP2836ITHU9F3ADA1T9MF3F97O'
