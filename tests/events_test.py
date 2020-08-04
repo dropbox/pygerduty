@@ -2,8 +2,10 @@ import httpretty
 import json
 import textwrap
 import pygerduty.events
+import pygerduty.events_v2
 
 from pygerduty.events import INTEGRATION_API_URL
+from pygerduty.events_v2 import INTEGRATION_API_URL as INTEGRATION_API_URL_V2
 from pygerduty.common import Requester
 
 
@@ -35,3 +37,23 @@ def test_create_event():
 
     assert response == 'srv01/HTTP'
 
+
+@httpretty.activate
+def test_enqueue_event_v2():
+    response = {
+        "status": "success",
+        "message": "Event processed",
+        "dedup_key": "Service (P123456) Test Dedup Key"
+    }
+    httpretty.register_uri(
+        httpretty.POST, INTEGRATION_API_URL_V2,
+        body=textwrap.dedent(json.dumps(response)), status=200)
+
+    E = pygerduty.events_v2.Events('fake_integration_key')
+
+    request = {}
+    with open('tests/fixtures/event_request_v2.json') as fp:
+        request = json.load(fp)
+
+    dedup_key = E.enqueue(**request)
+    assert dedup_key == response['dedup_key']
