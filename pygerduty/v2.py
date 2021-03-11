@@ -316,7 +316,10 @@ class EmailFilters(Collection):
 
 
 class Extensions(Collection):
-    pass
+    def enable(self, entity_id):
+        path = "{0}/{1}/enable".format(self.name, entity_id)
+        response = self.pagerduty.request("POST", path)
+        return self.container(self, **response.get(self.sname, {}))
 
 
 class Addons(Collection):
