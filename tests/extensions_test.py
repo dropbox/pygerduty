@@ -58,3 +58,19 @@ def test_list_extensions_v2():
     assert len(extensions[1].extension_objects) == 1
     ext_obj1 = extensions[1].extension_objects[0]
     assert ext_obj1.id == 'PIJ90N8'
+
+
+@httpretty.activate
+def test_enable_extension_v2():
+    body = open('tests/fixtures/get_extension_v2.json').read()
+    httpretty.register_uri(
+        httpretty.POST, "https://api.pagerduty.com/extensions/PPGPXHO/enable",
+        body=body, status=200)
+    p = pygerduty.v2.PagerDuty("password")
+    extension = p.extensions.enable("PPGPXHO")
+
+    assert extension.self_ == 'https://api.pagerduty.com/extensions/PPGPXHO'
+    assert extension.endpoint_url == 'https://example.com/recieve_a_pagerduty_webhook'
+    assert len(extension.extension_objects) == 1
+    ext_obj = extension.extension_objects[0]
+    assert ext_obj.id == 'PIJ90N7'
